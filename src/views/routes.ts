@@ -24,5 +24,3 @@ const routes: Array<RouteConfig> = [
 ];
 
 export default routes;
-
-

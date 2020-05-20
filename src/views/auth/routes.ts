@@ -6,6 +6,6 @@ const authRoutes: Array<RouteConfig> = [
     path: "/auth",
     component: () => import("./Login.vue")
   }
-]
+];
 
 export default authRoutes;

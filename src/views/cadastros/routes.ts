@@ -16,6 +16,6 @@ const cadastroRoutes: Array<RouteConfig> = [
 		path: "/cadastro/imovel",
 		component: () => import("./Imovel.vue")
 	},
-]
+];
 
 export default cadastroRoutes;
