@@ -5,7 +5,7 @@
 			<div class="container">
 				<div class="level">
 					<div class="level-left">
-						<h1 class="title is-4">Clientes</h1>
+						<h1 class="title is-3">Clientes</h1>
 					</div>
 					<div class="level-rigth">
 						<b-button icon-left="plus" type="is-primary">Criar novo</b-button>

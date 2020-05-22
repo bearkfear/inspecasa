@@ -3,7 +3,14 @@
 		<Navbar></Navbar>
 		<section class="section">
 			<div class="container">
-				<h1 class="title is-3">Endereços</h1>
+				<div class="level">
+					<div class="level-left">
+						<h1 class="title is-3">Endereços</h1>
+					</div>
+					<div class="level-rigth">
+						<b-button icon-left="plus" type="is-primary">Criar novo</b-button>
+					</div>
+				</div>
 				<table class="table is-striped is-hoverable is-fullwidth">
 					<thead>
 						<tr>
@@ -20,17 +27,16 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>João Machado Soares</td>
-							<td>1240</td>
-							<td>Bloco B5 apt 319</td>
-							<td>Camobi</td>
-							<td>Santa Maria</td>
-							<td>RS</td>
-							<td>97110-000</td>
-							<td></td>
-							<td></td>
-							<td>Alguma coisa</td>
+						<tr v-for="endereco in enderecos" :key="endereco.uid">
+							<td>{{ endereco.rua }}</td>
+							<td>{{ endereco.numero }}</td>
+							<td>{{ endereco.complemento }}</td>
+							<td>{{ endereco.bairro }}</td>
+							<td>{{ endereco.cidade }}</td>
+							<td>{{ endereco.uf }}</td>
+							<td>{{ endereco.cep }}</td>
+							<td>{{ endereco.avenida }}</td>
+							<td>{{ endereco.logradouro }}</td>
 							<td>
 								<b-button type="is-info" icon-left="edit" size="is-small"></b-button>
 								<b-button type="is-danger" icon-left="trash" size="is-small"></b-button>
@@ -47,11 +53,30 @@
 import Vue from "vue";
 
 import Navbar from "@/components/Navbar.vue";
+import gql from "graphql-tag";
 
 export default Vue.extend({
 	name: "endereco",
 	components: {
 		Navbar
+	},
+	apollo: {
+		enderecos: gql`
+			query enderecos {
+				enderecos {
+					uid
+					rua
+					logradouro
+					complemento
+					numero
+					uf
+					cep
+					avenida
+					cidade
+					bairro
+				}
+			}
+		`
 	}
 });
 </script>
