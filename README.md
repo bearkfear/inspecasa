@@ -44,3 +44,11 @@ Esse projeto possui outros projetos relacionados
  Backend: https://github.com/bearkfear/inspecasa-backend
  
  Mobile: https://github.com/bearkfear/home-inspection-app
+
+
+## Documentos de referencia
+
+<i>Está atrasado nas informações mas ainda é valido</i>
+[FullStackVue.js](https://github.com/prisma-labs/graphql-yoga/tree/master/examples/fullstack-vue)
+
+[Apollo VueJS](https://apollo.vuejs.org/)

@@ -12,10 +12,16 @@
 					<p>Clientes</p>
 				</b-navbar-item>
 				<b-navbar-item tag="router-link" to="/cadastro/imovel">
-					<p>Imóveis</p>
+					<div class="level">
+						<div class="level-left"></div>
+						<div class="level-rigth">Imóveis</div>
+					</div>
 				</b-navbar-item>
 				<b-navbar-item tag="router-link" to="/cadastro/endereco">
-					<p>Endereços</p>
+					<div class="level">
+						<div class="level-left"></div>
+						<div class="level-rigth">Endereços</div>
+					</div>
 				</b-navbar-item>
 			</b-navbar-dropdown>
 		</template>
@@ -38,7 +44,9 @@
 							<div class="level-left">
 								<b-icon icon="calendar"></b-icon>
 							</div>
-							<div class="level-rigth"><p>Perfil</p></div>
+							<div class="level-rigth">
+								<p>Perfil</p>
+							</div>
 						</div>
 					</b-dropdown-item>
 					<b-dropdown-item>
@@ -54,6 +62,7 @@
 		</template>
 	</b-navbar>
 </template>
+
 <script lang="ts">
 import Vue from "vue";
 
