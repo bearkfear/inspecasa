@@ -30,8 +30,18 @@
 							<td>{{ imovel.numQuartos }}</td>
 							<td>{{ imovel.situacao }}</td>
 							<td>
-								<b-button type="is-info" icon-left="edit" size="is-small"></b-button>
-								<b-button type="is-danger" icon-left="trash" size="is-small"></b-button>
+								<b-button
+									type="is-info"
+									icon-left="edit"
+									size="is-small"
+									@click="handleEditar(imovel)"
+								></b-button>
+								<b-button
+									type="is-danger"
+									icon-left="trash"
+									size="is-small"
+									@click="handleRemover(imovel)"
+								></b-button>
 							</td>
 						</tr>
 					</tbody>
@@ -53,13 +63,59 @@ export default Vue.extend({
 		Navbar
 	},
 	methods: {
+		handleRemover(imovel: any) {
+			this.$buefy.dialog.confirm({
+				title: "Remover Imovel",
+				message: "Deseja <b>remover</b> o imovel? Essa ação não pode ser desfeita.",
+				confirmText: "Remover",
+				type: "is-danger",
+				hasIcon: true,
+				onConfirm: () => {
+					this.$apollo
+						.mutate({
+							mutation: gql`
+								mutation deleteImovel($id: ID!) {
+									deleteImovel(id: $id)
+								}
+							`,
+							variables: {
+								id: imovel.id
+							}
+						})
+						.then(() => {
+							this.$apollo.queries.imoveis.refetch();
+						});
+				}
+			});
+		},
 		handleAdicionar() {
 			this.$buefy.modal.open({
 				parent: this,
 				hasModalCard: true,
 				component: ModalImovel,
 				props: {},
-				events: {}
+				events: {
+					reload: () => {
+						this.$apollo.queries.imoveis.refetch();
+					}
+				}
+			});
+		},
+		handleEditar(imovel: any) {
+			this.$buefy.modal.open({
+				parent: this,
+				hasModalCard: true,
+				component: ModalImovel,
+				props: {
+					isEditing: true,
+					idImovel: imovel.id,
+					idEndereco: imovel.endereco.id
+				},
+				events: {
+					reload: () => {
+						this.$apollo.queries.imoveis.refetch();
+					}
+				}
 			});
 		}
 	},
@@ -86,6 +142,9 @@ export default Vue.extend({
 					numQuartos
 					situacao
 					valorProposta
+					endereco {
+						id
+					}
 				}
 			}
 		`

@@ -31,30 +31,32 @@
 				<b-dropdown hoverable>
 					<template slot="trigger">
 						<b-navbar-item>
-							<div class="level">
-								<div class="level-left"><p>Enrico Da Silva</p></div>
-								<div class="level-rigth">
+							<div class="media">
+								<div class="media-left">
+									<p>Enrico Da Silva</p>
+								</div>
+								<div class="media-content">
 									<img src="@/assets/user-placeholder.jpeg" />
 								</div>
 							</div>
 						</b-navbar-item>
 					</template>
 					<b-dropdown-item>
-						<div class="level">
-							<div class="level-left">
+						<div class="media">
+							<div class="media-left">
 								<b-icon icon="calendar"></b-icon>
 							</div>
-							<div class="level-rigth">
+							<div class="media-content">
 								<p>Perfil</p>
 							</div>
 						</div>
 					</b-dropdown-item>
 					<b-dropdown-item>
-						<div class="level">
-							<div class="level-left">
+						<div class="media">
+							<div class="media-left">
 								<b-icon icon="calendar"></b-icon>
 							</div>
-							<div class="level-rigth"><p>Sair</p></div>
+							<div class="level-content"><p>Sair</p></div>
 						</div>
 					</b-dropdown-item>
 				</b-dropdown>

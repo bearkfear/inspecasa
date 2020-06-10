@@ -19,6 +19,7 @@ module.exports = {
 		quotes: ["error", "double"],
 		semi: ["error", "always"],
 		"no-tabs": ["off"],
+		"object-curly-newline": ["off"],
 
 		// override default options for rules from base configurations
 		"no-cond-assign": ["error", "always"],
@@ -26,6 +27,7 @@ module.exports = {
 		// disable rules from base configurations
 		indent: ["off"],
 		"comma-dangle": ["off"],
+		"arrow-parens": ["off"],
 	},
 	overrides: [
 		{

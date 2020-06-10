@@ -2,9 +2,9 @@ import Vue from "vue";
 import Buefy from "buefy";
 import VueApollo from "vue-apollo";
 // @ts-ignore
-import money from 'v-money'
+import money from "v-money";
 // @ts-ignore
-import VueMask from 'v-mask';
+import VueMask from "v-mask";
 
 
 import App from "./App.vue";

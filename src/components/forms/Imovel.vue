@@ -2,7 +2,7 @@
 	<div style="width: auto">
 		<div class="modal-card">
 			<header class="modal-card-head">
-				<p clas="modal-card-title">Adicionar Imóvel</p>
+				<p clas="modal-card-title">{{ isEditing ? "Editar" : "Adicionar" }} Imóvel</p>
 			</header>
 			<section class="modal-card-body">
 				<h3 class="title is-4">Geral</h3>
@@ -93,7 +93,11 @@
 						</b-input>
 					</b-field>
 					<b-field label="Número">
-						<b-input placeholder="Número da casa" type="text" v-model="endereco.numero"></b-input>
+						<b-input
+							placeholder="Número da casa"
+							type="number"
+							v-model.number="endereco.numero"
+						></b-input>
 					</b-field>
 				</div>
 			</section>
@@ -102,8 +106,24 @@
 					<b-button @click="$emit('close')">
 						Fechar
 					</b-button>
-					<b-button type="is-success" @change="handleStoreImovel()">
+
+					<b-button
+						v-if="!isEditing"
+						type="is-success"
+						@click="handleStoreImovel()"
+						:loading="isSubmitting"
+						:disabled="isSubmitting"
+					>
 						Adicionar
+					</b-button>
+					<b-button
+						v-else
+						type="is-success"
+						@click="handleEditImovel()"
+						:loading="isSubmitting"
+						:disabled="isSubmitting"
+					>
+						Salvar
 					</b-button>
 				</div>
 			</footer>
@@ -112,8 +132,8 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { debounce } from "lodash";
 import axios from "axios";
+import gql from "graphql-tag";
 
 interface ViaCep {
 	cep: string;
@@ -153,6 +173,23 @@ interface Data {
 }
 // Data, Methods, Computed, Props
 export default Vue.extend({
+	props: {
+		isEditing: {
+			required: false,
+			default: false,
+			type: Boolean
+		},
+		idImovel: {
+			required: false,
+			default: "0",
+			type: String
+		},
+		idEndereco: {
+			required: false,
+			default: "0",
+			type: String
+		}
+	},
 	data: (): Data => ({
 		imovel: {
 			descricao: null,
@@ -175,10 +212,151 @@ export default Vue.extend({
 		isSubmitting: false,
 		isLoading: false
 	}),
+	created() {
+		if (this.isEditing) {
+			this.$apollo
+				.query({
+					query: gql`
+						query imovelEndereco($idEndereco: ID!, $idImovel: ID!) {
+							imovel(id: $idImovel) {
+								descricao
+								valorProposta
+								categoria
+								numQuartos
+								situacao
+							}
+							endereco(id: $idEndereco) {
+								cep
+								rua
+								logradouro
+								complemento
+								numero
+								uf
+								avenida
+								cidade
+								bairro
+							}
+						}
+					`,
+					variables: {
+						idImovel: this.idImovel,
+						idEndereco: this.idEndereco
+					}
+				})
+				.then(({ data }) => {
+					this.endereco = data.endereco;
+					this.imovel = data.imovel;
+					this.$delete(this.endereco, "__typename");
+					this.$delete(this.imovel, "__typename");
+				});
+		}
+	},
 	methods: {
-		handleStoreImovel() {
-			console.log(this.imovel);
+		handleEditImovel() {
+			this.isSubmitting = true;
+			const val = this.imovel.valorProposta;
+			this.$apollo
+				.mutate({
+					mutation: gql`
+						mutation updateImovelAndEndereco(
+							$imovel: ImovelInput!
+							$endereco: EnderecoInput!
+							$idEndereco: ID!
+							$idImovel: ID!
+						) {
+							updateImovel(id: $idImovel, imovel: $imovel) {
+								id
+							}
+							updateEndereco(id: $idEndereco, input: $endereco) {
+								id
+							}
+
+						}
+					`,
+					variables: {
+						imovel: {
+							...this.imovel,
+							valorProposta: Number(
+								(val || "R$ 0,00")
+									.replace(/\./g, "")
+									.replace("R$ ", "")
+									.replace(",", ".")
+							)
+						},
+						endereco: this.endereco,
+						idEndereco: this.idEndereco,
+						idImovel: this.idImovel
+					}
+				})
+				.then(() => {
+					this.$emit("reload");
+					this.$emit("close");
+				});
 		},
+		handleStoreImovel() {
+			this.isSubmitting = true;
+			const val = this.imovel.valorProposta;
+			interface ResponseMutation {
+				storeImovel: {
+					id: string;
+				};
+				storeEndereco: {
+					id: string;
+				};
+			}
+			this.$apollo
+				.mutate<ResponseMutation>({
+					mutation: gql`
+						mutation storeImovelAndEndereco($imovel: ImovelInput!, $endereco: EnderecoInput!) {
+							storeImovel(imovel: $imovel) {
+								id
+							}
+							storeEndereco(input: $endereco) {
+								id
+							}
+						}
+					`,
+					variables: {
+						imovel: {
+							...this.imovel,
+							valorProposta: Number(
+								(val || "R$ 0,00")
+									.replace(/\./g, "")
+									.replace("R$ ", "")
+									.replace(",", ".")
+							)
+						},
+						endereco: this.endereco
+					}
+				})
+				.then(({ data }) => {
+					this.isSubmitting = false;
+					this.$apollo
+						.mutate({
+							mutation: gql`
+								mutation updateEndereco($id: ID!, $endereco: EnderecoInput!, $imovelId: ID!) {
+									updateEndereco(id: $id, input: $endereco, imovelId: $imovelId) {
+										id
+									}
+								}
+							`,
+							variables: {
+								id: data?.storeEndereco.id,
+								endereco: this.endereco,
+								imovelId: data?.storeImovel.id
+							}
+						})
+						.then(() => {
+							this.$emit("reload");
+							this.$emit("close");
+						});
+				})
+				.catch(e => {
+					this.isSubmitting = false;
+					console.log("Algo de errado aconteceu");
+				});
+		},
+
 		handleCep(cep: string) {
 			if (cep && cep.length === 9) {
 				const localCep = cep.replace("-", "");
@@ -200,12 +378,11 @@ export default Vue.extend({
 					.then(({ data }) => {
 						console.log(data);
 
-						const { logradouro, complemento, bairro, localidade, uf } = data;
+						const { logradouro, bairro, localidade, uf } = data;
 
 						this.endereco.rua = logradouro;
 						this.endereco.uf = uf;
 						this.endereco.logradouro = logradouro;
-						this.endereco.complemento = complemento;
 						this.endereco.bairro = bairro;
 						this.endereco.cidade = localidade;
 					});
