@@ -60,12 +60,12 @@ export default Vue.extend({
 		clientes: gql`
 			query clientes {
 				clientes {
-					uid
+					id
 					nome
 					sobrenome
 					email
-					dataCriacao
-					ultimoAcesso
+					created_at
+					changed_at
 					bio
 				}
 			}

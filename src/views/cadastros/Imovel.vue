@@ -29,19 +29,27 @@
 							<td>{{ imovel.descricao }}</td>
 							<td>{{ imovel.numQuartos }}</td>
 							<td>{{ imovel.situacao }}</td>
-							<td>
-								<b-button
-									type="is-info"
-									icon-left="edit"
-									size="is-small"
-									@click="handleEditar(imovel)"
-								></b-button>
-								<b-button
-									type="is-danger"
-									icon-left="trash"
-									size="is-small"
-									@click="handleRemover(imovel)"
-								></b-button>
+							<td width="10%">
+								<div class="buttons">
+									<b-button
+										type="is-info"
+										icon-left="eye"
+										size="is-small"
+										@click="$router.push(`/show/imovel/${imovel.id}`)"
+									></b-button>
+									<b-button
+										type="is-info"
+										icon-left="edit"
+										size="is-small"
+										@click="handleEditar(imovel)"
+									></b-button>
+									<b-button
+										type="is-danger"
+										icon-left="trash"
+										size="is-small"
+										@click="handleRemover(imovel)"
+									></b-button>
+								</div>
 							</td>
 						</tr>
 					</tbody>
