@@ -13,21 +13,33 @@ const routes: Array<RouteConfig> = [
 	...apresetacaoRoutes,
 	{
 		path: "/",
-		component: DashboardPage
+		component: DashboardPage,
+		meta: {
+			requireAuth: true,
+		}
 	},
 	{
 		name: "about",
 		path: "/about",
-		component: AboutPage
+		component: AboutPage,
+		meta: {
+			requireAuth: false,
+		}
 	},
 	{
 		name: "dev",
 		path: "/tools",
-		component: Dev
+		component: Dev,
+		meta: {
+			requireAuth: true,
+		}
 	},
 	{
 		path: "*",
-		component: NotFindPage
+		component: NotFindPage,
+		meta: {
+			requireAuth: false,
+		}
 	}
 ];
 

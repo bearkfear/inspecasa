@@ -6,7 +6,7 @@
 			</b-navbar-item>
 		</template>
 
-		<template slot="start">
+		<template slot="start" v-if="!onlyLogo">
 			<b-navbar-dropdown label="Cadastros" aria-label="Cadastros" hoverable>
 				<b-navbar-item tag="router-link" to="/cadastro/cliente">
 					<p>Clientes</p>
@@ -26,7 +26,7 @@
 			</b-navbar-dropdown>
 		</template>
 
-		<template slot="end">
+		<template slot="end" v-if="!onlyLogo">
 			<b-navbar-item tag="div">
 				<b-dropdown hoverable>
 					<template slot="trigger">
@@ -68,5 +68,13 @@
 <script lang="ts">
 import Vue from "vue";
 
-export default Vue.extend({});
+export default Vue.extend({
+	props: {
+		onlyLogo: {
+			default: false,
+			required: false,
+			type: Boolean
+		}
+	}
+});
 </script>

@@ -33,9 +33,10 @@
 								<div class="buttons">
 									<b-button
 										type="is-info"
+										tag="router-link"
+										:to="{path: `/show/imovel/${imovel.id}`}"
 										icon-left="eye"
 										size="is-small"
-										@click="$router.push(`/show/imovel/${imovel.id}`)"
 									></b-button>
 									<b-button
 										type="is-info"

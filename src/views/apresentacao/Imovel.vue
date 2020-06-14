@@ -16,9 +16,9 @@
 					<article class="column is-6">
 						<div class="block">
 							<h1 class="title is-4">Informações</h1>
-							{{
-								imovel
-							}}
+							<code>
+								{{ JSON.stringify(imovel, null, 4) }}
+							</code>
 						</div>
 					</article>
 					<article class="column is-6">
@@ -87,35 +87,42 @@ export default Vue.extend({
 		activeTab: 0,
 		midiasUpload: [],
 		documentosUpload: [],
-		imovel: {}
+		imovel: null
 	}),
 	components: {
 		Navbar
 	},
 	apollo: {
-		imovel: gql`
-			query imovel($id: ID!) {
-				imovel(id: $id) {
-					id
-					categoria
-					descricao
-					numQuartos
-					valorProposta
-					updatedAt
-					endereco {
+		imovel: {
+			query: gql`
+				query imovel($id: ID!) {
+					imovel(id: $id) {
 						id
-						avenida
-						bairro
-						cep
-						cidade
-						complemento
-						logradouro
-						uf
+						categoria
+						descricao
+						numQuartos
+						valorProposta
 						updatedAt
+						endereco {
+							id
+							avenida
+							bairro
+							cep
+							cidade
+							complemento
+							logradouro
+							uf
+							updatedAt
+						}
 					}
 				}
+			`,
+			variables() {
+				return {
+					id: this.$route.params.id
+				};
 			}
-		`
+		}
 	}
 });
 </script>
