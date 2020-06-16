@@ -5,14 +5,21 @@
 				<b-navbar-item>
 					<div class="media">
 						<div class="media-left">
-							<p>{{ usuario.nome }} {{ usuario.sobrenome }}</p>
-							<small class="has-text-weight-bold">{{ usuario.funcao }}</small>
+							<template v-if="loading">
+								<b-skeleton v-if="loading" animated active width="100px"></b-skeleton>
+								<b-skeleton animated active width="100px"></b-skeleton>
+							</template>
+							<template v-else>
+								<p>{{ usuario.nome }} {{ usuario.sobrenome }}</p>
+								<small class="has-text-weight-bold">{{ usuario.funcao }}</small>
+							</template>
 						</div>
 					</div>
-					<img class="user-img" :src="usuario.urlImg" />
+					<b-skeleton v-if="loading" active animated circle width="48px" height="48px"></b-skeleton>
+					<img v-else class="user-img" :src="usuario.urlImg" />
 				</b-navbar-item>
 			</template>
-			<b-dropdown-item @click="logoutUser()">
+			<b-dropdown-item @click="logoutUser()" v-if="!loading">
 				<div class="media">
 					<div class="media-left">
 						<b-icon icon="id-card"></b-icon>
@@ -42,7 +49,8 @@ import gql from "graphql-tag";
 
 export default Vue.extend({
 	data: () => ({
-		uid: ""
+		uid: "",
+		usuario: null
 	}),
 	methods: {
 		logoutUser() {
@@ -50,11 +58,15 @@ export default Vue.extend({
 			this.$router.push({ path: "/auth" });
 		}
 	},
+	computed: {
+		loading() {
+			return !this.usuario;
+		}
+	},
 	created() {
 		const token = localStorage.getItem("token-jwt");
 		if (token) {
 			const decodedToken = decode(token);
-			console.log(decodedToken);
 			this.uid = decodedToken.user_id;
 		}
 	},

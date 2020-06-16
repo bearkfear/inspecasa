@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "inspecasa"
+  },
+  "targets": {
+    "inspecasa": {
+      "hosting": {
+        "app": [
+          "app-inspecasa"
+        ]
+      }
+    }
+  }
+}

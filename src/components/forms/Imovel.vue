@@ -353,7 +353,6 @@ export default Vue.extend({
 				})
 				.catch(e => {
 					this.isSubmitting = false;
-					console.log("Algo de errado aconteceu");
 				});
 		},
 
@@ -376,7 +375,6 @@ export default Vue.extend({
 						}
 					})
 					.then(({ data }) => {
-						console.log(data);
 
 						const { logradouro, bairro, localidade, uf } = data;
 

@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<Navbar></Navbar>
 		<section class="section">
 			<div class="container">
 				<div class="level">
@@ -47,16 +46,10 @@
 
 <script lang="ts">
 import Vue from "vue";
-import VMask from "v-mask";
-
-import Navbar from "@/components/Navbar.vue";
 import gql from "graphql-tag";
 
 export default Vue.extend({
 	name: "endereco",
-	components: {
-		Navbar
-	},
 	apollo: {
 		enderecos: gql`
 			query enderecos {

@@ -6,7 +6,7 @@
 			</b-navbar-item>
 		</template>
 
-		<template slot="start" v-if="!onlyLogo">
+		<template slot="start" v-if="$route.meta.requireAuth">
 			<b-navbar-dropdown label="Cadastros" aria-label="Cadastros" hoverable>
 				<b-navbar-item tag="router-link" to="/cadastro/cliente">
 					<p>Clientes</p>
@@ -26,7 +26,7 @@
 			</b-navbar-dropdown>
 		</template>
 
-		<template slot="end" v-if="!onlyLogo">
+		<template slot="end" v-if="$route.meta.requireAuth">
 			<User></User>
 		</template>
 	</b-navbar>
@@ -37,13 +37,6 @@ import Vue from "vue";
 import User from "./User.vue";
 
 export default Vue.extend({
-	props: {
-		onlyLogo: {
-			default: false,
-			required: false,
-			type: Boolean
-		}
-	},
 	components: {
 		User
 	},

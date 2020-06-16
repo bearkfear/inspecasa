@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<Navbar></Navbar>
 		<section class="section">
 			<div class="container">
 				<div class="level">
@@ -78,7 +77,6 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import Navbar from "@/components/Navbar.vue";
 import gql from "graphql-tag";
 
 export default Vue.extend({
@@ -89,9 +87,6 @@ export default Vue.extend({
 		documentosUpload: [],
 		imovel: null
 	}),
-	components: {
-		Navbar
-	},
 	apollo: {
 		imovel: {
 			query: gql`

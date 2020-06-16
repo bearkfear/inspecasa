@@ -1,8 +1,5 @@
 <template>
 	<section class="hero is-white is-fullheight">
-		<div class="hero-head">
-			<Navbar :only-logo="true"></Navbar>
-		</div>
 		<div class="hero-body">
 			<div class="container">
 				<div class="columns is-centered">
@@ -46,9 +43,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Navbar from "@/components/Navbar.vue";
-import EventBus from "@/eventBus";
-import firebase from "firebase";
+
+import firebase from "firebase/app";
+import "firebase/auth";
 
 interface Data {
 	email: null | string;
@@ -69,9 +66,6 @@ export default Vue.extend<Data, {}, {}, {}>({
 		authError: null,
 		isSubmitting: false
 	}),
-	components: {
-		Navbar
-	},
 	methods: {
 		navigate(path: string) {
 			this.$router.push(path);
@@ -89,6 +83,7 @@ export default Vue.extend<Data, {}, {}, {}>({
 				this.isSubmitting = false;
 				this.$router.push({ path: "/" });
 			} catch (e) {
+				this.isSubmitting = false;
 				this.authError = e.code;
 			}
 		}

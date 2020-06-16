@@ -1,6 +1,5 @@
-import firebase from "firebase";
+import firebase from "firebase/app";
 import "firebase/auth";
-import "firebase/analytics";
 
 const app = firebase.initializeApp({
 	apiKey: process.env.VUE_APP_APIKEY,
@@ -12,7 +11,3 @@ const app = firebase.initializeApp({
 	appId: process.env.VUE_APP_APPID,
 	measurementId: process.env.VUE_APP_MEASUREMENTID,
 })
-
-app.analytics();
-
-export default app;

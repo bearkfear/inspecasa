@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<Navbar></Navbar>
 		<section class="section">
 			<div class="container">
 				<div class="level">
@@ -63,14 +62,10 @@
 <script lang="ts">
 import Vue from "vue";
 import gql from "graphql-tag";
-import Navbar from "@/components/Navbar.vue";
 import ModalImovel from "@/components/forms/Imovel.vue";
 
 export default Vue.extend({
 	name: "imovel",
-	components: {
-		Navbar
-	},
 	methods: {
 		handleRemover(imovel: any) {
 			this.$buefy.dialog.confirm({

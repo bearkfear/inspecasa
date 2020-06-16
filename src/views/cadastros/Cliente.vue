@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<Navbar></Navbar>
 		<section class="section">
 			<div class="container">
 				<div class="level">
@@ -45,14 +44,10 @@
 <script lang="ts">
 import Vue from "vue";
 
-import Navbar from "@/components/Navbar.vue";
 import gql from "graphql-tag";
 
 export default Vue.extend({
 	name: "cliente",
-	components: {
-		Navbar
-	},
 	data: () => ({
 		clientes: [],
 	}),

@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<Navbar></Navbar>
 		<section class="section">
 			<div class="container">
 				<div class="level">
@@ -18,11 +17,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Navbar from "../../components/Navbar.vue";
 
-export default Vue.extend({
-	components: {
-		Navbar
-	}
-});
+export default Vue.extend({});
 </script>
