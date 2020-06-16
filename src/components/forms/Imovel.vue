@@ -375,7 +375,6 @@ export default Vue.extend({
 						}
 					})
 					.then(({ data }) => {
-
 						const { logradouro, bairro, localidade, uf } = data;
 
 						this.endereco.rua = logradouro;

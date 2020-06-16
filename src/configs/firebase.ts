@@ -10,4 +10,4 @@ const app = firebase.initializeApp({
 	messagingSenderId: process.env.VUE_APP_MESSAGINGSENDERID,
 	appId: process.env.VUE_APP_APPID,
 	measurementId: process.env.VUE_APP_MEASUREMENTID,
-})
+});

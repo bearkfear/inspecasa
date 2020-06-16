@@ -6,7 +6,7 @@
 					<div class="media">
 						<div class="media-left">
 							<template v-if="loading">
-								<b-skeleton v-if="loading" animated active width="100px"></b-skeleton>
+								<b-skeleton animated active width="100px"></b-skeleton>
 								<b-skeleton animated active width="100px"></b-skeleton>
 							</template>
 							<template v-else>
@@ -49,44 +49,44 @@ import gql from "graphql-tag";
 
 export default Vue.extend({
 	data: () => ({
-		uid: "",
-		usuario: null
+		usuario: null,
+		loading: false
 	}),
 	methods: {
 		logoutUser() {
 			localStorage.removeItem("token-jwt");
 			this.$router.push({ path: "/auth" });
-		}
-	},
-	computed: {
-		loading() {
-			return !this.usuario;
+		},
+		fetchUser(uid: string) {
+			this.$apollo
+				.query({
+					query: gql`
+						query usuario($id: ID!) {
+							usuario(uid: $id) {
+								nome
+								sobrenome
+								urlImg
+								funcao
+							}
+						}
+					`,
+					variables: {
+						id: uid
+					}
+				})
+				.then(res => {
+					console.log(res);
+					this.usuario = res.data.usuario;
+					this.loading = false;
+				});
 		}
 	},
 	created() {
 		const token = localStorage.getItem("token-jwt");
 		if (token) {
 			const decodedToken = decode(token);
-			this.uid = decodedToken.user_id;
-		}
-	},
-	apollo: {
-		usuario: {
-			query: gql`
-				query usuario($id: ID!) {
-					usuario(uid: $id) {
-						nome
-						sobrenome
-						urlImg
-						funcao
-					}
-				}
-			`,
-			variables() {
-				return {
-					id: this.uid
-				};
-			}
+			this.loading = true;
+			this.fetchUser(decodedToken.user_id);
 		}
 	}
 });
