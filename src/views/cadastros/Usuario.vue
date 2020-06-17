@@ -39,7 +39,7 @@
 							<td>{{ usuario.funcao }}</td>
 							<td>{{ new Date(Number(usuario.createdAt)).toLocaleString() }}</td>
 							<td>{{ new Date(Number(usuario.changedAt)).toLocaleString() }}</td>
-							<td class="buttons">
+							<td class="buttons" width="10%">
 								<b-button
 									icon-left="eye"
 									type="is-info"

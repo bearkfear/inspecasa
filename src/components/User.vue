@@ -84,10 +84,10 @@ export default Vue.extend({
 		}
 	},
 	created() {
+		this.loading = true;
 		const token = localStorage.getItem("token-jwt");
 		if (token) {
 			const decodedToken = decode(token);
-			this.loading = true;
 			this.fetchUser(decodedToken.user_id);
 		}
 	}

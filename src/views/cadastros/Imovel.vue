@@ -23,6 +23,13 @@
 						</tr>
 					</thead>
 					<tbody>
+						<template v-if="loading">
+							<tr v-for="(skl, i) in 10" :key="i">
+								<th v-for="(skll, inx) in 5" :key="inx">
+									<b-skeleton active animated width="100px"></b-skeleton>
+								</th>
+							</tr>
+						</template>
 						<tr v-for="imovel in imoveis" :key="imovel.id">
 							<td>{{ imovel.categoria | categoria }}</td>
 							<td>{{ imovel.descricao }}</td>
@@ -54,6 +61,16 @@
 						</tr>
 					</tbody>
 				</table>
+				<template v-if="!loading && imoveis.length <= 0">
+					<section class="section">
+						<div class="content has-text-grey has-text-centered">
+							<p>
+								<b-icon icon="frown-open" size="is-large"> </b-icon>
+							</p>
+							<p>Sem Registros. Crie um!</p>
+						</div>
+					</section>
+				</template>
 			</div>
 		</section>
 	</div>
@@ -66,12 +83,27 @@ import ModalImovel from "@/components/forms/Imovel.vue";
 
 export default Vue.extend({
 	name: "imovel",
+	data: () => ({
+		imoveis: [],
+		loading: false
+	}),
 	filters: {
 		situacao(val: number) {
 			if (val === 1) {
 				return "A Venda";
 			}
 			return "Vendido";
+		},
+		categoria(key: number) {
+			enum Categoria {
+				Apartamento,
+				Kitnet,
+				Loft,
+				Duplex,
+				Triplex,
+				Casa
+			}
+			return Categoria[key];
 		}
 	},
 	methods: {
@@ -129,37 +161,37 @@ export default Vue.extend({
 					}
 				}
 			});
+		},
+		fetchImoveis() {
+			this.$apollo
+				.query({
+					query: gql`
+						query imoveis {
+							imoveis {
+								id
+								categoria
+								descricao
+								numQuartos
+								situacao
+								valorProposta
+								endereco {
+									id
+								}
+							}
+						}
+					`
+				})
+				.then(({ data }) => {
+					this.imoveis = data.imoveis;
+				})
+				.finally(() => {
+					this.loading = false;
+				});
 		}
 	},
-	filters: {
-		categoria(key: number) {
-			enum Categoria {
-				Apartamento,
-				Kitnet,
-				Loft,
-				Duplex,
-				Triplex,
-				Casa
-			}
-			return Categoria[key];
-		}
-	},
-	apollo: {
-		imoveis: gql`
-			query imoveis {
-				imoveis {
-					id
-					categoria
-					descricao
-					numQuartos
-					situacao
-					valorProposta
-					endereco {
-						id
-					}
-				}
-			}
-		`
+	created() {
+		this.loading = true;
+		this.fetchImoveis();
 	}
 });
 </script>
