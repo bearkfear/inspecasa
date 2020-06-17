@@ -104,3 +104,8 @@ $speed-slower: 250ms !default;
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
+
+#app {
+	width: 100vw;
+	height: 100vh;
+}

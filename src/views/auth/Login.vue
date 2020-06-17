@@ -1,40 +1,66 @@
 <template>
-	<section class="hero is-white is-fullheight">
-		<div class="hero-body">
-			<div class="container">
-				<div class="columns is-centered">
-					<div class="column is-4 notification">
-						<h1 class="title is-3">Acesse o sistema</h1>
-						<form v-on:submit.prevent="handleSubmit">
-							<b-field label="E-mail">
-								<b-input
-									expanded
-									type="email"
-									v-model="email"
-									placeholder="Digite o seu email de acesso"
-								></b-input>
-							</b-field>
-							<b-field label="Senha">
-								<b-input
-									type="password"
-									v-model="password"
-									placeholder="**************"
-									:password-reveal="true"
-								></b-input>
-							</b-field>
-							<b-message v-if="authError" type="is-danger">
-								{{ authError }}
-							</b-message>
-							<button
-								class="button is-success is-fullwidth is-medium is-light"
-								:disabled="isSubmitting"
-								:loading="isSubmitting"
-								@click="handleSubmit(email, password)"
-							>
-								Entrar
-							</button>
-						</form>
+	<section class="section full-height">
+		<div class="container">
+			<div class="columns">
+				<div class="column is-6">
+					<div class="content is-spaced">
+						<h1 class="title is-4">BEM VINDO</h1>
+						<div class="m-auto">
+							<img src="~@/assets/logo.svg" width="250px" class="m-auto" alt="Logo" />
+						</div>
+						<p class="">
+							Acesse sua conta para ficar atualizado. Gerencie imóveis, suas inspeções e seu amplo
+							acervo de informações em um único lugar
+						</p>
+						<hr />
+						<b-field label="E-mail">
+							<b-input
+								expanded
+								icon="at"
+								type="email"
+								size="is-medium"
+								v-model="email"
+								placeholder="Digite o seu email de acesso"
+							></b-input>
+						</b-field>
+						<b-field label="Senha">
+							<b-input
+								type="password"
+								icon="key"
+								v-model="password"
+								size="is-medium"
+								placeholder="**************"
+							></b-input>
+						</b-field>
+						<b-message v-if="authError" type="is-danger">
+							{{ authError }}
+						</b-message>
+
+						<b-button
+							:disabled="isSubmitting"
+							:loading="isSubmitting"
+							expanded
+							type="is-primary"
+							size="is-medium"
+							@click="handleSubmit(email, password)"
+							icon-right="sign-in-alt"
+						>
+							Entrar
+						</b-button>
+						<br />
+						<hr />
+						<p>v1.0.0-alpha - 2020 - Brasil</p>
 					</div>
+				</div>
+				<div class="column is-6 background-image tile">
+					<section class="hero">
+						<div class="hero-body">
+							<div class="container">
+								<div class="m-auto">
+								</div>
+							</div>
+						</div>
+					</section>
 				</div>
 			</div>
 		</div>
@@ -91,13 +117,23 @@ export default Vue.extend<Data, {}, {}, {}>({
 });
 </script>
 
-<style lang="css">
-.bg-fb {
-	background-color: #5061a6;
-	color: #fff;
+<style lang="scss">
+.background-image {
+	background-image: url("~@/assets/background-login-right.jpg");
+	background-repeat: no-repeat;
+	background-size: contain;
 }
-.bg-gg {
-	background-color: #4285f4;
-	color: #fff;
+
+.full-height {
+	display: flex;
+	height: 100vh;
+	align-items: center;
+	align-content: center;
+}
+
+.m-auto {
+	img {
+		height: 60px;
+	}
 }
 </style>

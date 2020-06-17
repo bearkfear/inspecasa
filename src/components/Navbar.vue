@@ -1,5 +1,5 @@
 <template>
-	<b-navbar shadow>
+	<b-navbar shadow transparent fixed-top>
 		<template slot="brand">
 			<b-navbar-item tag="router-link" :to="{ path: '/' }">
 				<img src="@/assets/logo.svg" alt="Logo da empresa Inspecasa" />

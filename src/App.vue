@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<Navbar></Navbar>
+		<Navbar v-if="$route.meta.requireAuth"></Navbar>
 		<router-view />
 	</div>
 </template>
@@ -12,7 +12,7 @@ import Navbar from "@/components/Navbar.vue";
 export default Vue.extend({
 	components: {
 		Navbar
-	}
+	},
 });
 </script>
 
