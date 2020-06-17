@@ -44,13 +44,24 @@
 									icon-left="eye"
 									type="is-info"
 									tag="router-link"
+									size="is-small"
 									:to="{ path: `/show/usuario/${usuario.id}` }"
 								></b-button>
-								<b-button icon-left="trash" type="is-danger"></b-button>
+								<b-button icon-left="trash" type="is-danger" size="is-small"></b-button>
 							</td>
 						</tr>
 					</tbody>
 				</table>
+				<template v-if="!loading && usuarios.length <= 0">
+					<section class="section">
+						<div class="content has-text-grey has-text-centered">
+							<p>
+								<b-icon icon="frown-open" size="is-large"> </b-icon>
+							</p>
+							<p>Sem Registros. Crie um!</p>
+						</div>
+					</section>
+				</template>
 			</div>
 		</section>
 	</div>
@@ -69,10 +80,11 @@ export default Vue.extend({
 	}),
 	methods: {
 		fetchUsuarios() {
+			this.loading = true;
 			this.$apollo
 				.query({
 					query: gql`
-						{
+						query usuarios {
 							usuarios {
 								id
 								nome
@@ -95,7 +107,6 @@ export default Vue.extend({
 		}
 	},
 	created() {
-		this.loading = true;
 		this.fetchUsuarios();
 	}
 });

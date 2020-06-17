@@ -23,19 +23,43 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="cliente in clientes" :key="cliente.uid">
+						<template v-if="loading">
+							<tr v-for="(skl, i) in 10" :key="i">
+								<th v-for="(skll, inx) in 8" :key="inx">
+									<b-skeleton active animated width="100px"></b-skeleton>
+								</th>
+							</tr>
+						</template>
+						<tr v-for="cliente in clientes" :key="cliente.id">
 							<th>{{ cliente.nome }}</th>
 							<td>{{ cliente.sobrenome }}</td>
 							<td>{{ cliente.email }}</td>
-							<td>{{ cliente.dataCriacao }}</td>
-							<td>{{ cliente.ultimoAcesso }}</td>
+							<td>{{ new Date(cliente.createdAt).toLocaleString() }}</td>
+							<td>{{ new Date(cliente.changedAt).toLocaleString() }}</td>
 							<td>{{ cliente.bio }}</td>
-							<td>
-								<b-button icon-left="trash" type="is-warning" size="is-small"></b-button>
+							<td class="buttons">
+								<b-button
+									icon-left="eye"
+									type="is-info"
+									tag="router-link"
+									size="is-small"
+									:to="{ path: `/show/cliente/${cliente.id}` }"
+								></b-button>
+								<b-button icon-left="trash" type="is-danger" size="is-small"></b-button>
 							</td>
 						</tr>
 					</tbody>
 				</table>
+				<template v-if="!loading && clientes.length === 0">
+					<section class="section">
+						<div class="content has-text-grey has-text-centered">
+							<p>
+								<b-icon icon="frown-open" size="is-large"> </b-icon>
+							</p>
+							<p>Sem Registros. Crie um!</p>
+						</div>
+					</section>
+				</template>
 			</div>
 		</section>
 	</div>
@@ -50,21 +74,37 @@ export default Vue.extend({
 	name: "cliente",
 	data: () => ({
 		clientes: [],
+		loading: false
 	}),
-	apollo: {
-		clientes: gql`
-			query clientes {
-				clientes {
-					id
-					nome
-					sobrenome
-					email
-					created_at
-					changed_at
-					bio
-				}
-			}
-		`
+	methods: {
+		fetchClientes() {
+			this.loading = true;
+			this.$apollo
+				.query({
+					query: gql`
+						query clientes {
+							clientes {
+								id
+								nome
+								sobrenome
+								email
+								createdAt
+								changedAt
+								bio
+							}
+						}
+					`
+				})
+				.then(({ data }) => {
+					this.clientes = data.clientes;
+				})
+				.finally(() => {
+					this.loading = false;
+				});
+		}
+	},
+	created() {
+		this.fetchClientes();
 	}
 });
 </script>

@@ -18,14 +18,6 @@ const cadastroRoutes: Array<RouteConfig> = [
 		component: () => import("./Usuario.vue")
 	},
 	{
-		name: "endereco",
-		path: "/cadastro/endereco",
-		meta: {
-			requireAuth: true,
-		},
-		component: () => import("./Endereco.vue")
-	},
-	{
 		name: "imovel",
 		path: "/cadastro/imovel",
 		meta: {

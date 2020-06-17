@@ -17,12 +17,6 @@
 							<div class="level-rigth">Imóveis</div>
 						</div>
 					</b-navbar-item>
-					<b-navbar-item tag="router-link" to="/cadastro/endereco">
-						<div class="level">
-							<div class="level-left"></div>
-							<div class="level-rigth">Endereços</div>
-						</div>
-					</b-navbar-item>
 				</b-navbar-dropdown>
 
 				<b-navbar-dropdown label="Empresa" aria-label="Empresa" hoverable>

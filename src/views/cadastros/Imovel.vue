@@ -27,13 +27,13 @@
 							<td>{{ imovel.categoria | categoria }}</td>
 							<td>{{ imovel.descricao }}</td>
 							<td>{{ imovel.numQuartos }}</td>
-							<td>{{ imovel.situacao }}</td>
+							<td>{{ imovel.situacao | situacao }}</td>
 							<td width="10%">
 								<div class="buttons">
 									<b-button
 										type="is-info"
 										tag="router-link"
-										:to="{path: `/show/imovel/${imovel.id}`}"
+										:to="{ path: `/show/imovel/${imovel.id}` }"
 										icon-left="eye"
 										size="is-small"
 									></b-button>
@@ -66,6 +66,14 @@ import ModalImovel from "@/components/forms/Imovel.vue";
 
 export default Vue.extend({
 	name: "imovel",
+	filters: {
+		situacao(val: number) {
+			if (val === 1) {
+				return "A Venda";
+			}
+			return "Vendido";
+		}
+	},
 	methods: {
 		handleRemover(imovel: any) {
 			this.$buefy.dialog.confirm({

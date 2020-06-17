@@ -1,5 +1,5 @@
 <template>
-	<b-navbar-item tag="div" v-if="usuario">
+	<b-navbar-item tag="div">
 		<b-dropdown>
 			<template slot="trigger">
 				<b-navbar-item>
@@ -60,6 +60,7 @@ export default Vue.extend({
 			this.$router.push({ path: "/auth" });
 		},
 		fetchUser(uid: string) {
+			this.loading = true;
 			this.$apollo
 				.query({
 					query: gql`
