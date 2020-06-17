@@ -1,6 +1,6 @@
 <template>
 	<b-navbar-item tag="div" v-if="usuario">
-		<b-dropdown hoverable>
+		<b-dropdown>
 			<template slot="trigger">
 				<b-navbar-item>
 					<div class="media">
@@ -16,7 +16,9 @@
 						</div>
 					</div>
 					<b-skeleton v-if="loading" active animated circle width="48px" height="48px"></b-skeleton>
-					<img v-else class="user-img" :src="usuario.urlImg" />
+					<figure v-else>
+						<img class="user-img" :src="usuario.urlImg" />
+					</figure>
 				</b-navbar-item>
 			</template>
 			<b-dropdown-item @click="logoutUser()" v-if="!loading">
@@ -74,9 +76,8 @@ export default Vue.extend({
 						id: uid
 					}
 				})
-				.then(res => {
-					console.log(res);
-					this.usuario = res.data.usuario;
+				.then(({ data }) => {
+					this.usuario = data.usuario;
 					this.loading = false;
 				});
 		}
@@ -94,10 +95,10 @@ export default Vue.extend({
 
 <style scoped>
 .user-img {
-	max-width: 48px;
-	max-height: 48px;
-	width: 48px;
-	height: 48px;
+	max-width: 40px;
+	max-height: 40px;
+	width: 40px;
+	height: 40px;
 	border-radius: 50%;
 }
 </style>

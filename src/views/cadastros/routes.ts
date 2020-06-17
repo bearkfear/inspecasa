@@ -10,6 +10,14 @@ const cadastroRoutes: Array<RouteConfig> = [
 		component: () => import("./Cliente.vue")
 	},
 	{
+		name: "usuario",
+		path: "/cadastro/usuario",
+		meta: {
+			requireAuth: true,
+		},
+		component: () => import("./Usuario.vue")
+	},
+	{
 		name: "endereco",
 		path: "/cadastro/endereco",
 		meta: {
