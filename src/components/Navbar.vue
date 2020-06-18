@@ -1,6 +1,6 @@
 <template>
-	<b-navbar shadow>
-			<template slot="brand">
+	<b-navbar shadow >
+			<template slot="brand" >
 				<b-navbar-item tag="router-link" :to="{ path: '/' }">
 					<img src="@/assets/logo.svg" alt="Logo da empresa Inspecasa" />
 				</b-navbar-item>
@@ -42,3 +42,7 @@ export default Vue.extend({
 	}
 });
 </script>
+
+<style lang="sass" scoped>
+
+</style>

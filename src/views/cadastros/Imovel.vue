@@ -138,6 +138,7 @@ export default Vue.extend({
 				hasModalCard: true,
 				component: ModalImovel,
 				props: {},
+				fullScreen: true,
 				events: {
 					reload: () => {
 						this.$apollo.queries.imoveis.refetch();

@@ -1,139 +1,158 @@
 <template>
-	<div style="width: auto">
-		<div class="modal-card">
-			<header class="modal-card-head">
-				<p clas="modal-card-title">{{ isEditing ? "Editar" : "Adicionar" }} Imóvel</p>
-			</header>
-			<section class="modal-card-body">
-				<h3 class="title is-4">Geral</h3>
+	<div class="modal-card">
+		<header class="modal-card-head">
+			<div>
+				<h1 class="modal-card-title">{{ isEditing ? "Editar" : "Adicionar" }} Imóvel</h1>
 				<p>Preencha as informações gerais sobre o imóvel</p>
-				<p></p>
-				<hr />
-				<div>
-					<b-field label="Descrição">
-						<input
-							class="input"
-							v-model="imovel.descricao"
-							type="text"
-							placeholder="Digite uma descrição para o imóvel"
-						/>
-					</b-field>
+			</div>
+		</header>
+		<section class="modal-card-body">
+			<div>
+				<br />
+				<b-field label="Proprietário(s)">
+					<Multiselect
+						:multiple="true"
+						v-model="donos"
+						placeholder="Selecione um proprietário, (escreva para buscar!)"
+						:options="clientes"
+						label="nome"
+						track-by="id"
+						:searchable="true"
+						:close-on-select="false"
+						:allow-empty="false"
+						deselect-label="Precisa selecionar ao menos um!"
+					></Multiselect>
+				</b-field>
+				<b-field label="Descricão">
+					<ckeditor
+						v-model="imovel.descricao"
+						:editor="editor"
+						:config="config"
+						placeholder="Descreva o imóvel"
+					></ckeditor>
+				</b-field>
+				<div class="columns">
+					<div class="column">
+						<b-field label="Valor Proposto">
+							<input
+								class="input"
+								v-model="imovel.valorProposta"
+								type="text"
+								placeholder="Qual o valor pretendido para venda"
+								v-money="{
+									decimal: ',',
+									thousands: '.',
+									prefix: 'R$ ',
+									precision: 2,
+									masked: false
+								}"
+							/>
+						</b-field>
+					</div>
+					<div class="column">
+						<b-field label="Quantos quartos">
+							<b-numberinput v-model="imovel.numQuartos"></b-numberinput>
+						</b-field>
+					</div>
+				</div>
 
-					<b-field label="Valor Proposto">
-						<input
-							class="input"
-							v-model="imovel.valorProposta"
-							type="text"
-							placeholder="Qual o valor pretendido para venda"
-							v-money="{
-								decimal: ',',
-								thousands: '.',
-								prefix: 'R$ ',
-								precision: 2,
-								masked: false
-							}"
-						/>
-					</b-field>
-
-					<b-field label="Categoria">
-						<b-select
-							v-model.number="imovel.categoria"
-							placeholder="Selecione uma categoria de imóvel"
+				<b-field label="Categoria">
+					<b-select
+						v-model.number="imovel.categoria"
+						placeholder="Selecione uma categoria de imóvel"
+					>
+						<option value="0"
+							>Apartamento padrão: sala de estar, sala de jantar, cozinha, quartos,
+							banheiros</option
 						>
-							<option value="0"
-								>Apartamento padrão: sala de estar, sala de jantar, cozinha, quartos,
-								banheiros</option
-							>
-							<option value="1"
-								>Kitnet: banheiro e cômodo com quarto cozinha e sala sem divisórias</option
-							>
-							<option value="2"
-								>Loft: apartamento maior e mais amplos, sem divisórias, com o pé direito mais alto e
-								com grandes janelas e muitas vezes com mezaninos instalados no ambiente</option
-							>
-							<option value="3">Duplex: apartamento com dois andares</option>
-							<option value="4">Triplex: apartamento com tres andares</option>
-							<option value="5">Casa: imóvel com cozinha, sala, área, banheiro e quarto</option>
-						</b-select>
-					</b-field>
+						<option value="1"
+							>Kitnet: banheiro e cômodo com quarto cozinha e sala sem divisórias</option
+						>
+						<option value="2"
+							>Loft: apartamento maior e mais amplos, sem divisórias, com o pé direito mais alto e
+							com grandes janelas e muitas vezes com mezaninos instalados no ambiente</option
+						>
+						<option value="3">Duplex: apartamento com dois andares</option>
+						<option value="4">Triplex: apartamento com tres andares</option>
+						<option value="5">Casa: imóvel com cozinha, sala, área, banheiro e quarto</option>
+					</b-select>
+				</b-field>
 
-					<b-field label="Quantos quartos">
-						<b-numberinput v-model="imovel.numQuartos"></b-numberinput>
-					</b-field>
-					<br />
-					<br />
-					<h3 class="title is-4">Endereço</h3>
-					<p>Informe o endereço</p>
-					<hr />
-					<b-field label="CEP">
-						<input
-							class="input"
-							v-model="endereco.cep"
-							v-mask="'#####-###'"
-							placeholder="Digite o seu CEP"
-							@input="handleCep(endereco.cep)"
-						/>
-					</b-field>
-					<b-field label="Rua">
-						<b-input type="text" v-model="endereco.rua" placeholder="Nome da rua"> </b-input>
-					</b-field>
-					<b-field label="Cidade">
-						<b-input type="text" v-model="endereco.cidade" placeholder="Nome da Municipio">
-						</b-input>
-					</b-field>
+				<br />
+				<br />
+				<h3 class="title is-4">Endereço</h3>
+				<p>Informe o endereço</p>
+				<hr />
+				<b-field label="CEP">
+					<input
+						class="input"
+						v-model="endereco.cep"
+						v-mask="'#####-###'"
+						placeholder="Digite o seu CEP"
+						@input="handleCep(endereco.cep)"
+					/>
+				</b-field>
+				<b-field label="Rua">
+					<b-input type="text" v-model="endereco.rua" placeholder="Nome da rua"> </b-input>
+				</b-field>
+				<b-field label="Cidade">
+					<b-input type="text" v-model="endereco.cidade" placeholder="Nome da Municipio"> </b-input>
+				</b-field>
 
-					<b-field label="UF">
-						<b-input type="text" v-model="endereco.uf" maxlength="2"> </b-input>
-					</b-field>
-					<b-field label="Bairro">
-						<b-input v-model="endereco.bairro" placeholder="Nome do bairro"></b-input>
-					</b-field>
-					<b-field label="Complemento">
-						<b-input type="text" v-model="endereco.complemento" placeholder="Complemento">
-						</b-input>
-					</b-field>
-					<b-field label="Número">
-						<b-input
-							placeholder="Número da casa"
-							type="number"
-							v-model.number="endereco.numero"
-						></b-input>
-					</b-field>
-				</div>
-			</section>
-			<footer class="modal-card-foot">
-				<div class="container">
-					<b-button @click="$emit('close')">
-						Fechar
-					</b-button>
+				<b-field label="UF">
+					<b-input type="text" v-model="endereco.uf" maxlength="2"> </b-input>
+				</b-field>
+				<b-field label="Bairro">
+					<b-input v-model="endereco.bairro" placeholder="Nome do bairro"></b-input>
+				</b-field>
+				<b-field label="Complemento">
+					<b-input type="text" v-model="endereco.complemento" placeholder="Complemento"> </b-input>
+				</b-field>
+				<b-field label="Número">
+					<b-input
+						placeholder="Número da casa"
+						type="number"
+						v-model.number="endereco.numero"
+					></b-input>
+				</b-field>
+			</div>
+		</section>
+		<footer class="modal-card-foot">
+			<div class="container">
+				<b-button @click="$emit('close')">
+					Fechar
+				</b-button>
 
-					<b-button
-						v-if="!isEditing"
-						type="is-success"
-						@click="handleStoreImovel()"
-						:loading="isSubmitting"
-						:disabled="isSubmitting"
-					>
-						Adicionar
-					</b-button>
-					<b-button
-						v-else
-						type="is-success"
-						@click="handleEditImovel()"
-						:loading="isSubmitting"
-						:disabled="isSubmitting"
-					>
-						Salvar
-					</b-button>
-				</div>
-			</footer>
-		</div>
+				<b-button
+					v-if="!isEditing"
+					type="is-success"
+					@click="handleStoreImovel()"
+					:loading="isSubmitting"
+					:disabled="isSubmitting"
+				>
+					Adicionar
+				</b-button>
+				<b-button
+					v-else
+					type="is-success"
+					@click="handleEditImovel()"
+					:loading="isSubmitting"
+					:disabled="isSubmitting"
+				>
+					Salvar
+				</b-button>
+			</div>
+		</footer>
 	</div>
 </template>
 <script lang="ts">
 import Vue from "vue";
 import axios from "axios";
 import gql from "graphql-tag";
+// @ts-ignore
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import Multiselect from "vue-multiselect";
+import CKEDITOR_CONFIG from "@/constants";
 
 interface ViaCep {
 	cep: string;
@@ -169,7 +188,12 @@ interface Data {
 	};
 	endereco: Endereco;
 	isSubmitting: boolean;
+	editor: typeof ClassicEditor;
+	config: typeof CKEDITOR_CONFIG;
 	isLoading: boolean;
+	loading: { [key: string]: boolean };
+	clientes: any[];
+	donos: any[];
 }
 // Data, Methods, Computed, Props
 export default Vue.extend({
@@ -191,6 +215,7 @@ export default Vue.extend({
 		}
 	},
 	data: (): Data => ({
+		donos: [],
 		imovel: {
 			descricao: null,
 			valorProposta: null,
@@ -209,10 +234,24 @@ export default Vue.extend({
 			cidade: null,
 			bairro: null
 		},
+		editor: ClassicEditor,
+		config: CKEDITOR_CONFIG,
 		isSubmitting: false,
-		isLoading: false
+		isLoading: false,
+		clientes: [],
+		loading: {
+			clientes: false
+		}
 	}),
+	components: {
+		Multiselect
+	},
 	created() {
+		if (!this.isEditing) {
+			this.loading.clientes = true;
+			this.fetchClientes();
+		}
+
 		if (this.isEditing) {
 			this.$apollo
 				.query({
@@ -252,6 +291,27 @@ export default Vue.extend({
 		}
 	},
 	methods: {
+		fetchClientes() {
+			this.$apollo
+				.query({
+					query: gql`
+						query clientes {
+							clientes {
+								id
+								nome
+								sobrenome
+								email
+							}
+						}
+					`
+				})
+				.then(({ data }) => {
+					this.clientes = data.clientes;
+				})
+				.finally(() => {
+					this.loading.clientes = false;
+				});
+		},
 		handleEditImovel() {
 			this.isSubmitting = true;
 			const val = this.imovel.valorProposta;
@@ -270,7 +330,6 @@ export default Vue.extend({
 							updateEndereco(id: $idEndereco, input: $endereco) {
 								id
 							}
-
 						}
 					`,
 					variables: {
@@ -388,3 +447,7 @@ export default Vue.extend({
 	}
 });
 </script>
+
+<style lang="scss" scoped>
+@import "~vue-multiselect/dist/vue-multiselect.min.css";
+</style>
