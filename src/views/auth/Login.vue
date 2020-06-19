@@ -56,8 +56,7 @@
 					<section class="hero">
 						<div class="hero-body">
 							<div class="container">
-								<div class="m-auto">
-								</div>
+								<div class="m-auto"></div>
 							</div>
 						</div>
 					</section>
@@ -72,6 +71,7 @@ import Vue from "vue";
 
 import firebase from "firebase/app";
 import "firebase/auth";
+import { GET_USER } from "@/queries";
 
 interface Data {
 	email: null | string;
@@ -101,10 +101,22 @@ export default Vue.extend<Data, {}, {}, {}>({
 
 			try {
 				const resp = await firebase.auth().signInWithEmailAndPassword(email, password);
-
 				const { user } = resp;
-
+				if (!user) throw new Error("Não existe");
 				const token = await user?.getIdToken();
+				const {
+					data: { usuario }
+				} = await this.$apollo.query({
+					query: GET_USER,
+					variables: {
+						uid: user.uid
+					}
+				});
+				this.$store.commit("SET_USER", {
+					token,
+					uid: user?.uid,
+					id: usuario.id
+				});
 				localStorage.setItem("token-jwt", token || "");
 				this.isSubmitting = false;
 				this.$router.push({ path: "/" });

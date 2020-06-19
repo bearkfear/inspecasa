@@ -13,11 +13,32 @@
 				</div>
 				<div class="columns is-multiline">
 					<article class="column is-6">
-						<div class="block">
+						<div>
 							<h1 class="title is-4">Informações</h1>
-							<code>
-								{{ JSON.stringify(imovel, null, 4) }}
-							</code>
+							<p>
+								<strong>Preço: </strong>
+								<span>{{ imovel.valorProposta }}</span>
+							</p>
+							<p>
+								<strong>Quartos: </strong>
+								<span>{{ imovel.numQuartos }}</span>
+							</p>
+							<p>
+								<strong>Categoria: </strong>
+								<span>{{ imovel.categoria }}</span>
+							</p>
+							<strong>Descrição: </strong>
+							<p v-html="imovel.descricao"></p>
+
+							<p>
+								<strong>Endereço: </strong>
+							</p>
+							<p>
+								{{ imovel.endereco.cidade }}/{{ imovel.endereco.uf }} -
+								{{ imovel.endereco.bairro }} - {{ imovel.endereco.logradouro }} -
+								{{ imovel.endereco.numero }} - {{ imovel.endereco.complemento }} -
+								{{ imovel.endereco.cep }}
+							</p>
 						</div>
 					</article>
 					<article class="column is-6">
@@ -77,7 +98,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import gql from "graphql-tag";
+import { GET_IMOVEL } from "@/queries";
 
 export default Vue.extend({
 	name: "VisualizarImovel",
@@ -89,29 +110,7 @@ export default Vue.extend({
 	}),
 	apollo: {
 		imovel: {
-			query: gql`
-				query imovel($id: ID!) {
-					imovel(id: $id) {
-						id
-						categoria
-						descricao
-						numQuartos
-						valorProposta
-						updatedAt
-						endereco {
-							id
-							avenida
-							bairro
-							cep
-							cidade
-							complemento
-							logradouro
-							uf
-							updatedAt
-						}
-					}
-				}
-			`,
+			query: GET_IMOVEL,
 			variables() {
 				return {
 					id: this.$route.params.id

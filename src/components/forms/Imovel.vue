@@ -38,6 +38,7 @@
 								class="input"
 								v-model="imovel.valorProposta"
 								type="text"
+								min="0"
 								placeholder="Qual o valor pretendido para venda"
 								v-money="{
 									decimal: ',',
@@ -51,7 +52,7 @@
 					</div>
 					<div class="column">
 						<b-field label="Quantos quartos">
-							<b-numberinput v-model="imovel.numQuartos"></b-numberinput>
+							<b-numberinput v-model="imovel.numQuartos" min="0"></b-numberinput>
 						</b-field>
 					</div>
 				</div>
@@ -83,42 +84,74 @@
 				<h3 class="title is-4">Endereço</h3>
 				<p>Informe o endereço</p>
 				<hr />
-				<b-field label="CEP">
-					<input
-						class="input"
-						v-model="endereco.cep"
-						v-mask="'#####-###'"
-						placeholder="Digite o seu CEP"
-						@input="handleCep(endereco.cep)"
-					/>
-				</b-field>
-				<b-field label="Rua">
-					<b-input type="text" v-model="endereco.rua" placeholder="Nome da rua"> </b-input>
-				</b-field>
-				<b-field label="Cidade">
-					<b-input type="text" v-model="endereco.cidade" placeholder="Nome da Municipio"> </b-input>
-				</b-field>
-
-				<b-field label="UF">
-					<b-input type="text" v-model="endereco.uf" maxlength="2"> </b-input>
-				</b-field>
-				<b-field label="Bairro">
-					<b-input v-model="endereco.bairro" placeholder="Nome do bairro"></b-input>
-				</b-field>
-				<b-field label="Complemento">
-					<b-input type="text" v-model="endereco.complemento" placeholder="Complemento"> </b-input>
-				</b-field>
-				<b-field label="Número">
-					<b-input
-						placeholder="Número da casa"
-						type="number"
-						v-model.number="endereco.numero"
-					></b-input>
-				</b-field>
+				<div class="columns">
+					<b-field label="CEP" class="column is-2">
+						<input
+							class="input"
+							v-model="endereco.cep"
+							v-mask="'#####-###'"
+							placeholder="Digite o seu CEP"
+							@input="handleCep(endereco.cep)"
+						/>
+					</b-field>
+					<b-field label="Rua" class="column">
+						<b-input
+							type="text"
+							v-model="endereco.rua"
+							placeholder="Nome da rua"
+							:loading="loading.loadingCep"
+							disabled
+						>
+						</b-input>
+					</b-field>
+					<b-field label="Cidade" class="column">
+						<b-input
+							type="text"
+							v-model="endereco.cidade"
+							placeholder="Nome da Municipio"
+							:loading="loading.loadingCep"
+							disabled
+						>
+						</b-input>
+					</b-field>
+					<b-field label="UF" class="column is-1">
+						<b-input
+							placeholder="UF"
+							type="text"
+							v-model="endereco.uf"
+							maxlength="2"
+							:loading="loading.loadingCep"
+							disabled
+						>
+						</b-input>
+					</b-field>
+				</div>
+				<div class="columns">
+					<b-field label="Bairro" class="column">
+						<b-input
+							v-model="endereco.bairro"
+							placeholder="Nome do bairro"
+							:loading="loading.loadingCep"
+							disabled
+						></b-input>
+					</b-field>
+					<b-field label="Complemento" class="column">
+						<b-input type="text" v-model="endereco.complemento" placeholder="Complemento">
+						</b-input>
+					</b-field>
+					<b-field label="Número" class="column">
+						<b-input
+							placeholder="Número da casa"
+							type="number"
+							v-model.number="endereco.numero"
+							min="0"
+						></b-input>
+					</b-field>
+				</div>
 			</div>
 		</section>
-		<footer class="modal-card-foot">
-			<div class="container">
+		<footer class="modal-card-foot ">
+			<div class="is-pulled-right">
 				<b-button @click="$emit('close')">
 					Fechar
 				</b-button>
@@ -145,38 +178,24 @@
 		</footer>
 	</div>
 </template>
+
 <script lang="ts">
 import Vue from "vue";
 import axios from "axios";
 import gql from "graphql-tag";
+import Multiselect from "vue-multiselect";
 // @ts-ignore
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import Multiselect from "vue-multiselect";
+
 import CKEDITOR_CONFIG from "@/constants";
-
-interface ViaCep {
-	cep: string;
-	logradouro: string;
-	complemento: string;
-	bairro: string;
-	localidade: string;
-	uf: string;
-	unidade: string;
-	ibge: string;
-	gia: string;
-}
-
-interface Endereco {
-	rua: string | null;
-	logradouro?: string | null;
-	complemento?: string | null;
-	numero: number | null;
-	uf: string | null;
-	cep: string;
-	avenida: string | null;
-	cidade: string | null;
-	bairro: string | null;
-}
+import {
+	GET_IMOVEL_ENDERECO,
+	GET_CLIENTES,
+	UPDATE_IMOVEL_ENDERECO,
+	UPDATE_ENDERECO
+} from "@/queries";
+import { ViaCep, Endereco } from "@/types";
+import cleanMoney from "@/utils/cleanMoney";
 
 interface Data {
 	imovel: {
@@ -240,71 +259,17 @@ export default Vue.extend({
 		isLoading: false,
 		clientes: [],
 		loading: {
-			clientes: false
+			clientes: false,
+			loadingCep: false
 		}
 	}),
 	components: {
 		Multiselect
 	},
-	created() {
-		if (!this.isEditing) {
-			this.loading.clientes = true;
-			this.fetchClientes();
-		}
-
-		if (this.isEditing) {
-			this.$apollo
-				.query({
-					query: gql`
-						query imovelEndereco($idEndereco: ID!, $idImovel: ID!) {
-							imovel(id: $idImovel) {
-								descricao
-								valorProposta
-								categoria
-								numQuartos
-								situacao
-							}
-							endereco(id: $idEndereco) {
-								cep
-								rua
-								logradouro
-								complemento
-								numero
-								uf
-								avenida
-								cidade
-								bairro
-							}
-						}
-					`,
-					variables: {
-						idImovel: this.idImovel,
-						idEndereco: this.idEndereco
-					}
-				})
-				.then(({ data }) => {
-					this.endereco = data.endereco;
-					this.imovel = data.imovel;
-					this.$delete(this.endereco, "__typename");
-					this.$delete(this.imovel, "__typename");
-				});
-		}
-	},
 	methods: {
 		fetchClientes() {
 			this.$apollo
-				.query({
-					query: gql`
-						query clientes {
-							clientes {
-								id
-								nome
-								sobrenome
-								email
-							}
-						}
-					`
-				})
+				.query({ query: GET_CLIENTES })
 				.then(({ data }) => {
 					this.clientes = data.clientes;
 				})
@@ -317,30 +282,11 @@ export default Vue.extend({
 			const val = this.imovel.valorProposta;
 			this.$apollo
 				.mutate({
-					mutation: gql`
-						mutation updateImovelAndEndereco(
-							$imovel: ImovelInput!
-							$endereco: EnderecoInput!
-							$idEndereco: ID!
-							$idImovel: ID!
-						) {
-							updateImovel(id: $idImovel, imovel: $imovel) {
-								id
-							}
-							updateEndereco(id: $idEndereco, input: $endereco) {
-								id
-							}
-						}
-					`,
+					mutation: UPDATE_IMOVEL_ENDERECO,
 					variables: {
 						imovel: {
 							...this.imovel,
-							valorProposta: Number(
-								(val || "R$ 0,00")
-									.replace(/\./g, "")
-									.replace("R$ ", "")
-									.replace(",", ".")
-							)
+							valorProposta: cleanMoney(String(val))
 						},
 						endereco: this.endereco,
 						idEndereco: this.idEndereco,
@@ -366,8 +312,12 @@ export default Vue.extend({
 			this.$apollo
 				.mutate<ResponseMutation>({
 					mutation: gql`
-						mutation storeImovelAndEndereco($imovel: ImovelInput!, $endereco: EnderecoInput!) {
-							storeImovel(imovel: $imovel) {
+						mutation storeImovelAndEndereco(
+							$imovel: ImovelInput!
+							$owners: [ID!]!
+							$endereco: EnderecoInput!
+						) {
+							storeImovel(imovel: $imovel, owners: $owners) {
 								id
 							}
 							storeEndereco(input: $endereco) {
@@ -378,13 +328,9 @@ export default Vue.extend({
 					variables: {
 						imovel: {
 							...this.imovel,
-							valorProposta: Number(
-								(val || "R$ 0,00")
-									.replace(/\./g, "")
-									.replace("R$ ", "")
-									.replace(",", ".")
-							)
+							valorProposta: cleanMoney(String(val))
 						},
+						owners: this.donos.map(dono => dono.id),
 						endereco: this.endereco
 					}
 				})
@@ -392,13 +338,7 @@ export default Vue.extend({
 					this.isSubmitting = false;
 					this.$apollo
 						.mutate({
-							mutation: gql`
-								mutation updateEndereco($id: ID!, $endereco: EnderecoInput!, $imovelId: ID!) {
-									updateEndereco(id: $id, input: $endereco, imovelId: $imovelId) {
-										id
-									}
-								}
-							`,
+							mutation: UPDATE_ENDERECO,
 							variables: {
 								id: data?.storeEndereco.id,
 								endereco: this.endereco,
@@ -417,6 +357,7 @@ export default Vue.extend({
 
 		handleCep(cep: string) {
 			if (cep && cep.length === 9) {
+				this.loading.loadingCep = true;
 				const localCep = cep.replace("-", "");
 
 				axios
@@ -435,14 +376,40 @@ export default Vue.extend({
 					})
 					.then(({ data }) => {
 						const { logradouro, bairro, localidade, uf } = data;
-
 						this.endereco.rua = logradouro;
 						this.endereco.uf = uf;
 						this.endereco.logradouro = logradouro;
 						this.endereco.bairro = bairro;
 						this.endereco.cidade = localidade;
+					})
+					.finally(() => {
+						this.loading.loadingCep = false;
 					});
 			}
+		}
+	},
+	created() {
+		console.log(this.$store.state);
+		if (!this.isEditing) {
+			this.loading.clientes = true;
+			this.fetchClientes();
+		}
+
+		if (this.isEditing) {
+			this.$apollo
+				.query({
+					query: GET_IMOVEL_ENDERECO,
+					variables: {
+						idImovel: this.idImovel,
+						idEndereco: this.idEndereco
+					}
+				})
+				.then(({ data }) => {
+					this.endereco = data.endereco;
+					this.imovel = data.imovel;
+					this.$delete(this.endereco, "__typename");
+					this.$delete(this.imovel, "__typename");
+				});
 		}
 	}
 });

@@ -47,7 +47,7 @@
 import Vue from "vue";
 // @ts-ignore
 import decode from "jwt-decode";
-import gql from "graphql-tag";
+import { GET_USER } from "@/queries";
 
 export default Vue.extend({
 	data: () => ({
@@ -63,19 +63,8 @@ export default Vue.extend({
 			this.loading = true;
 			this.$apollo
 				.query({
-					query: gql`
-						query usuario($id: ID!) {
-							usuario(uid: $id) {
-								nome
-								sobrenome
-								urlImg
-								funcao
-							}
-						}
-					`,
-					variables: {
-						id: uid
-					}
+					query: GET_USER,
+					variables: { uid }
 				})
 				.then(({ data }) => {
 					this.usuario = data.usuario;
@@ -85,11 +74,7 @@ export default Vue.extend({
 	},
 	created() {
 		this.loading = true;
-		const token = localStorage.getItem("token-jwt");
-		if (token) {
-			const decodedToken = decode(token);
-			this.fetchUser(decodedToken.user_id);
-		}
+		this.fetchUser(this.$store.state.user.uid);
 	}
 });
 </script>

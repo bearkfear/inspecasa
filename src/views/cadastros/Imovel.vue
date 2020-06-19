@@ -32,7 +32,7 @@
 						</template>
 						<tr v-for="imovel in imoveis" :key="imovel.id">
 							<td>{{ imovel.categoria | categoria }}</td>
-							<td>{{ imovel.descricao }}</td>
+							<td><div v-html="imovel.descricao"></div></td>
 							<td>{{ imovel.numQuartos }}</td>
 							<td>{{ imovel.situacao | situacao }}</td>
 							<td width="10%">
