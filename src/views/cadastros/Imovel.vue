@@ -127,7 +127,7 @@ export default Vue.extend({
 							}
 						})
 						.then(() => {
-							this.$apollo.queries.imoveis.refetch();
+							this.fetchImoveis();
 						});
 				}
 			});
@@ -141,7 +141,7 @@ export default Vue.extend({
 				fullScreen: true,
 				events: {
 					reload: () => {
-						this.$apollo.queries.imoveis.refetch();
+						this.fetchImoveis();
 					}
 				}
 			});
@@ -158,7 +158,7 @@ export default Vue.extend({
 				},
 				events: {
 					reload: () => {
-						this.$apollo.queries.imoveis.refetch();
+						this.fetchImoveis();
 					}
 				}
 			});

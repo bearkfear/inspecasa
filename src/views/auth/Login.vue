@@ -115,7 +115,7 @@ export default Vue.extend<Data, {}, {}, {}>({
 				this.$store.commit("SET_USER", {
 					token,
 					uid: user?.uid,
-					id: usuario.id
+					...usuario
 				});
 				localStorage.setItem("token-jwt", token || "");
 				this.isSubmitting = false;

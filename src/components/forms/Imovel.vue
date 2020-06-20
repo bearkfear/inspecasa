@@ -192,7 +192,8 @@ import {
 	GET_IMOVEL_ENDERECO,
 	GET_CLIENTES,
 	UPDATE_IMOVEL_ENDERECO,
-	UPDATE_ENDERECO
+	UPDATE_ENDERECO,
+	STORE_IMOVEL_ENDERECO
 } from "@/queries";
 import { ViaCep, Endereco } from "@/types";
 import cleanMoney from "@/utils/cleanMoney";
@@ -311,27 +312,15 @@ export default Vue.extend({
 			}
 			this.$apollo
 				.mutate<ResponseMutation>({
-					mutation: gql`
-						mutation storeImovelAndEndereco(
-							$imovel: ImovelInput!
-							$owners: [ID!]!
-							$endereco: EnderecoInput!
-						) {
-							storeImovel(imovel: $imovel, owners: $owners) {
-								id
-							}
-							storeEndereco(input: $endereco) {
-								id
-							}
-						}
-					`,
+					mutation: STORE_IMOVEL_ENDERECO,
 					variables: {
 						imovel: {
 							...this.imovel,
 							valorProposta: cleanMoney(String(val))
 						},
 						owners: this.donos.map(dono => dono.id),
-						endereco: this.endereco
+						endereco: this.endereco,
+						vendedor: this.$store.state.user.id
 					}
 				})
 				.then(({ data }) => {

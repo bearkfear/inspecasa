@@ -12,7 +12,11 @@ interface State {
 	user: {
 		token: string | null;
 		uid: string | null;
-		id: number | null
+		id: number | null;
+		funcao: string | null;
+		nome: string | null;
+		sobrenome: string | null;
+		urlImg: string | null;
 	};
 }
 
@@ -21,7 +25,11 @@ export default new Vuex.Store<State>({
 		user: {
 			token: null,
 			uid: null,
-			id: null
+			id: null,
+			funcao: null,
+			nome: null,
+			sobrenome: null,
+			urlImg: null
 		}
 	},
 	mutations: {

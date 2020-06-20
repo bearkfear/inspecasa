@@ -67,8 +67,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-
-import gql from "graphql-tag";
+import { GET_CLIENTES } from "@/queries";
 
 export default Vue.extend({
 	name: "cliente",
@@ -81,19 +80,7 @@ export default Vue.extend({
 			this.loading = true;
 			this.$apollo
 				.query({
-					query: gql`
-						query clientes {
-							clientes {
-								id
-								nome
-								sobrenome
-								email
-								createdAt
-								changedAt
-								bio
-							}
-						}
-					`
+					query: GET_CLIENTES
 				})
 				.then(({ data }) => {
 					this.clientes = data.clientes;

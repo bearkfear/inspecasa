@@ -15,15 +15,15 @@ export default new VueApollo({
 		cache,
 		connectToDevTools: true,
 		defaultOptions: {
-			// watchQuery: {
-			// 	fetchPolicy: 'no-cache',
-			// },
-			// mutate: {
-			// 	fetchPolicy: 'no-cache',
-			// },
-			// query: {
-			// 	fetchPolicy: 'no-cache',
-			// }
+			watchQuery: {
+				fetchPolicy: 'no-cache',
+			},
+			mutate: {
+				fetchPolicy: 'no-cache',
+			},
+			query: {
+				fetchPolicy: 'no-cache',
+			}
 		}
 	})
 });
