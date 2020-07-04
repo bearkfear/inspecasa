@@ -14,7 +14,6 @@
 					<thead>
 						<tr>
 							<th>Nome</th>
-							<th>Sobrenome</th>
 							<th>Email</th>
 							<th>Bio</th>
 							<th>Função</th>
@@ -26,14 +25,13 @@
 					<tbody>
 						<template v-if="loading">
 							<tr v-for="(skl, i) in 10" :key="i">
-								<th v-for="(skll, inx) in 8" :key="inx">
+								<th v-for="(skll, inx) in 7" :key="inx">
 									<b-skeleton active animated width="100px"></b-skeleton>
 								</th>
 							</tr>
 						</template>
 						<tr v-for="usuario in usuarios" :key="usuario.id">
-							<th>{{ usuario.nome }}</th>
-							<td>{{ usuario.sobrenome }}</td>
+							<th>{{ usuario.nome }} {{ usuario.sobrenome }}</th>
 							<td>{{ usuario.email }}</td>
 							<td>{{ usuario.bio }}</td>
 							<td>{{ usuario.funcao }}</td>

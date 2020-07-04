@@ -1,12 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import VuexPersistence from 'vuex-persist'
+import VuexPersistence from "vuex-persist";
 
 Vue.use(Vuex);
 const vuexLocal = new VuexPersistence({
 	key: "persist-inspecasa",
 	storage: window.localStorage
-})
+});
 
 interface State {
 	user: {

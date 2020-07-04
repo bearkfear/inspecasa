@@ -1,5 +1,5 @@
 <template>
-	<b-navbar-item tag="div">
+	<b-navbar-item tag="div" class="is-paddingless">
 		<b-dropdown>
 			<template slot="trigger">
 				<b-navbar-item>

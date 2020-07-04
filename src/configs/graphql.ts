@@ -16,13 +16,13 @@ export default new VueApollo({
 		connectToDevTools: true,
 		defaultOptions: {
 			watchQuery: {
-				fetchPolicy: 'no-cache',
+				fetchPolicy: "no-cache",
 			},
 			mutate: {
-				fetchPolicy: 'no-cache',
+				fetchPolicy: "no-cache",
 			},
 			query: {
-				fetchPolicy: 'no-cache',
+				fetchPolicy: "no-cache",
 			}
 		}
 	})

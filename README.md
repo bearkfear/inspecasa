@@ -1,4 +1,6 @@
 <h1 align="center">INSPECASA👋</h1>
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/3ce20b85-e6c9-4a57-ae7e-4588d1c69fa6/deploy-status)](https://app.netlify.com/sites/inspecasa/deploys)
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0-blue.svg?cacheSeconds=2592000" />
   <a href="#" target="_blank">
