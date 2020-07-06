@@ -82,6 +82,19 @@ export const GET_IMOVEL = gql`
 	}
 `;
 
+
+export const GET_ME = gql`
+	query me {
+		me {
+			id
+			nome
+			sobrenome
+			urlImg
+			funcao
+			uid
+		}
+	}
+`
 export const GET_USER = gql`
 	query usuario($uid: ID!) {
 		usuario(uid: $uid) {
@@ -96,12 +109,11 @@ export const GET_USER = gql`
 
 export const STORE_IMOVEL_ENDERECO = gql`
 	mutation storeImovelAndEndereco(
-		$vendedor: ID!
 		$imovel: ImovelInput!
 		$owners: [ID!]!
 		$endereco: EnderecoInput!
 	) {
-		storeImovel(vendedor: $vendedor, imovel: $imovel, owners: $owners) {
+		storeImovel(imovel: $imovel, owners: $owners) {
 			id
 		}
 		storeEndereco(input: $endereco) {
