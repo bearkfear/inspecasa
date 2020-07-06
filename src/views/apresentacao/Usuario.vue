@@ -9,21 +9,51 @@
 						</h1>
 					</div>
 				</div>
-				<hr />
 				<div class="columns is-multiline">
 					<article class="column is-6">
-						<div>
-							<h1 class="title is-4">Informações</h1>
-							<div>
-								<code>
-									{{ JSON.stringify(usuario, null, 4)}}
-								</code>
+						<div class="box">
+							<h1 class="title is-4">Sobre</h1>
+							<hr />
+							<div class="media">
+								<div class="media-left">
+									<figure class="image is-128x128">
+										<img :src="usuario.urlImg" class="is-rounded" />
+									</figure>
+									<b-field class="file">
+										<b-upload v-model="file">
+											<a class="button is-twitter is-small">
+												<b-icon icon="upload"></b-icon>
+												<span>Click to upload</span>
+											</a>
+										</b-upload>
+										<span class="file-name" v-if="file">
+											{{ file.name }}
+										</span>
+									</b-field>
+								</div>
+								<div class="media-content">
+									<h1 class="title is-5">
+										{{ usuario.nome }} {{ usuario.sobrenome }} ({{ usuario.email }})
+									</h1>
+
+									<p><strong>Função:</strong> {{ usuario.funcao }}</p>
+									<p><strong>Bio:</strong> {{ usuario.bio }}</p>
+									<p>
+										<strong>Primeiro Acesso:</strong>
+										{{ new Date(Number(usuario.createdAt)).toLocaleString() }}
+									</p>
+									<p>
+										<strong>Ultimo Acesso:</strong>
+										{{ new Date(Number(usuario.changedAt)).toLocaleString() }}
+									</p>
+								</div>
 							</div>
 						</div>
 					</article>
 					<article class="column is-6">
-						<div class="block">
+						<div class="box">
 							<h1 class="title is-4">Vendas</h1>
+							<hr />
 						</div>
 					</article>
 				</div>
@@ -39,7 +69,8 @@ export default Vue.extend({
 	name: "VisualizarUsuario",
 	data: () => ({
 		usuario: null,
-		loading: false
+		loading: false,
+		file: null
 	}),
 	methods: {
 		fetchUser() {

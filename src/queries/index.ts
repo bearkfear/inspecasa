@@ -82,7 +82,6 @@ export const GET_IMOVEL = gql`
 	}
 `;
 
-
 export const GET_ME = gql`
 	query me {
 		me {
@@ -94,15 +93,20 @@ export const GET_ME = gql`
 			uid
 		}
 	}
-`
+`;
 export const GET_USER = gql`
 	query usuario($id: ID!) {
 		usuario(id: $id) {
 			id
 			nome
 			sobrenome
-			urlImg
 			funcao
+			email
+			bio
+			uid
+			createdAt
+			changedAt
+			urlImg
 		}
 	}
 `;
