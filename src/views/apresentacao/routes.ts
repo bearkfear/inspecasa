@@ -8,6 +8,14 @@ const apresentacaoRoutes: Array<RouteConfig> = [
 		meta: {
 			requireAuth: true
 		}
+	},
+	{
+		name: "apresetacao-usuario",
+		path: "/show/usuario/:id",
+		component: () => import("./Usuario.vue"),
+		meta: {
+			requireAuth: true
+		}
 	}
 ];
 

@@ -14,29 +14,25 @@
 					<thead>
 						<tr>
 							<th>Nome</th>
-							<th>Sobrenome</th>
 							<th>Email</th>
 							<th>Data Criação</th>
 							<th>Ultimo Acesso</th>
-							<th>Bio</th>
 							<th>Ações</th>
 						</tr>
 					</thead>
 					<tbody>
 						<template v-if="loading">
 							<tr v-for="(skl, i) in 10" :key="i">
-								<th v-for="(skll, inx) in 8" :key="inx">
+								<th v-for="(skll, inx) in 7" :key="inx">
 									<b-skeleton active animated width="100px"></b-skeleton>
 								</th>
 							</tr>
 						</template>
 						<tr v-for="cliente in clientes" :key="cliente.id">
-							<th>{{ cliente.nome }}</th>
-							<td>{{ cliente.sobrenome }}</td>
+							<th>{{ cliente.nome }} {{ cliente.sobrenome }}</th>
 							<td>{{ cliente.email }}</td>
-							<td>{{ new Date(cliente.createdAt).toLocaleString() }}</td>
-							<td>{{ new Date(cliente.changedAt).toLocaleString() }}</td>
-							<td>{{ cliente.bio }}</td>
+							<td>{{ new Date(Number(cliente.createdAt)).toLocaleString() }}</td>
+							<td>{{ new Date(Number(cliente.changedAt)).toLocaleString() }}</td>
 							<td class="buttons">
 								<b-button
 									icon-left="eye"

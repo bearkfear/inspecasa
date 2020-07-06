@@ -71,7 +71,7 @@ import Vue from "vue";
 
 import firebase from "firebase/app";
 import "firebase/auth";
-import { GET_USER } from "@/queries";
+import { GET_ME } from "@/queries";
 
 interface Data {
 	email: null | string;
@@ -100,29 +100,29 @@ export default Vue.extend<Data, {}, {}, {}>({
 			this.isSubmitting = true;
 
 			try {
-				const resp = await firebase.auth().signInWithEmailAndPassword(email, password);
-				const { user } = resp;
-				if (!user) throw new Error("Não existe");
+				const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
 				const token = await user?.getIdToken();
-				const {
-					data: { usuario }
-				} = await this.$apollo.query({
-					query: GET_USER,
-					variables: {
-						uid: user.uid
-					}
-				});
-				this.$store.commit("SET_USER", {
-					token,
-					uid: user?.uid,
-					...usuario
-				});
 				localStorage.setItem("token-jwt", token || "");
+				const { data: { me } } = await this.$apollo.query({ query: GET_ME });
+
+				if (me) {
+					this.$store.commit("SET_USER", {
+						token,
+						...me,
+					});
+					this.$router.push({ path: "/" });
+				} else {
+					localStorage.removeItem("token-jwt");
+					return new Error("Usuário não existe!");
+				}
 				this.isSubmitting = false;
-				this.$router.push({ path: "/" });
 			} catch (e) {
 				this.isSubmitting = false;
-				this.authError = e.code;
+				if (e.code) {
+					this.authError = e.code;
+				} else {
+					this.authError = e;
+				}
 			}
 		}
 	}

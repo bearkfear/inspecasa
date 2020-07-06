@@ -3,6 +3,8 @@ import VueRouter, { NavigationGuard } from "vue-router";
 import routes from "../views/routes";
 // @ts-ignore;
 import decode from "jwt-decode";
+import { auth } from 'firebase';
+import "firebase/auth";
 
 Vue.use(VueRouter);
 
@@ -12,7 +14,7 @@ const router = new VueRouter({
 	routes,
 });
 
-export const guard: NavigationGuard<Vue> = (to, from, next) => {
+export const guard: NavigationGuard<Vue> = async (to, from, next) => {
 
 	if (to.meta.requireAuth) {
 		let isAuth = false;
@@ -23,6 +25,10 @@ export const guard: NavigationGuard<Vue> = (to, from, next) => {
 				isAuth = true;
 			} else {
 				// resignin user;
+				const refreshToken = await auth().currentUser?.getIdToken(true);
+				localStorage.setItem('token-jwt', refreshToken || '');
+				const decodedRefreshToken = decode(refreshToken);
+				if (decodedRefreshToken.exp * 1000 > Date.now()) isAuth = true;
 			}
 		}
 		if (isAuth) {

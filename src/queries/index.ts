@@ -82,26 +82,51 @@ export const GET_IMOVEL = gql`
 	}
 `;
 
-export const GET_USER = gql`
-	query usuario($uid: ID!) {
-		usuario(uid: $uid) {
+export const GET_ME = gql`
+	query me {
+		me {
 			id
 			nome
 			sobrenome
 			urlImg
 			funcao
+			uid
+		}
+	}
+`;
+
+export const UPDATE_USER = gql`
+	mutation updateUsuario($id: ID!, $usuario: UsuarioInput!) {
+		updateUsuario(id: $id, usuario: $usuario) {
+			urlImg
+		}
+	}
+`;
+
+export const GET_USER = gql`
+	query usuario($id: ID!) {
+		usuario(id: $id) {
+			id
+			nome
+			sobrenome
+			funcao
+			email
+			bio
+			uid
+			createdAt
+			changedAt
+			urlImg
 		}
 	}
 `;
 
 export const STORE_IMOVEL_ENDERECO = gql`
 	mutation storeImovelAndEndereco(
-		$vendedor: ID!
 		$imovel: ImovelInput!
 		$owners: [ID!]!
 		$endereco: EnderecoInput!
 	) {
-		storeImovel(vendedor: $vendedor, imovel: $imovel, owners: $owners) {
+		storeImovel(imovel: $imovel, owners: $owners) {
 			id
 		}
 		storeEndereco(input: $endereco) {
