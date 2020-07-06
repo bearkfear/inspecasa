@@ -1,7 +1,9 @@
 <template>
 	<div id="app">
 		<Navbar v-if="$route.meta.requireAuth"></Navbar>
-		<router-view />
+		<transition name="fade">
+			<router-view />
+		</transition>
 	</div>
 </template>
 
