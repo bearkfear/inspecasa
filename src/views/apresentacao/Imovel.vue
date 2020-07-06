@@ -4,7 +4,7 @@
 			<div class="container">
 				<div class="level">
 					<div class="level-left">
-						<h1 class="title is-3">Visualizar</h1>
+						<h1 class="title is-3"><router-link to="/cadastro/imovel">Imóveis</router-link> / Visualizar</h1>
 					</div>
 					<div class="level-rigth buttons">
 						<b-button icon-left="history" type="is-info">Historico</b-button>

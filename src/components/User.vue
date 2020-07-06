@@ -21,17 +21,23 @@
 					</figure>
 				</b-navbar-item>
 			</template>
-			<b-dropdown-item @click="logoutUser()" v-if="!loading">
-				<div class="media">
-					<div class="media-left">
-						<b-icon icon="id-card"></b-icon>
+			<b-dropdown-item :disabled="loading" has-link>
+				<router-link
+					:to="{
+						path: `/show/usuario/${usuario.id}`
+					}"
+				>
+					<div class="media">
+						<div class="media-left">
+							<b-icon icon="id-card"></b-icon>
+						</div>
+						<div class="media-content">
+							<p>Perfil</p>
+						</div>
 					</div>
-					<div class="media-content">
-						<p>Perfil</p>
-					</div>
-				</div>
+				</router-link>
 			</b-dropdown-item>
-			<b-dropdown-item @click="logoutUser()">
+			<b-dropdown-item @click="logoutUser()" :disabled="loading">
 				<div class="media">
 					<div class="media-left">
 						<b-icon icon="sign-out-alt"></b-icon>
@@ -45,9 +51,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-// @ts-ignore
-import decode from "jwt-decode";
-import { GET_USER } from "@/queries";
+import { GET_ME } from "@/queries";
 
 export default Vue.extend({
 	data: () => ({
@@ -59,22 +63,18 @@ export default Vue.extend({
 			localStorage.removeItem("token-jwt");
 			this.$router.push({ path: "/auth" });
 		},
-		fetchUser(uid: string) {
+		async fetchUser() {
 			this.loading = true;
-			this.$apollo
-				.query({
-					query: GET_USER,
-					variables: { uid }
-				})
-				.then(({ data }) => {
-					this.usuario = data.usuario;
-					this.loading = false;
-				});
+			const { data } = await this.$apollo.query({
+				query: GET_ME
+			});
+			this.usuario = data.me;
+			this.loading = false;
 		}
 	},
 	created() {
 		this.loading = true;
-		this.fetchUser(this.$store.state.user.uid);
+		this.fetchUser();
 	}
 });
 </script>

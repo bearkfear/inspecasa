@@ -96,8 +96,8 @@ export const GET_ME = gql`
 	}
 `
 export const GET_USER = gql`
-	query usuario($uid: ID!) {
-		usuario(uid: $uid) {
+	query usuario($id: ID!) {
+		usuario(id: $id) {
 			id
 			nome
 			sobrenome

@@ -7,23 +7,16 @@
 			</template>
 
 			<template slot="start" v-if="$route.meta.requireAuth">
-				<b-navbar-dropdown label="Cadastros" aria-label="Cadastros" hoverable>
-					<b-navbar-item tag="router-link" to="/cadastro/cliente">
-						<p>Clientes</p>
-					</b-navbar-item>
-					<b-navbar-item tag="router-link" to="/cadastro/imovel">
-						<div class="level">
-							<div class="level-left"></div>
-							<div class="level-rigth">Imóveis</div>
-						</div>
-					</b-navbar-item>
-				</b-navbar-dropdown>
+				<b-navbar-item tag="router-link" to="/cadastro/cliente">
+					<p>Clientes</p>
+				</b-navbar-item>
+				<b-navbar-item tag="router-link" to="/cadastro/imovel">
+						<p>Imóveis</p>
+				</b-navbar-item>
 
-				<b-navbar-dropdown label="Empresa" aria-label="Empresa" hoverable>
-					<b-navbar-item tag="router-link" to="/cadastro/usuario">
-						<p>Usuários</p>
-					</b-navbar-item>
-				</b-navbar-dropdown>
+				<b-navbar-item tag="router-link" to="/cadastro/usuario">
+					<p>Usuários</p>
+				</b-navbar-item>
 			</template>
 
 			<template slot="end" v-if="$route.meta.requireAuth">
