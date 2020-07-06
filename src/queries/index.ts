@@ -94,6 +94,15 @@ export const GET_ME = gql`
 		}
 	}
 `;
+
+export const UPDATE_USER = gql`
+	mutation updateUsuario($id: ID!, $usuario: UsuarioInput!) {
+		updateUsuario(id: $id, usuario: $usuario) {
+			urlImg
+		}
+	}
+`;
+
 export const GET_USER = gql`
 	query usuario($id: ID!) {
 		usuario(id: $id) {

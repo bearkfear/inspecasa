@@ -24,7 +24,7 @@
 			<b-dropdown-item :disabled="loading" has-link>
 				<router-link
 					:to="{
-						path: `/show/usuario/${usuario.id}`
+						path: `/show/usuario/${usuario && usuario.id}`
 					}"
 				>
 					<div class="media">
