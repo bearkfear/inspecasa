@@ -30,7 +30,7 @@
 								</th>
 							</tr>
 						</template>
-						<tr v-for="imovel in imoveis" :key="imovel.id">
+						<tr v-for="imovel in imoveis" :key="imovel.createdAt">
 							<td>{{ imovel.categoria | categoria }}</td>
 							<td><div v-html="imovel.descricao"></div></td>
 							<td>{{ imovel.numQuartos }}</td>

@@ -28,7 +28,7 @@
 								</th>
 							</tr>
 						</template>
-						<tr v-for="cliente in clientes" :key="cliente.id">
+						<tr v-for="cliente in clientes" :key="cliente.createdAt">
 							<th>{{ cliente.nome }} {{ cliente.sobrenome }}</th>
 							<td>{{ cliente.email }}</td>
 							<td>{{ new Date(Number(cliente.createdAt)).toLocaleString() }}</td>

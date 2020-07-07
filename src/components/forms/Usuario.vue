@@ -8,9 +8,9 @@
 		</header>
 		<section class="modal-card-body">
 			<div>
-				<div class="media">
-					<div class="media-left">
-						<b-field class="file" :disabled="loading">
+				<div class="columns">
+					<div class="column is-2">
+						<b-field class="file" :disabled="loading || isSubmitting">
 							<b-upload
 								v-model="file"
 								accept="image/*"
@@ -47,31 +47,68 @@
 						>
 						</b-progress>
 					</div>
-					<div class="media-right">
+					<div class="column">
 						<b-field label="Nome">
-							<b-input placeholder="Nome" v-model="usuario.nome"> </b-input>
+							<b-input placeholder="Nome" v-model="usuario.nome" :disabled="isSubmitting">
+							</b-input>
 						</b-field>
 						<b-field label="Sobrenome">
-							<b-input placeholder="Sobrenome" v-model="usuario.sobrenome"> </b-input>
+							<b-input placeholder="Sobrenome" v-model="usuario.sobrenome" :disabled="isSubmitting">
+							</b-input>
 						</b-field>
 					</div>
 				</div>
 
-				<b-field label="E-mail">
-					<b-input type="email" placeholder="example@inspecasa.site" v-model="usuario.email">
-					</b-input>
-				</b-field>
-				<b-field label="Função">
-					<b-input type="text" placeholder="Cargo ou função" v-model="usuario.funcao"> </b-input>
-				</b-field>
-				<b-field label="Biografia">
-					<b-input
-						type="text"
-						placeholder="Tomo um café antes de fechar um negócio"
-						v-model="usuario.bio"
-					>
-					</b-input>
-				</b-field>
+				<div class="columns">
+					<div class="column">
+						<b-field label="E-mail">
+							<b-input
+								type="email"
+								placeholder="example@inspecasa.site"
+								v-model="usuario.email"
+								required
+								:disabled="isSubmitting"
+							>
+							</b-input>
+						</b-field>
+					</div>
+					<div class="column">
+						<b-field label="Senha">
+							<b-input
+								type="password"
+								required
+								placeholder="******"
+								v-model="password"
+								:disabled="isSubmitting"
+							></b-input>
+						</b-field>
+					</div>
+				</div>
+
+				<div class="columns">
+					<div class="column">
+						<b-field label="Biografia">
+							<b-input
+								type="text"
+								placeholder="Tomo um café antes de fechar um negócio"
+								v-model="usuario.bio"
+								:disabled="isSubmitting"
+							>
+							</b-input>
+						</b-field>
+					</div>
+					<div class="column">
+						<b-field label="Função">
+							<b-input
+								type="text"
+								placeholder="Cargo ou função"
+								v-model="usuario.funcao"
+								:disabled="isSubmitting"
+							>
+							</b-input>
+						</b-field>
+					</div>
+				</div>
 			</div>
 		</section>
 		<footer class="modal-card-foot ">
@@ -85,6 +122,7 @@
 					type="is-success"
 					:loading="isSubmitting"
 					:disabled="isSubmitting"
+					@click="addUsuario"
 				>
 					Adicionar
 				</b-button>
@@ -99,7 +137,7 @@
 <script lang="ts">
 import Vue from "vue";
 import firebase from "firebase";
-import { GET_USER, UPDATE_USER } from "@/queries";
+import { GET_USER, UPDATE_USER, STORE_USER } from "@/queries";
 import uuid from "uuid-random";
 import { Usuario } from "@/types";
 
@@ -110,6 +148,8 @@ interface Data {
 	reader: string | ArrayBuffer | null;
 	progress: number;
 	isUploading: boolean;
+	password: null | string;
+	isSubmitting: boolean;
 }
 // Data, Methods, Computed, Props
 export default Vue.extend({
@@ -128,13 +168,34 @@ export default Vue.extend({
 	},
 	data: (): Data => ({
 		usuario: null,
+		password: null,
 		file: null,
 		isUploading: false,
 		progress: 0,
 		reader: null,
-		loading: false
+		loading: false,
+		isSubmitting: false
 	}),
 	methods: {
+		async addUsuario() {
+			try {
+				this.isSubmitting = true;
+				await this.$apollo.mutate({
+					mutation: STORE_USER,
+					variables: {
+						usuario: this.usuario,
+						password: this.password
+					}
+				});
+
+				this.$emit("reload");
+				this.$emit("close");
+				this.isSubmitting = false;
+			} catch (error) {
+				this.isSubmitting = false;
+				console.log(error);
+			}
+		},
 		saveFoto() {
 			const { file } = this;
 			if (file !== null) {
@@ -167,15 +228,18 @@ export default Vue.extend({
 			}
 		},
 		updateUserImage(url: string) {
-			return this.$apollo.mutate({
-				mutation: UPDATE_USER,
-				variables: {
-					id: this.usuario?.id,
-					usuario: {
-						urlImg: url
+			if (this.usuario?.id) {
+				return this.$apollo.mutate({
+					mutation: UPDATE_USER,
+					variables: {
+						id: this.usuario?.id,
+						usuario: {
+							urlImg: url
+						}
 					}
-				}
-			});
+				});
+			}
+			return Promise.resolve();
 		},
 		removeFoto() {
 			this.file = null;

@@ -30,7 +30,7 @@
 								</th>
 							</tr>
 						</template>
-						<tr v-for="usuario in usuarios" :key="usuario.id">
+						<tr v-for="usuario in usuarios" :key="usuario.createdAt">
 							<th>{{ usuario.nome }} {{ usuario.sobrenome }}</th>
 							<td>{{ usuario.email }}</td>
 							<td>{{ usuario.bio }}</td>
@@ -73,7 +73,7 @@ import gql from "graphql-tag";
 export default Vue.extend({
 	name: "usuario",
 	data: () => ({
-		usuario: [],
+		usuarios: [],
 		loading: false
 	}),
 	methods: {

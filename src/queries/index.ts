@@ -95,6 +95,16 @@ export const GET_ME = gql`
 	}
 `;
 
+export const STORE_USER = gql`
+	mutation addUsuario($usuario: UsuarioStore!, $password: String!) {
+		storeUsuario(usuario: $usuario, password: $password) {
+			id
+			createdAt
+			changedAt
+		}
+	}
+`
+
 export const UPDATE_USER = gql`
 	mutation updateUsuario($id: ID!, $usuario: UsuarioInput!) {
 		updateUsuario(id: $id, usuario: $usuario) {
