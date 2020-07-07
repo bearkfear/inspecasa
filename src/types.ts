@@ -21,3 +21,16 @@ export interface Endereco {
 	cidade: string | null;
 	bairro: string | null;
 }
+
+export interface Usuario {
+	id?: number | null;
+	nome: string | null;
+	sobrenome: string | null;
+	funcao: string | null;
+	email: string | null;
+	bio: string | null;
+	uid?: string | null;
+	createdAt?: string | null;
+	changedAt?: string | null;
+	urlImg: string | null;
+}

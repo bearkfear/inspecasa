@@ -7,7 +7,7 @@
 						<h1 class="title is-3">Usuarios</h1>
 					</div>
 					<div class="level-rigth">
-						<b-button icon-left="plus" type="is-primary">Criar novo</b-button>
+						<b-button icon-left="plus" type="is-primary" @click="handleAdicionar()">Criar novo</b-button>
 					</div>
 				</div>
 				<table class="table is-striped is-hoverable is-fullwidth">
@@ -19,7 +19,7 @@
 							<th>Função</th>
 							<th>Data Criação</th>
 							<th>Ultimo Acesso</th>
-							<th>Ações</th>
+							<th width="10%">Ações</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -37,7 +37,7 @@
 							<td>{{ usuario.funcao }}</td>
 							<td>{{ new Date(Number(usuario.createdAt)).toLocaleString() }}</td>
 							<td>{{ new Date(Number(usuario.changedAt)).toLocaleString() }}</td>
-							<td class="buttons" width="10%">
+							<td class="buttons">
 								<b-button
 									icon-left="eye"
 									type="is-info"
@@ -67,16 +67,30 @@
 
 <script lang="ts">
 import Vue from "vue";
-
+import ModalUsuario from "@/components/forms/Usuario.vue";
 import gql from "graphql-tag";
 
 export default Vue.extend({
 	name: "usuario",
 	data: () => ({
-		usuarios: [],
+		usuario: [],
 		loading: false
 	}),
 	methods: {
+		handleAdicionar() {
+			this.$buefy.modal.open({
+				parent: this,
+				hasModalCard: true,
+				component: ModalUsuario,
+				props: {},
+				fullScreen: true,
+				events: {
+					reload: () => {
+						this.fetchUsuarios();
+					}
+				}
+			});
+		},
 		fetchUsuarios() {
 			this.loading = true;
 			this.$apollo
