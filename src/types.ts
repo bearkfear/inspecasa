@@ -34,3 +34,14 @@ export interface Usuario {
 	changedAt?: string | null;
 	urlImg: string | null;
 }
+
+export interface Cliente {
+	id?: number| null;
+	nome: string | null;
+	sobrenome: string | null;
+	email: string | null;
+	bio: string | null;
+	createdAt?: string | null;
+	changedAt?: string | null;
+	urlImg: string | null;
+}

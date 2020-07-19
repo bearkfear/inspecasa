@@ -1,45 +1,35 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import VuexPersistence from "vuex-persist";
+
+import Vue from 'vue';
+import Vuex from 'vuex';
+import VuexPersistence from 'vuex-persist';
+import state from './state';
+import mutations from './mutations';
+import actions from './actions';
 
 Vue.use(Vuex);
+
 const vuexLocal = new VuexPersistence({
-	key: "persist-inspecasa",
-	storage: window.localStorage
+  key: 'persist-inspecasa',
+  storage: window.localStorage
 });
 
-interface State {
-	user: {
-		token: string | null;
-		uid: string | null;
-		id: number | null;
-		funcao: string | null;
-		nome: string | null;
-		sobrenome: string | null;
-		urlImg: string | null;
-	};
+export interface IState {
+  user: {
+    token:null | string;
+    uid:null | string;
+    id:null | string;
+    funcao:null | string;
+    nome:null | string;
+    sobrenome:null | string;
+    urlImg:null | string;
+  };
 }
 
-export default new Vuex.Store<State>({
-	state: {
-		user: {
-			token: null,
-			uid: null,
-			id: null,
-			funcao: null,
-			nome: null,
-			sobrenome: null,
-			urlImg: null
-		}
-	},
-	mutations: {
-		SET_USER(state, user) {
-			state.user = user;
-		}
-	},
-	actions: {
-	},
-	modules: {
-	},
-	plugins: [vuexLocal.plugin]
+export default new Vuex.Store<IState>({
+  state,
+  mutations,
+  actions,
+  modules: {
+  },
+  plugins: [vuexLocal.plugin]
 });

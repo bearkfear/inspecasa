@@ -13,6 +13,9 @@
 							acervo de informações em um único lugar
 						</p>
 						<hr />
+						<form>
+
+						
 						<b-field label="E-mail">
 							<b-input
 								expanded
@@ -32,6 +35,7 @@
 								placeholder="**************"
 							></b-input>
 						</b-field>
+						</form>
 						<b-message v-if="authError" type="is-danger">
 							{{ authError }}
 						</b-message>
@@ -72,7 +76,7 @@ import Vue from "vue";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { GET_ME } from "@/queries";
-
+import verifyTokenIsValid from '@/utils/verifyTokenIsValid';
 interface Data {
 	email: null | string;
 	password: null | string;
@@ -102,7 +106,7 @@ export default Vue.extend<Data, {}, {}, {}>({
 			try {
 				const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
 				const token = await user?.getIdToken();
-				localStorage.setItem("token-jwt", token || "");
+				localStorage.setItem("token", token || "");
 				const { data: { me } } = await this.$apollo.query({ query: GET_ME });
 
 				if (me) {
@@ -112,7 +116,8 @@ export default Vue.extend<Data, {}, {}, {}>({
 					});
 					this.$router.push({ path: "/" });
 				} else {
-					localStorage.removeItem("token-jwt");
+					localStorage.removeItem("token");
+					firebase.auth().signOut();
 					return new Error("Usuário não existe!");
 				}
 				this.isSubmitting = false;
@@ -124,6 +129,11 @@ export default Vue.extend<Data, {}, {}, {}>({
 					this.authError = e;
 				}
 			}
+		}
+	},
+	mounted() { 
+		if (verifyTokenIsValid()) { 
+			this.$router.push({ path: "/" });
 		}
 	}
 });

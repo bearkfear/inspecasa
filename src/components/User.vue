@@ -51,6 +51,8 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { auth } from 'firebase';
+import "firebase/auth"
 import { GET_ME } from "@/queries";
 
 export default Vue.extend({
@@ -60,7 +62,8 @@ export default Vue.extend({
 	}),
 	methods: {
 		logoutUser() {
-			localStorage.removeItem("token-jwt");
+			auth().signOut();
+			localStorage.removeItem("token");
 			this.$router.push({ path: "/auth" });
 		},
 		async fetchUser() {

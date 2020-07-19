@@ -7,7 +7,7 @@
 						<h1 class="title is-3">Clientes</h1>
 					</div>
 					<div class="level-rigth">
-						<b-button icon-left="plus" type="is-primary">Criar novo</b-button>
+						<b-button icon-left="plus" type="is-primary"  @click="handleAdicionar()">Criar novo</b-button>
 					</div>
 				</div>
 				<table class="table is-striped is-hoverable is-fullwidth">
@@ -64,6 +64,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { GET_CLIENTES } from "@/queries";
+import ModalCliente from "@/components/forms/Cliente.vue";
 
 export default Vue.extend({
 	name: "cliente",
@@ -72,6 +73,20 @@ export default Vue.extend({
 		loading: false
 	}),
 	methods: {
+		handleAdicionar() {
+			this.$buefy.modal.open({
+				parent: this,
+				hasModalCard: true,
+				component: ModalCliente,
+				props: {},
+				fullScreen: true,
+				events: {
+					reload: () => {
+						this.fetchClientes();
+					}
+				}
+			});
+		},
 		fetchClientes() {
 			this.loading = true;
 			this.$apollo

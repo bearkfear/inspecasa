@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/storage";
-
+import verifyIdToken from "@/utils/verifyTokenIsValid";
 const app = firebase.initializeApp({
 	apiKey: process.env.VUE_APP_APIKEY,
 	authDomain: process.env.VUE_APP_AUTHDOMAIN,
@@ -12,3 +12,13 @@ const app = firebase.initializeApp({
 	appId: process.env.VUE_APP_APPID,
 	measurementId: process.env.VUE_APP_MEASUREMENTID,
 });
+
+app.auth().onIdTokenChanged(user => { 
+	user?.getIdToken(true).then((refreshToken) => { 
+		console.log("FIREBASE: atualizando token")
+		console.log(verifyIdToken());
+		console.log(refreshToken);
+		localStorage.setItem('token', refreshToken);
+
+	})
+})
