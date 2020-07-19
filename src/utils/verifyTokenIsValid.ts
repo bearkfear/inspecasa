@@ -1,3 +1,4 @@
+// @ts-ignore
 import decode from 'jwt-decode';
 
 export default function(token = null) { 

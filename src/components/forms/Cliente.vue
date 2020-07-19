@@ -112,12 +112,12 @@
 <script lang="ts">
 import Vue from "vue";
 import firebase from "firebase";
-import { STORE_CLIENTE } from "@/queries";
+import { STORE_CLIENTE, UPDATE_CLIENTE } from "@/queries";
 import uuid from "uuid-random";
-import { cliente } from "@/types";
+import { Cliente } from "@/types";
 
 interface Data {
-	cliente: null | cliente;
+	cliente: null | Cliente;
 	loading: boolean;
 	file: File | null;
 	reader: string | ArrayBuffer | null;
@@ -134,7 +134,7 @@ export default Vue.extend({
 			default: false,
 			type: Boolean
 		},
-		idCLiente: {
+		idCliente: {
 			required: false,
 			default: "0",
 			type: String
@@ -165,7 +165,6 @@ export default Vue.extend({
 				this.isSubmitting = false;
 			} catch (error) {
 				this.isSubmitting = false;
-				console.log(error);
 			}
 		},
 		saveFoto() {
@@ -180,8 +179,7 @@ export default Vue.extend({
 					snapshot => {
 						this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 					},
-					error => {
-						console.error(error);
+					() => {
 						this.file = null;
 						this.reader = null;
 					},
