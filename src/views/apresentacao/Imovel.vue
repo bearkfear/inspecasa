@@ -61,7 +61,7 @@
           </article>
         </div>
         <footer>
-          <b-tabs v-model="activeTab" expanded type="is-toggle">
+          <b-tabs v-model="activeTab" expanded>
             <b-tab-item label="Vistorias" icon="bug">
               <div class="level">
                 <div class="level-left"></div>
@@ -104,14 +104,14 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from 'vue';
-import { GET_IMOVEL } from '@/queries';
-import Midia from '@/components/midia/Midia.vue';
+import Vue from "vue";
+import { GET_IMOVEL } from "@/queries";
+import Midia from "@/components/midia/Midia.vue";
 
 export default Vue.extend({
-  name: 'VisualizarImovel',
+  name: "VisualizarImovel",
   data: () => ({
-    activeTab: 0,
+    activeTab: 2,
     documentosUpload: [],
     imovel: null,
     loading: false,

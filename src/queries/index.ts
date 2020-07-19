@@ -1,4 +1,31 @@
 import gql from "graphql-tag";
+import { Midia } from "@/types";
+
+interface GetMidiasFromImovelContent { 
+	id: number;
+	midias: Midia[]
+}
+
+export interface GetMidiasFromImovel {
+	imovel: GetMidiasFromImovelContent;
+}
+
+export const GET_MIDIAS_FROM_IMOVEL = gql`
+	query getMidiasFromImovel($id: ID!) { 
+		imovel(id: $id) {
+			id
+			midias {
+				id
+				changedAt
+				createdAt
+				descricao
+				extensao
+				url
+			}
+		}
+	}
+`
+
 
 export const GET_IMOVEL_ENDERECO = gql`
 	query imovelEndereco($idEndereco: ID!, $idImovel: ID!) {

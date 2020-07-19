@@ -216,7 +216,6 @@ export default Vue.extend({
 			this.reader = null;
 		},
 		selectImage(image: File) {
-			console.log(image);
 			const reader = new FileReader();
 			reader.readAsDataURL(image);
 			reader.onload = event => {

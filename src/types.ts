@@ -46,3 +46,20 @@ export interface Cliente {
 	changedAt?: string | null;
 	urlImg: string | null;
 }
+
+
+export interface FileToUpload{
+  progress: number;
+  description: string;
+  archive: File;
+  extension: string;
+}
+
+export interface Midia { 
+	id: number;
+	changedAt: string;
+	createdAt: string;
+	descricao: string;
+	extensao: string;
+	url: string;
+}

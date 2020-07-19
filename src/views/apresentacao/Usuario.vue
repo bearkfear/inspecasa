@@ -112,10 +112,10 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from 'vue';
-import firebase from 'firebase';
-import { GET_USER, UPDATE_USER } from '@/queries';
-import uuid from 'uuid-random';
+import Vue from "vue";
+import firebase from "firebase";
+import { GET_USER, UPDATE_USER } from "@/queries";
+import uuid from "uuid-random";
 
 interface Usuario {
   id: number;
@@ -140,7 +140,7 @@ interface Data {
 }
 
 export default Vue.extend({
-  name: 'VisualizarUsuario',
+  name: "VisualizarUsuario",
   data: (): Data => ({
     usuario: null,
     loading: false,
@@ -158,10 +158,9 @@ export default Vue.extend({
         const uploadTask = storage.child(`profile_images/${uuid()}`).put(file);
 
         uploadTask.on(
-          'state_changed',
+          "state_changed",
           (snapshot) => {
-            this.progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           },
           (error) => {
             console.error(error);
@@ -200,7 +199,6 @@ export default Vue.extend({
       this.reader = null;
     },
     selectImage(image: File) {
-      console.log(image);
       const reader = new FileReader();
       reader.readAsDataURL(image);
       reader.onload = (event) => {

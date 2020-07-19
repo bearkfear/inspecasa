@@ -193,7 +193,6 @@ export default Vue.extend({
 				this.isSubmitting = false;
 			} catch (error) {
 				this.isSubmitting = false;
-				console.log(error);
 			}
 		},
 		saveFoto() {
@@ -246,7 +245,6 @@ export default Vue.extend({
 			this.reader = null;
 		},
 		selectImage(image: File) {
-			console.log(image);
 			const reader = new FileReader();
 			reader.readAsDataURL(image);
 			reader.onload = event => {

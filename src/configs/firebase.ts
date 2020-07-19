@@ -15,9 +15,6 @@ const app = firebase.initializeApp({
 
 app.auth().onIdTokenChanged(user => { 
 	user?.getIdToken(true).then((refreshToken) => { 
-		console.log("FIREBASE: atualizando token")
-		console.log(verifyIdToken());
-		console.log(refreshToken);
 		localStorage.setItem('token', refreshToken);
 
 	})

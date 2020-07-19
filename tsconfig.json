@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "h",
     "target": "esnext",
     "module": "esnext",
     "strict": true,
-    "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
     "esModuleInterop": true,

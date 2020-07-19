@@ -86,12 +86,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import gql from 'graphql-tag';
-import ModalImovel from '@/components/forms/Imovel.vue';
+import Vue from "vue";
+import gql from "graphql-tag";
+import ModalImovel from "@/components/forms/Imovel.vue";
 
 export default Vue.extend({
-  name: 'imovel',
+  name: "imovel",
   data: () => ({
     imoveis: [],
     loading: false,
@@ -99,9 +99,9 @@ export default Vue.extend({
   filters: {
     situacao(val: number) {
       if (val === 1) {
-        return 'A Venda';
+        return "A Venda";
       }
-      return 'Vendido';
+      return "Vendido";
     },
     categoria(key: number) {
       enum Categoria {
@@ -118,11 +118,11 @@ export default Vue.extend({
   methods: {
     handleRemover(imovel: any) {
       this.$buefy.dialog.confirm({
-        title: 'Remover Imovel',
+        title: "Remover Imovel",
         message:
-          'Deseja <b>remover</b> o imovel? Essa ação não pode ser desfeita.',
-        confirmText: 'Remover',
-        type: 'is-danger',
+          "Deseja <b>remover</b> o imovel? Essa ação não pode ser desfeita.",
+        confirmText: "Remover",
+        type: "is-danger",
         hasIcon: true,
         onConfirm: () => {
           this.$apollo

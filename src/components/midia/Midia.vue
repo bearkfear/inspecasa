@@ -1,37 +1,45 @@
 <template>
   <div>
-    <div v-if="files.length >= 0">
-      <table class="table is-striped is-hoverable is-fullwidth">
+    <div v-if="files.length > 0">
+      <table class="table is-striped is-hoverable is-fullwidth is-narrow">
         <thead>
           <tr>
-            <th>Progresso</th>
+            <th width="10%">Progresso</th>
             <th>Descrição</th>
+            <th width="1%">Ações</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="file in files" :key="file.name">
-            <td><b-progress></b-progress></td>
-            <td>
-              <b-field>
-                <b-input type="text" :placeholder="file.name"></b-input>
-              </b-field>
-            </td>
-          </tr>
+          <File
+            v-for="(file, i) in files"
+            :file="file"
+            :key="file.name"
+            @delete="handleRemoverFromUpload(i)"
+          ></File>
         </tbody>
       </table>
       <div class="level">
         <div class="level-left"></div>
         <div class="level-right">
-          <b-button icon-right="paper-plane" type="is-success"
+          <b-button
+            icon-right="paper-plane"
+            type="is-success"
+            @click="handleStartUploads()"
             >Enviar</b-button
           >
         </div>
       </div>
-      <hr>
+      <hr />
     </div>
     <div>
       <b-field>
-        <b-upload v-model="files" multiple drag-drop expanded>
+        <b-upload
+          v-model="tempFiles"
+          multiple
+          drag-drop
+          expanded
+          @input="handleLoadFiles($event)"
+        >
           <div class="content has-text-centered">
             <p>
               <b-icon icon="upload" size="is-medium"></b-icon>
@@ -41,15 +49,63 @@
         </b-upload>
       </b-field>
     </div>
+    <List></List>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from "vue";
+import { FileToUpload } from "@/types";
+import eventBus, { TYPES } from "@/eventBus";
+import File from "@/components/midia/FileToUpload.vue";
+import List from "@/components/midia/List.vue";
+
+interface Midia {
+  id: number;
+  extensao: string;
+  descricao: string;
+  url: string;
+  createdAt: string;
+  changedAt: string;
+}
+
+interface Data {
+  tempFiles: File[];
+  files: FileToUpload[];
+}
+
 export default Vue.extend({
-  name: 'midia',
-  data: () => ({
+  name: "midia",
+
+  data: (): Data => ({
+    tempFiles: [],
     files: [],
   }),
+  components: {
+    File,
+    List
+  },
+  methods: {
+    handleStartUploads() {
+      eventBus.$emit(TYPES.START_UPLOAD);
+    },
+    handleLoadFiles(files: File[]) {
+      const tempFiles: FileToUpload[] = [];
+      files.forEach((f) => {
+        tempFiles.push({
+          progress: 0,
+          description: f.name,
+          archive: f,
+          extension: "",
+        });
+      });
+
+      this.files.push(...tempFiles);
+      this.tempFiles = [];
+    },
+    handleRemoverFromUpload(index: number) {
+      this.files.splice(index, 1);
+    },
+  },
 });
 </script>
