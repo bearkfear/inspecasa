@@ -6,9 +6,9 @@
   inspecasa
 </h1>
 
-Rocket Redis is a Graphic User Interface for managing Redis databases with ease.
 
-🚧 **Rocket Redis is under development** 🚧
+
+🚀 **inspecasa está em desenvolvimento** 
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/3ce20b85-e6c9-4a57-ae7e-4588d1c69fa6/deploy-status)](https://app.netlify.com/sites/inspecasa/deploys)
 <p>
