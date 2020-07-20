@@ -1,4 +1,40 @@
 import gql from "graphql-tag";
+import { Midia } from "@/types";
+
+
+export const ADD_MIDIA = gql`
+	mutation addMidia($midia: MidiaInput!, $imovelId: ID!) {
+		storeMidia(midia: $midia, imovelId: $imovelId) {
+			id
+		}
+	}
+`;
+
+interface GetMidiasFromImovelContent { 
+	id: number;
+	midias: Midia[]
+}
+
+export interface GetMidiasFromImovel {
+	imovel: GetMidiasFromImovelContent;
+}
+
+export const GET_MIDIAS_FROM_IMOVEL = gql`
+	query getMidiasFromImovel($id: ID!) { 
+		imovel(id: $id) {
+			id
+			midias {
+				id
+				changedAt
+				createdAt
+				descricao
+				extensao
+				url
+			}
+		}
+	}
+`
+
 
 export const GET_IMOVEL_ENDERECO = gql`
 	query imovelEndereco($idEndereco: ID!, $idImovel: ID!) {
@@ -30,6 +66,8 @@ export const GET_CLIENTES = gql`
 			nome
 			sobrenome
 			email
+			urlImg
+			bio
 			changedAt
 			createdAt
 		}
@@ -94,6 +132,51 @@ export const GET_ME = gql`
 		}
 	}
 `;
+
+export const UPDATE_CLIENTE = gql`
+	mutation updateCliente($cliente: ClienteInput!, $id: ID!) {
+		updateCliente(id: $id, cliente: $cliente) {
+			id
+			createdAt
+			changedAt
+		}
+	}
+`
+
+export const STORE_CLIENTE = gql`
+	mutation addCliente($cliente: ClienteStore!) {
+		storeCliente(cliente: $cliente) {
+			id
+			createdAt
+			changedAt
+		}
+	}
+`
+
+export const STORE_USER = gql`
+	mutation addUsuario($usuario: UsuarioStore!, $password: String!) {
+		storeUsuario(usuario: $usuario, password: $password) {
+			id
+			createdAt
+			changedAt
+		}
+	}
+`
+export const GET_CLIENTE = gql`
+	query cliente($id: ID!) { 
+		cliente(id: $id) {
+			id
+			nome
+			sobrenome
+			email
+			bio
+			createdAt
+			changedAt
+			urlImg
+		}
+	}
+
+`
 
 export const UPDATE_USER = gql`
 	mutation updateUsuario($id: ID!, $usuario: UsuarioInput!) {

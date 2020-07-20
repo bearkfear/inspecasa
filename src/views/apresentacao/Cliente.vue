@@ -24,7 +24,7 @@
                   <figure v-else class="image is-128x128">
                     <img
                       class="is-rounded"
-                      :src="reader ? reader : usuario.urlImg"
+                      :src="reader ? reader : cliente.urlImg"
                     />
                   </figure>
                 </b-upload>
@@ -54,13 +54,13 @@
 
               <b-skeleton animated width="128" v-if="loading"></b-skeleton>
               <h1 class="title is-3" v-else>
-                {{ usuario.nome }} {{ usuario.sobrenome }}
+                {{ cliente.nome }} {{ cliente.sobrenome }}
               </h1>
-              <h2 class="title is-6"> {{ usuario.email }}</h2>
+              <h2 class="title is-6"> {{ cliente.email }}</h2>
 
               <p>
                 <b-skeleton animated width="128" v-if="loading"></b-skeleton
-                ><span v-else>{{ usuario.bio }}</span>
+                ><span v-else>{{ cliente.bio }}</span>
               </p>
               <hr />
               <div class="buttons">
@@ -75,32 +75,40 @@
                 <p>
                 <strong>Função:</strong>
                 <b-skeleton animated width="128" v-if="loading"></b-skeleton>
-                <span v-else> {{ usuario.funcao }}</span>
+                <span v-else> {{ cliente.funcao }}</span>
               </p>
               <p>
                 <strong>Bio:</strong>
                 <b-skeleton animated width="128" v-if="loading"></b-skeleton
-                ><span v-else>{{ usuario.bio }}</span>
+                ><span v-else>{{ cliente.bio }}</span>
               </p>
               <p>
                 <strong>Primeiro Acesso:</strong>
                 <b-skeleton animated width="128" v-if="loading"></b-skeleton>
                 <span v-else>
-                  {{ new Date(Number(usuario.createdAt)).toLocaleString() }}
+                  {{ new Date(Number(cliente.createdAt)).toLocaleString() }}
                 </span>
               </p>
               <p>
                 <strong>Ultimo Acesso:</strong>
                 <b-skeleton animated width="128" v-if="loading"></b-skeleton>
                 <span v-else>
-                  {{ new Date(Number(usuario.changedAt)).toLocaleString() }}
+                  {{ new Date(Number(cliente.changedAt)).toLocaleString() }}
                 </span>
               </p><p>
                 <strong>Função:</strong>
                 <b-skeleton animated width="128" v-if="loading"></b-skeleton>
-                <span v-else> {{ usuario.funcao }}</span>
+                <span v-else> {{ cliente.funcao }}</span>
               </p>
               </b-tab-item>
+              <b-tab-item label="Compras">
+                <div>
+                  <p>
+                    Nenhuma compra ainda!
+                  </p>
+                </div>
+              </b-tab-item>
+
               <b-tab-item label="Vendas" icon="chart-pie">
                 <div><p>Nenhuma venda ainda!</p></div>
               </b-tab-item>
@@ -114,24 +122,12 @@
 <script lang="ts">
 import Vue from "vue";
 import firebase from "firebase";
-import { GET_USER, UPDATE_USER } from "@/queries";
+import { GET_CLIENTE, UPDATE_CLIENTE } from "@/queries";
 import uuid from "uuid-random";
 
-interface Usuario {
-  id: number;
-  nome: string;
-  sobrenome: string;
-  funcao: string;
-  email: string;
-  bio: string;
-  uid: string;
-  createdAt: string;
-  changedAt: string;
-  urlImg: string;
-}
 
 interface Data {
-  usuario: null | Usuario;
+  cliente: any;
   loading: boolean;
   file: File | null;
   reader: string | ArrayBuffer | null;
@@ -140,9 +136,9 @@ interface Data {
 }
 
 export default Vue.extend({
-  name: "VisualizarUsuario",
+  name: "VisualizarCliente",
   data: (): Data => ({
-    usuario: null,
+    cliente: null,
     loading: false,
     file: null,
     reader: null,
@@ -171,9 +167,9 @@ export default Vue.extend({
             const downloadUrl = String(
               await uploadTask.snapshot.ref.getDownloadURL()
             );
-            if (downloadUrl && this.usuario) {
+            if (downloadUrl && this.cliente) {
               await this.updateUserImage(downloadUrl);
-              this.usuario.urlImg = downloadUrl;
+              this.cliente.urlImg = downloadUrl;
               this.isUploading = false;
               this.progress = 0;
               this.reader = null;
@@ -185,10 +181,10 @@ export default Vue.extend({
     },
     updateUserImage(url: string) {
       return this.$apollo.mutate({
-        mutation: UPDATE_USER,
+        mutation: UPDATE_CLIENTE,
         variables: {
-          id: this.usuario?.id,
-          usuario: {
+          id: this.cliente?.id,
+          cliente: {
             urlImg: url,
           },
         },
@@ -209,13 +205,13 @@ export default Vue.extend({
       this.loading = true;
       this.$apollo
         .query({
-          query: GET_USER,
+          query: GET_CLIENTE,
           variables: {
             id: this.$route.params.id,
           },
         })
         .then(({ data }) => {
-          this.usuario = data.usuario;
+          this.cliente = data.cliente;
           this.loading = false;
         });
     },

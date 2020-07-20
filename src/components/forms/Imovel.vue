@@ -36,7 +36,7 @@
 						<b-field label="Valor Proposto">
 							<input
 								class="input"
-								v-model="imovel.valorProposta"
+								v-model.lazy="imovel.valorProposta"
 								type="text"
 								min="0"
 								placeholder="Qual o valor pretendido para venda"
@@ -378,7 +378,6 @@ export default Vue.extend({
 		}
 	},
 	created() {
-		console.log(this.$store.state);
 		if (!this.isEditing) {
 			this.loading.clientes = true;
 			this.fetchClientes();

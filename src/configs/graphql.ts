@@ -13,7 +13,7 @@ const httpLink = createHttpLink({
 const authMiddleware = new ApolloLink((operation, forward) => {
 	operation.setContext({
 		headers: {
-			authorization: localStorage.getItem('token-jwt') || null,
+			authorization: localStorage.getItem('token') || null,
 		}
 	})
 	return forward(operation);

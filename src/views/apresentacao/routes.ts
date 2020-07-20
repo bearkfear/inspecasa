@@ -16,6 +16,14 @@ const apresentacaoRoutes: Array<RouteConfig> = [
 		meta: {
 			requireAuth: true
 		}
+	},
+	{
+		name: "apresentacao-cliente",
+		path: "/show/cliente/:id",
+		component: () => import("./Cliente.vue"),
+		meta: { 
+			requireAuth: true
+		}
 	}
 ];
 

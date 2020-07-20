@@ -1,93 +1,125 @@
 <template>
-	<div>
-		<section class="section">
-			<div class="container">
-				<div class="level">
-					<div class="level-left">
-						<h1 class="title is-3">Clientes</h1>
-					</div>
-					<div class="level-rigth">
-						<b-button icon-left="plus" type="is-primary">Criar novo</b-button>
-					</div>
-				</div>
-				<table class="table is-striped is-hoverable is-fullwidth">
-					<thead>
-						<tr>
-							<th>Nome</th>
-							<th>Email</th>
-							<th>Data Criação</th>
-							<th>Ultimo Acesso</th>
-							<th>Ações</th>
-						</tr>
-					</thead>
-					<tbody>
-						<template v-if="loading">
-							<tr v-for="(skl, i) in 10" :key="i">
-								<th v-for="(skll, inx) in 7" :key="inx">
-									<b-skeleton active animated width="100px"></b-skeleton>
-								</th>
-							</tr>
-						</template>
-						<tr v-for="cliente in clientes" :key="cliente.id">
-							<th>{{ cliente.nome }} {{ cliente.sobrenome }}</th>
-							<td>{{ cliente.email }}</td>
-							<td>{{ new Date(Number(cliente.createdAt)).toLocaleString() }}</td>
-							<td>{{ new Date(Number(cliente.changedAt)).toLocaleString() }}</td>
-							<td class="buttons">
-								<b-button
-									icon-left="eye"
-									type="is-info"
-									tag="router-link"
-									size="is-small"
-									:to="{ path: `/show/cliente/${cliente.id}` }"
-								></b-button>
-								<b-button icon-left="trash" type="is-danger" size="is-small"></b-button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<template v-if="!loading && clientes.length === 0">
-					<section class="section">
-						<div class="content has-text-grey has-text-centered">
-							<p>
-								<b-icon icon="frown-open" size="is-large"> </b-icon>
-							</p>
-							<p>Sem Registros. Crie um!</p>
-						</div>
-					</section>
-				</template>
-			</div>
-		</section>
-	</div>
+  <div>
+    <section class="section">
+      <div class="container">
+        <div class="level">
+          <div class="level-left">
+            <h1 class="title is-3">Clientes</h1>
+          </div>
+          <div class="level-rigth">
+            <b-button
+              icon-left="plus"
+              type="is-primary"
+              @click="handleAdicionar()"
+              >Criar novo</b-button
+            >
+          </div>
+        </div>
+        <table class="table is-striped is-hoverable is-fullwidth">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Email</th>
+              <th>Bio</th>
+              <th>Data Criação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template v-if="loading">
+              <tr v-for="(skl, i) in 10" :key="i">
+                <th v-for="(skll, inx) in 7" :key="inx">
+                  <b-skeleton active animated width="100px"></b-skeleton>
+                </th>
+              </tr>
+            </template>
+            <tr v-for="cliente in clientes" :key="cliente.createdAt">
+              <th>
+                <router-link
+                  class="user-content"
+                  :to="{ path: `/show/cliente/${cliente.id}` }"
+                >
+                  <figure class="image is-48x48">
+                    <img class="is-rounded" :src="cliente.urlImg" alt="" />
+                  </figure>
+                  <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;{{ cliente.nome }}
+                    {{ cliente.sobrenome }}
+                  </p>
+                </router-link>
+              </th>
+              <td>{{ cliente.email }}</td>
+              <td>{{ cliente.bio }}</td>
+              <td>
+                {{ new Date(Number(cliente.createdAt)).toLocaleString() }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <template v-if="!loading && clientes.length === 0">
+          <section class="section">
+            <div class="content has-text-grey has-text-centered">
+              <p>
+                <b-icon icon="frown-open" size="is-large"> </b-icon>
+              </p>
+              <p>Sem Registros. Crie um!</p>
+            </div>
+          </section>
+        </template>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { GET_CLIENTES } from "@/queries";
+import ModalCliente from "@/components/forms/Cliente.vue";
 
 export default Vue.extend({
-	name: "cliente",
-	data: () => ({
-		clientes: [],
-		loading: false
-	}),
-	methods: {
-		fetchClientes() {
-			this.loading = true;
-			this.$apollo
-				.query({
-					query: GET_CLIENTES
-				})
-				.then(({ data }) => {
-					this.clientes = data.clientes;
-				})
-				.finally(() => {
-					this.loading = false;
-				});
-		}
-	},
-	created() {
-		this.fetchClientes();
-	}
+  name: "cliente",
+  data: () => ({
+    clientes: [],
+    loading: false,
+  }),
+  methods: {
+    handleAdicionar() {
+      this.$buefy.modal.open({
+        parent: this,
+        hasModalCard: true,
+        component: ModalCliente,
+        props: {},
+        fullScreen: true,
+        events: {
+          reload: () => {
+            this.fetchClientes();
+          },
+        },
+      });
+    },
+    fetchClientes() {
+      this.loading = true;
+      this.$apollo
+        .query({
+          query: GET_CLIENTES,
+        })
+        .then(({ data }) => {
+          this.clientes = data.clientes;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+  },
+  created() {
+    this.fetchClientes();
+  },
 });
 </script>
+<style lang="css" scoped>
+.user-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+</style>

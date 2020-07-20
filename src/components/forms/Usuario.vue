@@ -2,8 +2,8 @@
 	<div class="modal-card">
 		<header class="modal-card-head">
 			<div>
-				<h1 class="modal-card-title">{{ isEditing ? "Editar" : "Adicionar" }} Cliente</h1>
-				<p>Preencha as informações sobre o Cliente</p>
+				<h1 class="modal-card-title">{{ isEditing ? "Editar" : "Adicionar" }} Usuario</h1>
+				<p>Preencha as informações sobre o Usuario</p>
 			</div>
 		</header>
 		<section class="modal-card-body">
@@ -20,7 +20,7 @@
 							>
 								<b-skeleton animated width="128" height="128" v-if="loading"></b-skeleton>
 								<figure v-else class="image is-128x128">
-									<img :src="reader ? reader : cliente.urlImg" />
+									<img :src="reader ? reader : usuario.urlImg" />
 								</figure>
 							</b-upload>
 						</b-field>
@@ -49,11 +49,11 @@
 					</div>
 					<div class="column">
 						<b-field label="Nome">
-							<b-input placeholder="Nome" v-model="cliente.nome" :disabled="isSubmitting">
+							<b-input placeholder="Nome" v-model="usuario.nome" :disabled="isSubmitting">
 							</b-input>
 						</b-field>
 						<b-field label="Sobrenome">
-							<b-input placeholder="Sobrenome" v-model="cliente.sobrenome" :disabled="isSubmitting">
+							<b-input placeholder="Sobrenome" v-model="usuario.sobrenome" :disabled="isSubmitting">
 							</b-input>
 						</b-field>
 					</div>
@@ -65,7 +65,7 @@
 							<b-input
 								type="email"
 								placeholder="example@inspecasa.site"
-								v-model="cliente.email"
+								v-model="usuario.email"
 								required
 								:disabled="isSubmitting"
 							>
@@ -73,11 +73,36 @@
 						</b-field>
 					</div>
 					<div class="column">
+						<b-field label="Senha">
+							<b-input
+								type="password"
+								required
+								placeholder="******"
+								v-model="password"
+								:disabled="isSubmitting"
+							></b-input>
+						</b-field>
+					</div>
+				</div>
+
+				<div class="columns">
+					<div class="column">
 						<b-field label="Biografia">
 							<b-input
 								type="text"
 								placeholder="Tomo um café antes de fechar um negócio"
-								v-model="cliente.bio"
+								v-model="usuario.bio"
+								:disabled="isSubmitting"
+							>
+							</b-input>
+						</b-field>
+					</div>
+					<div class="column">
+						<b-field label="Função">
+							<b-input
+								type="text"
+								placeholder="Cargo ou função"
+								v-model="usuario.funcao"
 								:disabled="isSubmitting"
 							>
 							</b-input>
@@ -97,7 +122,7 @@
 					type="is-success"
 					:loading="isSubmitting"
 					:disabled="isSubmitting"
-					@click="addcliente"
+					@click="addUsuario"
 				>
 					Adicionar
 				</b-button>
@@ -112,36 +137,38 @@
 <script lang="ts">
 import Vue from "vue";
 import firebase from "firebase";
-import { STORE_CLIENTE, UPDATE_CLIENTE } from "@/queries";
+import { GET_USER, UPDATE_USER, STORE_USER } from "@/queries";
 import uuid from "uuid-random";
-import { Cliente } from "@/types";
+import { Usuario } from "@/types";
 
 interface Data {
-	cliente: null | Cliente;
+	usuario: null | Usuario;
 	loading: boolean;
 	file: File | null;
 	reader: string | ArrayBuffer | null;
 	progress: number;
 	isUploading: boolean;
+	password: null | string;
 	isSubmitting: boolean;
 }
 // Data, Methods, Computed, Props
 export default Vue.extend({
-	name: "ClienteForm",
+	name: "UsuarioForm",
 	props: {
 		isEditing: {
 			required: false,
 			default: false,
 			type: Boolean
 		},
-		idCliente: {
+		idCLiente: {
 			required: false,
 			default: "0",
 			type: String
 		}
 	},
 	data: (): Data => ({
-		cliente: null,
+		usuario: null,
+		password: null,
 		file: null,
 		isUploading: false,
 		progress: 0,
@@ -150,13 +177,14 @@ export default Vue.extend({
 		isSubmitting: false
 	}),
 	methods: {
-		async addcliente() {
+		async addUsuario() {
 			try {
 				this.isSubmitting = true;
 				await this.$apollo.mutate({
-					mutation: STORE_CLIENTE,
+					mutation: STORE_USER,
 					variables: {
-						cliente: this.cliente,
+						usuario: this.usuario,
+						password: this.password
 					}
 				});
 
@@ -179,15 +207,16 @@ export default Vue.extend({
 					snapshot => {
 						this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 					},
-					() => {
+					error => {
+						console.error(error);
 						this.file = null;
 						this.reader = null;
 					},
 					async () => {
 						const downloadUrl = String(await uploadTask.snapshot.ref.getDownloadURL());
-						if (downloadUrl && this.cliente) {
+						if (downloadUrl && this.usuario) {
 							await this.updateUserImage(downloadUrl);
-							this.cliente.urlImg = downloadUrl;
+							this.usuario.urlImg = downloadUrl;
 							this.isUploading = false;
 							this.progress = 0;
 							this.reader = null;
@@ -198,12 +227,12 @@ export default Vue.extend({
 			}
 		},
 		updateUserImage(url: string) {
-			if (this.cliente?.id) {
+			if (this.usuario?.id) {
 				return this.$apollo.mutate({
-					mutation: UPDATE_CLIENTE,
+					mutation: UPDATE_USER,
 					variables: {
-						id: this.cliente?.id,
-						cliente: {
+						id: this.usuario?.id,
+						usuario: {
 							urlImg: url
 						}
 					}
@@ -224,7 +253,7 @@ export default Vue.extend({
 		}
 	},
 	created() {
-		this.cliente = {
+		this.usuario = {
 			urlImg:
 				"https://firebasestorage.googleapis.com/v0/b/inspecasa.appspot.com/o/user-placeholder.jpeg?alt=media&token=81babb0c-d997-4e6a-a4f0-81c153db94ea",
 			nome: null,
