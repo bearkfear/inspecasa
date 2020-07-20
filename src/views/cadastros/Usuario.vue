@@ -72,12 +72,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import ModalUsuario from '@/components/forms/Usuario.vue';
-import gql from 'graphql-tag';
+import Vue from "vue";
+import ModalUsuario from "@/components/forms/Usuario.vue";
+import gql from "graphql-tag";
 
 export default Vue.extend({
-  name: 'usuario',
+  name: "usuario",
   data: () => ({
     usuarios: [],
     loading: false,

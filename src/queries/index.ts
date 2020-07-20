@@ -66,6 +66,8 @@ export const GET_CLIENTES = gql`
 			nome
 			sobrenome
 			email
+			urlImg
+			bio
 			changedAt
 			createdAt
 		}
@@ -159,6 +161,21 @@ export const STORE_USER = gql`
 			changedAt
 		}
 	}
+`
+export const GET_CLIENTE = gql`
+	query cliente($id: ID!) { 
+		cliente(id: $id) {
+			id
+			nome
+			sobrenome
+			email
+			bio
+			createdAt
+			changedAt
+			urlImg
+		}
+	}
+
 `
 
 export const UPDATE_USER = gql`

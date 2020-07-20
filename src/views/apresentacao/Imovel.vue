@@ -9,11 +9,11 @@
               Visualizar
             </h1>
           </div>
-          <div class="level-rigth buttons">
+          <div class="level-right buttons">
             <b-button icon-left="history" type="is-primary">Historico</b-button>
             <b-button icon-left="handshake" type="is-success">Vender</b-button>
-            <b-button icon-left="edit" type="is-info">Editar</b-button>
-            <b-button icon-left="trash" type="is-danger">Remover</b-button>
+            <b-button icon-left="edit" type="is-info"></b-button>
+            <b-button icon-left="trash" type="is-danger"></b-button>
           </div>
         </div>
         <hr />
@@ -63,17 +63,7 @@
         <footer>
           <b-tabs v-model="activeTab" expanded>
             <b-tab-item label="Vistorias" icon="bug">
-              <div class="level">
-                <div class="level-left"></div>
-                <div class="level-right">
-                  <b-button type="is-primary" icon-left="plus"
-                    >Criar novo</b-button
-                  >
-                </div>
-              </div>
-              <div class="box content">
-                <div class="title is-4">Vistoria</div>
-              </div>
+              <Vistoria></Vistoria>
             </b-tab-item>
             <b-tab-item label="Documentos" icon="file-alt">
               <section>
@@ -107,17 +97,19 @@
 import Vue from "vue";
 import { GET_IMOVEL } from "@/queries";
 import Midia from "@/components/midia/Midia.vue";
+import Vistoria from "@/components/vistoria/Vistoria.vue";
 
 export default Vue.extend({
   name: "VisualizarImovel",
   data: () => ({
-    activeTab: 2,
+    activeTab: 0,
     documentosUpload: [],
     imovel: null,
     loading: false,
   }),
   components: {
     Midia,
+    Vistoria,
   },
   methods: {
     fetchImovel() {

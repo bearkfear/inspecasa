@@ -16,9 +16,12 @@
 						</div>
 					</div>
 					<b-skeleton v-if="loading" active animated circle width="48px" height="48px"></b-skeleton>
-					<figure v-else>
+					<template v-else>
+					<figure>
 						<img class="user-img" :src="usuario.urlImg" />
 					</figure>
+					<b-icon icon="caret-down"></b-icon>
+					</template>
 				</b-navbar-item>
 			</template>
 			<b-dropdown-item :disabled="loading" has-link>
@@ -29,7 +32,7 @@
 				>
 					<div class="media">
 						<div class="media-left">
-							<b-icon icon="id-card"></b-icon>
+							<b-icon icon="user-cog"></b-icon>
 						</div>
 						<div class="media-content">
 							<p>Perfil</p>
@@ -40,7 +43,7 @@
 			<b-dropdown-item @click="logoutUser()" :disabled="loading">
 				<div class="media">
 					<div class="media-left">
-						<b-icon icon="sign-out-alt"></b-icon>
+						<b-icon icon="power-off"></b-icon>
 					</div>
 					<div class="media-content"><p>Sair</p></div>
 				</div>
@@ -51,8 +54,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { auth } from 'firebase';
-import "firebase/auth"
+import { auth } from "firebase";
+import "firebase/auth";
 import { GET_ME } from "@/queries";
 
 export default Vue.extend({
