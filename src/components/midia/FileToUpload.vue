@@ -27,18 +27,22 @@
 <script lang="ts">
 import { FileToUpload } from "@/types";
 import eventBus, { TYPES } from "@/eventBus";
+import { ADD_MIDIA } from "@/queries";
 import Vue from "vue";
+import firebase from "firebase";
+import uuid from "uuid-random";
 
+const storage = firebase.storage().ref();
 interface Data {
-  isUploading: boolean
+  isUploading: boolean;
 }
 
 export default Vue.extend({
   name: "file-to-upload",
   props: {
     file: {
-      type: Object as () => FileToUpload
-    }
+      type: Object as () => FileToUpload,
+    },
   },
   data: () => ({
     isUploading: false,
@@ -47,12 +51,46 @@ export default Vue.extend({
   methods: {
     handleStartUpload() {
       this.isUploading = true;
-      console.log("iniciando o upload");
-    }
+      const uploadRef = storage
+        .child(`imoveis/midias/${uuid()}`)
+        .put(this.file.archive);
+      uploadRef.on(
+        "state_changed",
+        ({ bytesTransferred, totalBytes }) => {
+          const p = (bytesTransferred / totalBytes) * 100;
+          this.$emit("update:progress", p);
+        },
+        () => {
+          this.$emit("delete");
+        },
+        () => {
+          uploadRef.snapshot.ref.getDownloadURL().then((url: string) => {
+            this.$apollo
+              .mutate({
+                mutation: ADD_MIDIA,
+                variables: {
+                  midia: {
+                    url,
+                    descricao: this.file.description,
+                    extensao: this.file.extension,
+                  },
+                  imovelId: this.$route.params.id
+                },
+              })
+              .then(() => {
+                eventBus.$emit(TYPES.REFRESH_LIST_MIDIAS);
+                this.$emit("delete");
+              });
+          });
+        }
+      );
+    },
   },
   mounted() {
     eventBus.$on(TYPES.START_UPLOAD, () => {
-      this.handleStartUpload();
+      if (!this.isUploading) {
+        this.handleStartUpload();
+      }
     });
   },
 });

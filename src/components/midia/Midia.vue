@@ -13,8 +13,9 @@
           <File
             v-for="(file, i) in files"
             :file="file"
-            :key="file.name"
+            :key="file.id"
             @delete="handleRemoverFromUpload(i)"
+            @update:progress="file.progress = $event"
           ></File>
         </tbody>
       </table>
@@ -58,7 +59,8 @@ import Vue from "vue";
 import { FileToUpload } from "@/types";
 import eventBus, { TYPES } from "@/eventBus";
 import File from "@/components/midia/FileToUpload.vue";
-import List from "@/components/midia/List.vue";
+import uuid from "uuid-random";
+import List from "./List.vue";
 
 interface Midia {
   id: number;
@@ -83,7 +85,7 @@ export default Vue.extend({
   }),
   components: {
     File,
-    List
+    List,
   },
   methods: {
     handleStartUploads() {
@@ -92,12 +94,17 @@ export default Vue.extend({
     handleLoadFiles(files: File[]) {
       const tempFiles: FileToUpload[] = [];
       files.forEach((f) => {
-        tempFiles.push({
-          progress: 0,
-          description: f.name,
-          archive: f,
-          extension: "",
-        });
+        const cut = f.name.split(".");
+        const extension = cut[cut.length - 1];
+        if (extension) {
+          tempFiles.push({
+            id: uuid(),
+            progress: 0,
+            description: f.name,
+            archive: f,
+            extension: `.${extension}`,
+          });
+        }
       });
 
       this.files.push(...tempFiles);

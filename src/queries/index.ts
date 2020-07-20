@@ -1,6 +1,15 @@
 import gql from "graphql-tag";
 import { Midia } from "@/types";
 
+
+export const ADD_MIDIA = gql`
+	mutation addMidia($midia: MidiaInput!, $imovelId: ID!) {
+		storeMidia(midia: $midia, imovelId: $imovelId) {
+			id
+		}
+	}
+`;
+
 interface GetMidiasFromImovelContent { 
 	id: number;
 	midias: Midia[]

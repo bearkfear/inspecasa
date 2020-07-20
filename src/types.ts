@@ -49,6 +49,7 @@ export interface Cliente {
 
 
 export interface FileToUpload{
+	id: string;
   progress: number;
   description: string;
   archive: File;
