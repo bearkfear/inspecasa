@@ -1,4 +1,14 @@
-<h1 align="center">INSPECASA👋</h1>
+<p align="center">
+  <img src="https://firebasestorage.googleapis.com/v0/b/inspecasa.appspot.com/o/logos-inspecasa.png?alt=media&token=6d80dbf9-f316-4a88-ba37-dbd49da19c03" width="200" />
+</p>
+
+<h1 align="center">
+  inspecasa
+</h1>
+
+Rocket Redis is a Graphic User Interface for managing Redis databases with ease.
+
+🚧 **Rocket Redis is under development** 🚧
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/3ce20b85-e6c9-4a57-ae7e-4588d1c69fa6/deploy-status)](https://app.netlify.com/sites/inspecasa/deploys)
 <p>
