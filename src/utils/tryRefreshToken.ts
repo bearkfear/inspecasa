@@ -1,5 +1,4 @@
 import { auth } from 'firebase';
-import 'firebase/auth';
 import verifyTokenIsValid from "./verifyTokenIsValid";
 
 export default function() { 
