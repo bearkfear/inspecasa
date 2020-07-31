@@ -41,7 +41,6 @@ export interface Cliente {
 	sobrenome: string | null;
 	email: string | null;
 	bio: string | null;
-	funcao: string | null;
 	createdAt?: string | null;
 	changedAt?: string | null;
 	urlImg: string | null;
