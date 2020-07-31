@@ -1,31 +1,16 @@
-// Import Bulma's core
-@import "~bulma/sass/utilities/_all";
-
-// Import a Google Font
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
 
-	// // brand colors
-
-	// brandPrimary:"#ef6235",
-	// brandInfo:"#3ca7f7",
-	// brandSuccess:"#61ce35",
-	// brandDanger:"#ee3834",
-	// brandWarning:"#f7b142",
-	// brandDark:"#000",
-	// brandLight:"#ffffff",
-
-	// $primary: $turquoise
-	// $link: $blue
-	// $info: $cyan
-	// $success: #61ce35;
-	// $warning: $yellow
-	// $danger: $red
-	// $dark: $grey-darker
-	// $text: $grey-dark
 
 
-// Update Bulma's global variables
-$family-sans-serif: "Nunito", sans-serif;
+$family-sans-serif: Roboto, BlinkMacSystemFont,-apple-system, sans-serif;
+
+
+// $family-sans-serif: Roboto, sans-serif;
+
+@import "~bulma/sass/utilities/_all";
+
+$navbar-breakpoint: $tablet;
+
 // Set your colors
 $primary: #ef6235;
 $primary-invert: findColorInvert($primary);
