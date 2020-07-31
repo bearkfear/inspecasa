@@ -10,7 +10,12 @@
             </h1>
           </div>
           <div class="level-right buttons">
-            <b-button icon-left="history" type="is-primary">Historico</b-button>
+            <b-button
+              icon-left="history"
+              type="is-primary"
+              @click="handleOpenHistorico()"
+              >Historico</b-button
+            >
             <b-button icon-left="handshake" type="is-success">Vender</b-button>
             <b-button icon-left="edit" type="is-info"></b-button>
             <b-button icon-left="trash" type="is-danger"></b-button>
@@ -57,6 +62,48 @@
           <article class="column is-6">
             <div class="block">
               <h1 class="title is-5">Proprietário(s)</h1>
+              <template v-if="!imovel">
+                <div v-for="p in 3" :key="p" class="box">
+                  <div class="media">
+                    <div class="media-left">
+                      <b-skeleton
+                        animated
+                        circle
+                        width="48"
+                        height="48"
+                      ></b-skeleton>
+                    </div>
+                  </div>
+                </div>
+              </template>
+
+              <div
+                v-else
+                v-for="proprietario in imovel.proprietarios"
+                :key="proprietario.email"
+                class="box"
+              >
+                <div class="media">
+                  <div class="media-left">
+                    <figure class="image is-48x48">
+                      <img
+                        :src="proprietario.urlImg"
+                        alt=""
+                        class="is-rounded"
+                      />
+                    </figure>
+                  </div>
+                  <div class="media-right">
+                    <router-link
+                      class="has-text-weight-bold"
+                      :to="{ path: `/show/cliente/${proprietario.id}` }"
+                    >
+                      {{ proprietario.nome }} {{ proprietario.sobrenome }}
+                    </router-link>
+                    <p>{{ proprietario.email }}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </article>
         </div>
@@ -98,6 +145,7 @@ import Vue from "vue";
 import { GET_IMOVEL } from "@/queries";
 import Midia from "@/components/midia/Midia.vue";
 import Vistoria from "@/components/vistoria/Vistoria.vue";
+import Historico from "@/components/Historico.vue";
 
 export default Vue.extend({
   name: "VisualizarImovel",
@@ -112,6 +160,13 @@ export default Vue.extend({
     Vistoria,
   },
   methods: {
+    handleOpenHistorico() {
+      this.$buefy.modal.open({
+        component: Historico,
+        parent: this,
+        hasModalCard: true,
+      });
+    },
     fetchImovel() {
       this.loading = true;
       this.$apollo
