@@ -101,16 +101,12 @@
                 <span v-else> {{ cliente.funcao }}</span>
               </p>
               </b-tab-item>
-              <b-tab-item label="Compras">
+              <b-tab-item label="Transações" icon="wallet">
                 <div>
                   <p>
-                    Nenhuma compra ainda!
+                    Nenhuma transação ainda!
                   </p>
                 </div>
-              </b-tab-item>
-
-              <b-tab-item label="Vendas" icon="chart-pie">
-                <div><p>Nenhuma venda ainda!</p></div>
               </b-tab-item>
             </b-tabs>
           </article>
@@ -121,7 +117,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import firebase from "firebase";
+import * as firebase from "firebase/app";
 import { GET_CLIENTE, UPDATE_CLIENTE } from "@/queries";
 import uuid from "uuid-random";
 

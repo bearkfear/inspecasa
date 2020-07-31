@@ -29,7 +29,7 @@ import { FileToUpload } from "@/types";
 import eventBus, { TYPES } from "@/eventBus";
 import { ADD_MIDIA } from "@/queries";
 import Vue from "vue";
-import firebase from "firebase";
+import * as firebase from "firebase/app";
 import uuid from "uuid-random";
 
 const storage = firebase.storage().ref();

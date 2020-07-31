@@ -56,7 +56,9 @@
               <h1 class="title is-3" v-else>
                 {{ usuario.nome }} {{ usuario.sobrenome }}
               </h1>
-              <h2 class="title is-6"> {{ usuario.email }}</h2>
+
+              <b-skeleton animated width="128" v-if="loading"></b-skeleton>
+              <h2 v-else class="title is-6"> {{ usuario.email }}</h2>
 
               <p>
                 <b-skeleton animated width="128" v-if="loading"></b-skeleton
@@ -113,7 +115,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import firebase from "firebase";
+import * as firebase from "firebase/app";
 import { GET_USER, UPDATE_USER } from "@/queries";
 import uuid from "uuid-random";
 
