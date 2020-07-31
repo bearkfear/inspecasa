@@ -3,6 +3,7 @@ import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import VueApollo from "vue-apollo";
 import { ApolloLink, concat} from 'apollo-link';
+import verifyToken from "@/utils/verifyTokenIsValid"
 const cache = new InMemoryCache();
 
 const httpLink = createHttpLink({
@@ -11,6 +12,9 @@ const httpLink = createHttpLink({
 
 
 const authMiddleware = new ApolloLink((operation, forward) => {
+
+
+
 	operation.setContext({
 		headers: {
 			authorization: localStorage.getItem('token') || null,

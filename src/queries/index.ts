@@ -107,6 +107,13 @@ export const GET_IMOVEL = gql`
 			numQuartos
 			valorProposta
 			updatedAt
+			proprietarios {
+				id
+				nome
+				sobrenome
+				email
+				urlImg
+			}
 			endereco {
 				bairro
 				cep
