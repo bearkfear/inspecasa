@@ -13,23 +13,25 @@ const vuexLocal = new VuexPersistence({
   storage: window.localStorage
 });
 
-export interface IState {
-  user: {
-    token:null | string;
-    uid:null | string;
-    id:null | string;
-    funcao:null | string;
-    nome:null | string;
-    sobrenome:null | string;
-    urlImg:null | string;
-  };
+export interface IUser { 
+  token:null | string;
+  uid:null | string;
+  id:null | string;
+  funcao:null | string;
+  nome:null | string;
+  sobrenome:null | string;
+  urlImg:null | string;
 }
+export interface IState {
+  authorized: boolean;
+  user: IUser;
+}
+
 
 export default new Vuex.Store<IState>({
   state,
   mutations,
   actions,
-  modules: {
-  },
+  modules: {},
   plugins: [vuexLocal.plugin]
 });

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { NavigationGuard } from 'vue-router';
 import routes from '@/views/routes';
-import verifyTokenIsValid from '@/utils/verifyTokenIsValid';
+import verifyTokenIsValid from "@/utils/verifyTokenIsValid";
 
 Vue.use(VueRouter);
 
@@ -14,6 +14,7 @@ const router = new VueRouter({
 export const guard: NavigationGuard<Vue> = (to, from, next) => {
   if (to.meta.requireAuth) {
     const isAuth = verifyTokenIsValid() !== undefined;
+    // const isAuth: boolean = !!auth().currentUser;
     if (isAuth) {
       next();
     } else {

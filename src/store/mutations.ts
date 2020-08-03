@@ -1,16 +1,10 @@
 import types from './mutation-types';
-import { IState } from './index';
-interface User {
-  token: string | null;
-  uid: string | null;
-  id: string | null;
-  funcao: string | null;
-  nome: string | null;
-  sobrenome: string | null;
-  urlImg: string | null;
-}
+import { IState, IUser } from './index';
 export default {
-  [types.SET_USER] (state: IState, user: User): void {
+  [types.SET_USER] (state: IState, user: IUser): void {
     state.user = user;
+  },
+  [types.SET_AUTHORIZATION](state: IState, authorization: boolean) { 
+    state.authorized = authorization;
   }
 };
