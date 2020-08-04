@@ -78,8 +78,9 @@
 import Vue from "vue";
 
 import firebase from "firebase/app";
-import { GET_ME } from "@/queries";
+import { GET_ME } from "@/queries/user";
 import verifyTokenIsValid from "@/utils/verifyTokenIsValid";
+import mutationTypes from "@/store/mutation-types";
 
 interface Data {
   email: null | string;
@@ -92,9 +93,9 @@ interface Data {
 
 // interface Props {}
 
-export default Vue.extend<Data, {}, {}, {}>({
+export default Vue.extend({
   name: "login",
-  data: () => ({
+  data: (): Data => ({
     email: null,
     password: null,
     authError: null,
@@ -104,7 +105,7 @@ export default Vue.extend<Data, {}, {}, {}>({
     navigate(path: string) {
       this.$router.push(path);
     },
-    async handleSubmit(email: string, password: string) {
+    async handleSubmit(email: string, password: string): Promise<void> {
       this.isSubmitting = true;
 
       try {
@@ -118,15 +119,16 @@ export default Vue.extend<Data, {}, {}, {}>({
         } = await this.$apollo.query({ query: GET_ME });
 
         if (me) {
-          this.$store.commit("SET_USER", {
+          this.$store.commit(mutationTypes.SET_USER, {
             token,
             ...me,
           });
+          this.$store.commit(mutationTypes.SET_AUTHORIZATION, true);
           this.$router.push({ path: "/" });
         } else {
           localStorage.removeItem("token");
           firebase.auth().signOut();
-          return new Error("Usuário não existe!");
+          throw new Error("Usuário não existe!");
         }
         this.isSubmitting = false;
       } catch (e) {

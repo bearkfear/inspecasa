@@ -48,9 +48,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { auth } from 'firebase/app';
-import { GET_ME } from '@/queries';
+import Vue from "vue";
+import { auth } from "firebase/app";
+import { GET_ME } from "@/queries/user";
 
 export default Vue.extend({
   data: () => ({
@@ -60,8 +60,8 @@ export default Vue.extend({
   methods: {
     logoutUser() {
       auth().signOut();
-      localStorage.removeItem('token');
-      this.$router.push({ path: '/auth' });
+      localStorage.removeItem("token");
+      this.$router.push({ path: "/auth" });
     },
     async fetchUser() {
       this.loading = true;

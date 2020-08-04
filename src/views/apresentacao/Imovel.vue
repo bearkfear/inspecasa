@@ -113,23 +113,7 @@
               <Vistoria></Vistoria>
             </b-tab-item>
             <b-tab-item label="Documentos" icon="file-alt">
-              <section>
-                <b-field>
-                  <b-upload
-                    v-model="documentosUpload"
-                    multiple
-                    drag-drop
-                    expanded
-                  >
-                    <div class="content has-text-centered">
-                      <p>
-                        <b-icon icon="upload" size="is-medium"> </b-icon>
-                      </p>
-                      <p>Solte seus arquivos aqui ou clique para selecionar</p>
-                    </div>
-                  </b-upload>
-                </b-field>
-              </section>
+              <Documento></Documento>
             </b-tab-item>
             <b-tab-item label="Mídias" icon="video">
               <Midia></Midia>
@@ -142,7 +126,8 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { GET_IMOVEL } from "@/queries";
+import { GET_IMOVEL } from "@/queries/imovel";
+import Documento from "@/components/documentos/Documento.vue";
 import Midia from "@/components/midia/Midia.vue";
 import Vistoria from "@/components/vistoria/Vistoria.vue";
 import Historico from "@/components/Historico.vue";
@@ -158,6 +143,7 @@ export default Vue.extend({
   components: {
     Midia,
     Vistoria,
+    Documento
   },
   methods: {
     handleOpenHistorico() {

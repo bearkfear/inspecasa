@@ -72,7 +72,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { GET_CLIENTES } from "@/queries";
+import { GET_CLIENTES } from "@/queries/cliente";
 import ModalCliente from "@/components/forms/Cliente.vue";
 
 export default Vue.extend({

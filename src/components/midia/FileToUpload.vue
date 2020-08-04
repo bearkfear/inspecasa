@@ -16,7 +16,7 @@
       <b-button
         icon-left="trash"
         type="is-danger"
-        @click="handleRemoverFromUpload(i)"
+        @click="$emit('delete')"
         size="is-small"
         :disabled="isUploading"
       ></b-button>
@@ -27,7 +27,7 @@
 <script lang="ts">
 import { FileToUpload } from "@/types";
 import eventBus, { TYPES } from "@/eventBus";
-import { ADD_MIDIA } from "@/queries";
+import { ADD_MIDIA } from "@/queries/midia";
 import Vue from "vue";
 import * as firebase from "firebase/app";
 import uuid from "uuid-random";

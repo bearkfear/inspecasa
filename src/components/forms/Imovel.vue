@@ -42,7 +42,7 @@
             track-by="id"
             placeholder="Digite para buscar"
             deselect-label="Precisa selecionar ao menos um!"
-						select-label="Pressione Enter para selecionar"
+            select-label="Pressione Enter para selecionar"
             :multiple="true"
             :options="clientes"
             :searchable="true"
@@ -199,13 +199,11 @@ import Multiselect from "vue-multiselect";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 import CKEDITOR_CONFIG from "@/constants";
-import {
-  GET_IMOVEL_ENDERECO,
-  GET_CLIENTES,
-  UPDATE_IMOVEL_ENDERECO,
-  UPDATE_ENDERECO,
-  STORE_IMOVEL_ENDERECO,
-} from "@/queries";
+import { STORE_IMOVEL_ENDERECO, GET_IMOVEL_ENDERECO, UPDATE_IMOVEL_ENDERECO } from "@/queries/imovel";
+import { GET_CLIENTES } from "@/queries/cliente";
+
+import { UPDATE_ENDERECO } from "@/queries/endereco";
+
 import { ViaCep, Endereco } from "@/types";
 import cleanMoney from "@/utils/cleanMoney";
 

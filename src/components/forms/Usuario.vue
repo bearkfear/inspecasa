@@ -137,7 +137,7 @@
 <script lang="ts">
 import Vue from "vue";
 import * as firebase from "firebase/app";
-import { GET_USER, UPDATE_USER, STORE_USER } from "@/queries";
+import { GET_USER, UPDATE_USER, STORE_USER } from "@/queries/user";
 import uuid from "uuid-random";
 import { Usuario } from "@/types";
 

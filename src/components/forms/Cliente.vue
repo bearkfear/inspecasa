@@ -132,7 +132,7 @@
 <script lang="ts">
 import Vue from "vue";
 import * as firebase from "firebase/app";
-import { STORE_CLIENTE, UPDATE_CLIENTE } from "@/queries";
+import { STORE_CLIENTE, UPDATE_CLIENTE } from "@/queries/cliente";
 import uuid from "uuid-random";
 import { Cliente } from "@/types";
 
