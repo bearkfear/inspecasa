@@ -41,6 +41,7 @@ export default Vue.extend({
   }),
   methods: {
     handleSave() {
+      // @ts-ignore
       const filesUploading = this.$refs.midiaRef.files;
 
       if (filesUploading.length > 0) {
@@ -53,7 +54,7 @@ export default Vue.extend({
         this.$buefy.dialog.alert("Precisa preencher o campo de observação");
         return;
       }
-
+      // @ts-ignore
       const { midias } = this.$refs.midiaRef;
 
       this.$apollo.mutate({
