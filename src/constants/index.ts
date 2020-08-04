@@ -21,6 +21,7 @@ const BUEFY_OPTIONS = {
 };
 
 const CKEDITOR_CONFIG = {
+	language: "br",
 	toolbar: [
 		"heading",
 		"|",
@@ -41,7 +42,22 @@ const CKEDITOR_CONFIG = {
 };
 
 
+const VUE_PROGRESSBAR_CONFIG = {
+  color: '3677F6',
+  failedColor: 'red',
+  thickness: '5px',
+  transition: {
+    speed: '0.2s',
+    opacity: '0.6s',
+    termination: 300
+  },
+  autoRevert: true,
+  location: 'left',
+  inverse: false
+}
+
 export default {
 	BUEFY_OPTIONS,
-	CKEDITOR_CONFIG
+	CKEDITOR_CONFIG,
+	VUE_PROGRESSBAR_CONFIG
 };

@@ -11,12 +11,12 @@
         </thead>
         <tbody>
           <File
-            v-for="(file, i) in files"
+            v-for="(file, index) in files"
             :file="file"
             :key="file.id"
-            @delete="handleRemoverFromUpload(i)"
+            @delete="handleRemoverFromUpload(index)"
             @update:progress="file.progress = $event"
-          ></File>
+          />
         </tbody>
       </table>
       <div class="level">
@@ -45,12 +45,11 @@
             <p>
               <b-icon icon="upload" size="is-medium"></b-icon>
             </p>
-            <p>Solte seus arquivos aqui ou clique para selecionar</p>
+            <p>Solte os documentos ou clique para selecionar</p>
           </div>
         </b-upload>
       </b-field>
     </div>
-    <hr>
     <List></List>
   </div>
 </template>
@@ -59,7 +58,7 @@
 import Vue from "vue";
 import { FileToUpload } from "@/types";
 import eventBus, { TYPES } from "@/eventBus";
-import File from "@/components/midia/FileToUpload.vue";
+import File from "@/components/documentos/FileToUpload.vue";
 import uuid from "uuid-random";
 import List from "./List.vue";
 
@@ -78,7 +77,7 @@ interface Data {
 }
 
 export default Vue.extend({
-  name: "midia",
+  name: "documento",
 
   data: (): Data => ({
     tempFiles: [],
@@ -90,7 +89,7 @@ export default Vue.extend({
   },
   methods: {
     handleStartUploads() {
-      eventBus.$emit(TYPES.START_UPLOAD);
+      eventBus.$emit(TYPES.START_UPLOAD_DOCS);
     },
     handleLoadFiles(files: File[]) {
       const tempFiles: FileToUpload[] = [];

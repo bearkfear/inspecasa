@@ -1,4 +1,5 @@
 export default {
+	authorized: false,
 	user: {
 		token: null,
 		uid: null,

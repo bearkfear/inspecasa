@@ -1,6 +1,8 @@
 <template>
   <tr>
-    <td><b-progress :value="file.progress"></b-progress></td>
+    <td>
+      <b-progress :value="file.progress"></b-progress>
+      </td>
     <td>
       <b-field>
         <b-input
@@ -27,7 +29,7 @@
 <script lang="ts">
 import { FileToUpload } from "@/types";
 import eventBus, { TYPES } from "@/eventBus";
-import { ADD_MIDIA } from "@/queries/midia";
+import { ADD_DOC } from "@/queries/docs";
 import Vue from "vue";
 import * as firebase from "firebase/app";
 import uuid from "uuid-random";
@@ -52,7 +54,7 @@ export default Vue.extend({
     handleStartUpload() {
       this.isUploading = true;
       const uploadRef = storage
-        .child(`imoveis/midias/${uuid()}`)
+        .child(`imoveis/docs/${uuid()}`)
         .put(this.file.archive);
       uploadRef.on(
         "state_changed",
@@ -67,9 +69,9 @@ export default Vue.extend({
           uploadRef.snapshot.ref.getDownloadURL().then((url: string) => {
             this.$apollo
               .mutate({
-                mutation: ADD_MIDIA,
+                mutation: ADD_DOC,
                 variables: {
-                  midia: {
+                  input: {
                     url,
                     descricao: this.file.description,
                     extensao: this.file.extension,
@@ -78,7 +80,7 @@ export default Vue.extend({
                 },
               })
               .then(() => {
-                eventBus.$emit(TYPES.REFRESH_LIST_MIDIAS);
+                eventBus.$emit(TYPES.REFRESH_LIST_DOCS);
                 this.$emit("delete");
               });
           });
@@ -87,7 +89,7 @@ export default Vue.extend({
     },
   },
   mounted() {
-    eventBus.$on(TYPES.START_UPLOAD, () => {
+    eventBus.$on(TYPES.START_UPLOAD_DOCS, () => {
       if (!this.isUploading) {
         this.handleStartUpload();
       }

@@ -15,61 +15,25 @@
             >
           </div>
         </div>
-        <table class="table is-striped is-hoverable is-fullwidth">
-          <thead>
-            <tr>
-              <th>Valor Proposto</th>
-              <th>Categoria</th>
-              <th>Descrição</th>
-              <th>Quartos</th>
-              <th>Situação</th>
-              <!-- <th>Ações</th> -->
-            </tr>
-          </thead>
-          <tbody>
-            <template v-if="loading">
-              <tr v-for="(skl, i) in 10" :key="i">
-                <th v-for="(skll, inx) in 5" :key="inx">
-                  <b-skeleton active animated width="100px"></b-skeleton>
-                </th>
-              </tr>
-            </template>
-            <tr v-for="imovel in imoveis" :key="imovel.createdAt">
-              <td>
-                <router-link :to="{ path: `/show/imovel/${imovel.id}` }">
-                  R$ {{ String(imovel.valorProposta).replace(".", ", ") }}</router-link
-                >
-              </td>
-              <td>{{ imovel.categoria | categoria }}</td>
-              <td><div v-html="imovel.descricao"></div></td>
-              <td>{{ imovel.numQuartos }}</td>
-              <td>{{ imovel.situacao | situacao }}</td>
-              <!-- <td width="10%">
-                <div class="buttons">
-                  <b-button
-                    type="is-info"
-                    tag="router-link"
-                    :to="{ path: `/show/imovel/${imovel.id}` }"
-                    icon-left="eye"
-                    size="is-small"
-                  ></b-button>
-                  <b-button
-                    type="is-info"
-                    icon-left="edit"
-                    size="is-small"
-                    @click="handleEditar(imovel)"
-                  ></b-button>
-                  <b-button
-                    type="is-danger"
-                    icon-left="trash"
-                    size="is-small"
-                    @click="handleRemover(imovel)"
-                  ></b-button>
-                </div>
-              </td> -->
-            </tr>
-          </tbody>
-        </table>
+
+        <section>
+          <div
+            class="box hover-click"
+            v-for="imovel in imoveis"
+            :key="imovel.createdAt"
+            @click="$router.push({ path: `/show/imovel/${imovel.id}` })"
+          >
+            <h1 class="title is-6">
+              Valor Proposto: R$: {{ imovel.valorProposta }}
+            </h1>
+            <p>Categoria: {{ imovel.categoria | categoria }}</p>
+            <p>Situação: {{ imovel.situacao | situacao }}</p>
+            <p>Quartos: {{ imovel.numQuartos }}</p>
+            <div class="notification">
+              <div v-html="imovel.descricao"></div>
+            </div>
+          </div>
+        </section>
         <template v-if="!loading && imoveis.length <= 0">
           <section class="section">
             <div class="content has-text-grey has-text-centered">
@@ -206,3 +170,13 @@ export default Vue.extend({
   },
 });
 </script>
+<style lang="scss" scoped>
+.hover-click {
+  transition-duration: 0.3s;
+  cursor: pointer;
+}
+
+.hover-click:hover {
+  box-shadow: 0 0 6px #ef6327;
+}
+</style>

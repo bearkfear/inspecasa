@@ -15,47 +15,29 @@
             >
           </div>
         </div>
-        <div class="table-container">
-          <table class="table is-striped is-hoverable is-fullwidth">
-            <thead>
-              <tr>
-                <th>Usuário</th>
-                <th>Email</th>
-                <th>Bio</th>
-                <th>Função</th>
-                <th>Data Criação</th>
-              </tr>
-            </thead>
-            <tbody>
-              <template v-if="loading">
-                <tr v-for="(skl, i) in 10" :key="i">
-                  <th v-for="(skll, inx) in 7" :key="inx">
-                    <b-skeleton active animated width="100px"></b-skeleton>
-                  </th>
-                </tr>
-              </template>
-              <tr v-for="usuario in usuarios" :key="usuario.createdAt">
-                <th>
-                  <router-link
-                    class="user-content"
-                    :to="{ path: `/show/usuario/${usuario.id}` }"
-                  >
-                    <figure class="image is-48x48">
-                      <img class="is-rounded" :src="usuario.urlImg" alt="" />
-                    </figure>
-                    <p>&nbsp;&nbsp;&nbsp;&nbsp;{{ usuario.nome }} {{ usuario.sobrenome }}</p>
-                  </router-link>
-                </th>
-                <td>{{ usuario.email }}</td>
-                <td>{{ usuario.bio }}</td>
-                <td>{{ usuario.funcao }}</td>
-                <td>
-                  {{ new Date(Number(usuario.createdAt)).toLocaleString() }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <section>
+          <div
+            class="box hover-click"
+            v-for="(usuario, i) in usuarios"
+            :key="i"
+            @click="$router.push({ path: `/show/usuario/${usuario.id}` })"
+          >
+            <div class="media">
+              <div class="media-left">
+                <figure class="image is-48x48">
+                  <img class="is-rounded" :src="usuario.urlImg" alt="" />
+                </figure>
+              </div>
+              <div class="media-content">
+                <h1 class="title is-5">
+                  {{ usuario.nome }} {{ usuario.sobrenome }}
+                </h1>
+                <p>{{ usuario.email }}</p>
+                <p>{{ usuario.funcao }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
         <template v-if="!loading && usuarios.length <= 0">
           <section class="section">
             <div class="content has-text-grey has-text-centered">
@@ -130,11 +112,22 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
 .user-content {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
 }
+
+.hover-click {
+  transition-duration: .3s;
+  cursor: pointer;
+
+}
+
+.hover-click:hover {
+  box-shadow: 0 0 6px #ef6327;
+}
+
 </style>

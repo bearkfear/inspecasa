@@ -5,6 +5,10 @@ import VueApollo from "vue-apollo";
 import money from "v-money";
 // @ts-ignore
 import VueMask from "v-mask";
+
+
+// @ts-ignore
+import VueProgressBar from 'vue-progressbar'
 // @ts-ignore
 import CKEditor from "@ckeditor/ckeditor5-vue";
 import App from "./App.vue";
@@ -13,6 +17,8 @@ import store from "./store";
 import constants from "./constants";
 import apolloProvider from "./configs/graphql";
 import "@/configs/firebase";
+
+Vue.use(VueProgressBar, constants.VUE_PROGRESSBAR_CONFIG)
 
 Vue.config.productionTip = false;
 Vue.use(CKEditor);

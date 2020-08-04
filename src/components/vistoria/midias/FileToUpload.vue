@@ -27,7 +27,6 @@
 <script lang="ts">
 import { FileToUpload } from "@/types";
 import eventBus, { TYPES } from "@/eventBus";
-import { ADD_MIDIA } from "@/queries/midia";
 import Vue from "vue";
 import * as firebase from "firebase/app";
 import uuid from "uuid-random";
@@ -51,6 +50,7 @@ export default Vue.extend({
   methods: {
     handleStartUpload() {
       this.isUploading = true;
+      this.$emit("update:progress", 1);
       const uploadRef = storage
         .child(`imoveis/midias/${uuid()}`)
         .put(this.file.archive);
@@ -65,29 +65,19 @@ export default Vue.extend({
         },
         () => {
           uploadRef.snapshot.ref.getDownloadURL().then((url: string) => {
-            this.$apollo
-              .mutate({
-                mutation: ADD_MIDIA,
-                variables: {
-                  midia: {
-                    url,
-                    descricao: this.file.description,
-                    extensao: this.file.extension,
-                  },
-                  imovelId: this.$route.params.id
-                },
-              })
-              .then(() => {
-                eventBus.$emit(TYPES.REFRESH_LIST_MIDIAS);
-                this.$emit("delete");
-              });
+            eventBus.$emit(TYPES.ADD_UPLOADED_MIDIA_TO_VISTORIA, {
+              url,
+              descricao: this.file.description,
+              extensao: this.file.extension,
+            });
+            this.$emit("delete");
           });
         }
       );
     },
   },
   mounted() {
-    eventBus.$on(TYPES.START_UPLOAD, () => {
+    eventBus.$on(TYPES.START_UPLOAD_MIDIAS_VISTORIA, () => {
       if (!this.isUploading) {
         this.handleStartUpload();
       }

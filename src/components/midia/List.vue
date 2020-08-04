@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { GetMidiasFromImovel, GET_MIDIAS_FROM_IMOVEL } from "@/queries";
+import { GetMidiasFromImovel, GET_MIDIAS_FROM_IMOVEL } from "@/queries/midia";
 import { Midia } from "@/types";
 import eventBus, { TYPES } from "@/eventBus";
 
