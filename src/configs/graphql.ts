@@ -42,5 +42,5 @@ export default new VueApollo({
 				fetchPolicy: "no-cache",
 			}
 		}
-	})
+	}),
 });

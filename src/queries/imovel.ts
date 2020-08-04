@@ -84,3 +84,30 @@ export const GET_IMOVEL_ENDERECO = gql`
 `;
 
 
+export const GET_VISTORIAS_FROM_IMOVEL = gql`
+	query getVistoriasFromImovel($imovelId: ID!) { 
+		imovel(id: $imovelId) {
+			id
+			vistorias {
+				id
+				createdAt
+				observacao
+				responsavel {
+					id
+					nome
+					sobrenome
+					email
+					urlImg
+				}
+				midias {
+					id
+					url
+					extensao
+					createdAt
+					descricao
+				}
+			}
+		}
+	}
+
+`

@@ -28,34 +28,40 @@
               <h1 class="title is-5">Informações</h1>
               <p>
                 <strong>Preço: </strong>
-                <span v-if="!loading">{{ imovel.valorProposta }}</span>
+                <b-tag v-if="!loading" size="is-medium" type="is-success">R$ {{
+                  imovel.valorProposta
+                }}</b-tag>
                 <b-skeleton v-else active animated width="50px"></b-skeleton>
               </p>
               <p>
-                <strong>Quartos: </strong>
-                <span v-if="!loading">{{ imovel.numQuartos }}</span>
+                <strong>Quantidade de quartos: </strong>
+                <b-tag v-if="!loading" size="is-medium">{{ imovel.numQuartos }}</b-tag>
                 <b-skeleton v-else animated active width="50px"></b-skeleton>
               </p>
               <p>
                 <strong>Categoria: </strong>
-                <span v-if="!loading">{{ imovel.categoria }}</span>
+                <b-tag v-if="!loading" size="is-medium">{{ imovel.categoria }}</b-tag>
                 <b-skeleton v-else animated active width="50px"></b-skeleton>
               </p>
               <strong>Descrição: </strong>
-              <p v-if="!loading" v-html="imovel.descricao"></p>
+              <div
+                class="notification"
+                v-if="!loading"
+                v-html="imovel.descricao"
+              ></div>
               <b-skeleton v-else animated active width="50px"></b-skeleton>
 
               <p>
                 <strong>Endereço: </strong>
               </p>
-              <p v-if="!loading">
+              <div class="notification" v-if="!loading">
                 {{ imovel.endereco.cidade }}/{{ imovel.endereco.uf }} -
                 {{ imovel.endereco.bairro }} -
                 {{ imovel.endereco.logradouro }} -
                 {{ imovel.endereco.numero }} -
                 {{ imovel.endereco.complemento }} -
                 {{ imovel.endereco.cep }}
-              </p>
+              </div>
               <b-skeleton v-else animated active width="100"></b-skeleton>
             </div>
           </article>
@@ -143,7 +149,7 @@ export default Vue.extend({
   components: {
     Midia,
     Vistoria,
-    Documento
+    Documento,
   },
   methods: {
     handleOpenHistorico() {

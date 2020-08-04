@@ -18,8 +18,6 @@ import constants from "./constants";
 import apolloProvider from "./configs/graphql";
 import "@/configs/firebase";
 
-
-
 Vue.use(VueProgressBar, constants.VUE_PROGRESSBAR_CONFIG)
 
 Vue.config.productionTip = false;

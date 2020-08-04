@@ -26,8 +26,10 @@
             icon-right="paper-plane"
             type="is-success"
             @click="handleStartUploads()"
-            >Enviar</b-button
+            :disabled="disableEnviar"
           >
+            Enviar
+          </b-button>
         </div>
       </div>
       <hr />
@@ -42,16 +44,13 @@
           @input="handleLoadFiles($event)"
         >
           <div class="content has-text-centered">
-            <p>
-              <b-icon icon="upload" size="is-medium"></b-icon>
-            </p>
-            <p>Solte seus arquivos aqui ou clique para selecionar</p>
+            <b-icon icon="upload" size="is-small"></b-icon>&nbsp;Solte seus
+            arquivos aqui ou clique para selecionar
           </div>
         </b-upload>
       </b-field>
     </div>
-    <hr>
-    <List></List>
+    <List :midias="midias"></List>
   </div>
 </template>
 
@@ -59,8 +58,8 @@
 import Vue from "vue";
 import { FileToUpload } from "@/types";
 import eventBus, { TYPES } from "@/eventBus";
-import File from "@/components/midia/FileToUpload.vue";
 import uuid from "uuid-random";
+import File from "./FileToUpload.vue";
 import List from "./List.vue";
 
 interface Midia {
@@ -75,6 +74,8 @@ interface Midia {
 interface Data {
   tempFiles: File[];
   files: FileToUpload[];
+  midias: Partial<Midia>[];
+  disableEnviar: boolean;
 }
 
 export default Vue.extend({
@@ -83,6 +84,8 @@ export default Vue.extend({
   data: (): Data => ({
     tempFiles: [],
     files: [],
+    midias: [],
+    disableEnviar: false,
   }),
   components: {
     File,
@@ -90,7 +93,7 @@ export default Vue.extend({
   },
   methods: {
     handleStartUploads() {
-      eventBus.$emit(TYPES.START_UPLOAD);
+      eventBus.$emit(TYPES.START_UPLOAD_MIDIAS_VISTORIA);
     },
     handleLoadFiles(files: File[]) {
       const tempFiles: FileToUpload[] = [];
@@ -114,6 +117,14 @@ export default Vue.extend({
     handleRemoverFromUpload(index: number) {
       this.files.splice(index, 1);
     },
+  },
+  created() {
+    eventBus.$on(
+      TYPES.ADD_UPLOADED_MIDIA_TO_VISTORIA,
+      (midia: Partial<Midia>) => {
+        this.midias.push(midia);
+      }
+    );
   },
 });
 </script>
