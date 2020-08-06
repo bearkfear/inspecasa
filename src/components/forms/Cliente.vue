@@ -26,7 +26,7 @@
                   height="128"
                   v-if="loading"
                 ></b-skeleton>
-                <figure v-else class="image is-128x128">
+                <figure v-else class="image is-square is-128x128">
                   <img :src="reader ? reader : cliente.urlImg" />
                 </figure>
               </b-upload>

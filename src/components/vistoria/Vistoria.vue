@@ -50,7 +50,13 @@
               <p>{{ midia.descricao }}</p>
             </div>
             <div class="media-right">
-              <b-button icon-left="share" tag="a" :href="midia.url" target="_blank"></b-button>
+              <b-button
+                icon-left="share"
+                tag="a"
+                :href="midia.url"
+                target="_blank"
+                size="is-small"
+              ></b-button>
             </div>
           </div>
         </div>
