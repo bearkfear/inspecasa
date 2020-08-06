@@ -16,6 +16,13 @@ export const GET_CLIENTES = gql`
 `;
 
 
+export const DELETE_CLIENTE = gql`
+	mutation deleteCliente($id: ID!) { 
+		deleteCliente(id: $id)
+	}
+
+`
+
 export const UPDATE_CLIENTE = gql`
 	mutation updateCliente($cliente: ClienteInput!, $id: ID!) {
 		updateCliente(id: $id, cliente: $cliente) {

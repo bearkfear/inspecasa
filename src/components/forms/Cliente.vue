@@ -82,7 +82,7 @@
                 placeholder="example@inspecasa.site"
                 v-model="cliente.email"
                 required
-                :disabled="isSubmitting"
+                :disabled="isSubmitting || isEditing"
               >
               </b-input>
             </b-field>
@@ -118,6 +118,7 @@
         </b-button>
         <b-button
           v-else
+          @click="saveCliente"
           type="is-success"
           :loading="isSubmitting"
           :disabled="isSubmitting"
@@ -158,6 +159,11 @@ export default Vue.extend({
       required: false,
       default: "0",
       type: String,
+    },
+    clienteEdit: {
+      required: false,
+      default: null,
+      type: Object,
     },
   },
   data: (): Data => ({
@@ -244,6 +250,27 @@ export default Vue.extend({
         this.reader = event?.target?.result || null;
       };
     },
+    async saveCliente() {
+      try {
+        const { email, ...toSaveCliente } = this.cliente;
+
+        await this.$apollo.mutate({
+          mutation: UPDATE_CLIENTE,
+          variables: {
+            id: this.$route.params.id,
+            cliente: toSaveCliente,
+          },
+        });
+        this.$emit("refresh");
+        this.$emit("close");
+      } catch (error) {
+        this.$buefy.toast.open({
+          message: "Não foi possível salvar os dados.",
+          type: "is-danger",
+        });
+        this.$emit("close");
+      }
+    },
   },
   created() {
     this.cliente = {
@@ -254,6 +281,19 @@ export default Vue.extend({
       email: null,
       bio: null,
     };
+  },
+  mounted() {
+    if (this.isEditing === true) {
+      const { urlImg, nome, sobrenome, email, bio } = this.clienteEdit;
+      this.cliente = {
+        ...this.cliente,
+        urlImg,
+        nome,
+        sobrenome,
+        email,
+        bio,
+      };
+    }
   },
 });
 </script>

@@ -65,8 +65,20 @@
               </p>
               <hr />
               <div class="buttons">
-                <b-button type="is-info" icon-left="edit">Editar</b-button>
-                <b-button type="is-danger" icon-left="trash">Apagar</b-button>
+                <b-button
+                  type="is-info"
+                  icon-left="edit"
+                  @click="openEdit()"
+                  :disabled="loading"
+                  >Editar</b-button
+                >
+                <b-button
+                  type="is-danger"
+                  icon-left="trash"
+                  :disabled="loading"
+                  @click="handleApagarCliente()"
+                  >Apagar</b-button
+                >
               </div>
             </div>
           </article>
@@ -110,8 +122,9 @@
 <script lang="ts">
 import Vue from "vue";
 import * as firebase from "firebase/app";
-import { GET_CLIENTE, UPDATE_CLIENTE } from "@/queries/cliente";
+import { GET_CLIENTE, UPDATE_CLIENTE, DELETE_CLIENTE } from "@/queries/cliente";
 import uuid from "uuid-random";
+import ClienteForm from "@/components/forms/Cliente.vue";
 
 interface Data {
   cliente: any;
@@ -133,6 +146,56 @@ export default Vue.extend({
     isUploading: false,
   }),
   methods: {
+    handleApagarCliente() {
+      this.$buefy.dialog.confirm({
+        title: "Apagar Cliente",
+        message: `
+          Remover um cliente é uma ação que não pode ser desfeita.
+          Caso o cliente possua imoveis e/ou outros dados vinculados a conta, a remoção não será efetuada.
+          Para remover um cliente é necessário remover todos os seus vinculos
+         `,
+        cancelText: "Cancelar",
+        confirmText: "APAGAR",
+        type: "is-danger",
+        onConfirm: () => {
+          this.loading = true;
+          const { id } = this.$route.params;
+
+          this.$apollo
+            .mutate({
+              mutation: DELETE_CLIENTE,
+              variables: {
+                id,
+              },
+            })
+            .then(() => {
+              this.$router.push({ path: "/cadastro/cliente" });
+            })
+            .catch(() => {
+              this.$buefy.toast.open({
+                message: "Não foi possível apagar o Cliente",
+                type: "is-danger",
+              });
+              this.loading = false;
+            });
+        },
+      });
+    },
+    openEdit() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: ClienteForm,
+        hasModalCard: true,
+        fullScreen: true,
+        props: {
+          isEditing: true,
+          clienteEdit: this.cliente,
+        },
+        events: {
+          refresh: this.fetchUser,
+        },
+      });
+    },
     saveFoto() {
       const { file } = this;
       if (file !== null) {
