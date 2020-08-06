@@ -11,7 +11,6 @@
                   accept="image/*"
                   @input="selectImage"
                   drag-drop
-                  class="is-rounded"
                   :disabled="isUploading"
                 >
                   <b-skeleton
@@ -21,7 +20,7 @@
                     height="128"
                     v-if="loading"
                   ></b-skeleton>
-                  <figure v-else class="image is-128x128">
+                  <figure v-else class="image is-square is-128x128">
                     <img
                       class="is-rounded"
                       :src="reader ? reader : cliente.urlImg"
@@ -56,7 +55,9 @@
               <h1 class="title is-3" v-else>
                 {{ cliente.nome }} {{ cliente.sobrenome }}
               </h1>
-              <h2 class="title is-6"> {{ cliente.email }}</h2>
+
+              <b-skeleton animated width="128" v-if="loading"></b-skeleton>
+              <h2 v-else class="title is-6">{{ cliente.email }}</h2>
 
               <p>
                 <b-skeleton animated width="128" v-if="loading"></b-skeleton
@@ -64,7 +65,7 @@
               </p>
               <hr />
               <div class="buttons">
-								<b-button type="is-info" icon-left="edit">Editar</b-button>
+                <b-button type="is-info" icon-left="edit">Editar</b-button>
                 <b-button type="is-danger" icon-left="trash">Apagar</b-button>
               </div>
             </div>
@@ -73,33 +74,24 @@
             <b-tabs>
               <b-tab-item label="Geral" icon="address-card">
                 <p>
-                <strong>Função:</strong>
-                <b-skeleton animated width="128" v-if="loading"></b-skeleton>
-                <span v-else> {{ cliente.funcao }}</span>
-              </p>
-              <p>
-                <strong>Bio:</strong>
-                <b-skeleton animated width="128" v-if="loading"></b-skeleton
-                ><span v-else>{{ cliente.bio }}</span>
-              </p>
-              <p>
-                <strong>Primeiro Acesso:</strong>
-                <b-skeleton animated width="128" v-if="loading"></b-skeleton>
-                <span v-else>
-                  {{ new Date(Number(cliente.createdAt)).toLocaleString() }}
-                </span>
-              </p>
-              <p>
-                <strong>Ultimo Acesso:</strong>
-                <b-skeleton animated width="128" v-if="loading"></b-skeleton>
-                <span v-else>
-                  {{ new Date(Number(cliente.changedAt)).toLocaleString() }}
-                </span>
-              </p><p>
-                <strong>Função:</strong>
-                <b-skeleton animated width="128" v-if="loading"></b-skeleton>
-                <span v-else> {{ cliente.funcao }}</span>
-              </p>
+                  <strong>Bio: </strong>
+                  <b-skeleton animated width="128" v-if="loading"></b-skeleton
+                  ><span v-else>{{ cliente.bio }}</span>
+                </p>
+                <p>
+                  <strong>Primeiro Acesso:</strong>
+                  <b-skeleton animated width="128" v-if="loading"></b-skeleton>
+                  <span v-else>
+                    {{ new Date(Number(cliente.createdAt)).toLocaleString() }}
+                  </span>
+                </p>
+                <p>
+                  <strong>Ultimo Acesso:</strong>
+                  <b-skeleton animated width="128" v-if="loading"></b-skeleton>
+                  <span v-else>
+                    {{ new Date(Number(cliente.changedAt)).toLocaleString() }}
+                  </span>
+                </p>
               </b-tab-item>
               <b-tab-item label="Transações" icon="wallet">
                 <div>
@@ -120,7 +112,6 @@ import Vue from "vue";
 import * as firebase from "firebase/app";
 import { GET_CLIENTE, UPDATE_CLIENTE } from "@/queries/cliente";
 import uuid from "uuid-random";
-
 
 interface Data {
   cliente: any;

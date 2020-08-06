@@ -1,46 +1,56 @@
 const BUEFY_OPTIONS = {
-	defaultIconPack: "fas", // font awesome default icon pack
-	defaultDialogCancelText: "Cancelar",
-	defaultDayNames: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"],
-	defaultMonthNames: [
-		"Janeiro",
-		"Fevereiro",
-		"Março",
-		"Abril",
-		"Maio",
-		"Junho",
-		"Julho",
-		"Agosto",
-		"Setembro",
-		"Outubro",
-		"Novembro",
-		"Dezembro"
-	],
-	defaultClockpickerHoursLabel: "Hora",
-	defaultClockpickerMinutesLabel: "Minuto",
+  defaultIconPack: 'fas', // font awesome default icon pack
+  defaultDialogCancelText: 'Cancelar',
+  defaultDayNames: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+  defaultMonthNames: [
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outubro',
+    'Novembro',
+    'Dezembro',
+  ],
+  defaultClockpickerHoursLabel: 'Hora',
+  defaultClockpickerMinutesLabel: 'Minuto',
 };
 
 const CKEDITOR_CONFIG = {
-	language: "br",
-	toolbar: [
-		"heading",
-		"|",
-		"bold",
-		"italic",
-		"link",
-		"bulletedList",
-		"numberedList",
-		"blockQuote"
-	],
-	heading: {
-		options: [
-			{ model: "paragraph", title: "Paragrafo", class: "ck-heading_paragraph" },
-			{ model: "heading1", view: "h1", title: "Titulo 1", class: "ck-heading_heading1" },
-			{ model: "heading2", view: "h2", title: "Titulo 2", class: "ck-heading_heading2" }
-		]
-	}
+	language: 'br',
+	removePlugins: [ 'Heading', 'Link' ],
+  toolbar: [
+    'heading',
+    '|',
+    'bold',
+    'italic',
+    'link',
+    'bulletedList',
+    'numberedList',
+    'blockQuote',
+  ],
+  heading: {
+    options: [
+      { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+      {
+        model: 'heading1',
+        view: 'h1',
+        title: 'Heading 1',
+        class: 'ck-heading_heading1',
+      },
+      {
+        model: 'heading2',
+        view: 'h2',
+        title: 'Heading 2',
+        class: 'ck-heading_heading2',
+      },
+    ],
+  },
 };
-
 
 const VUE_PROGRESSBAR_CONFIG = {
   color: '3677F6',
@@ -49,15 +59,15 @@ const VUE_PROGRESSBAR_CONFIG = {
   transition: {
     speed: '0.2s',
     opacity: '0.6s',
-    termination: 300
+    termination: 300,
   },
   autoRevert: true,
   location: 'left',
-  inverse: false
-}
+  inverse: false,
+};
 
 export default {
-	BUEFY_OPTIONS,
-	CKEDITOR_CONFIG,
-	VUE_PROGRESSBAR_CONFIG
+  BUEFY_OPTIONS,
+  CKEDITOR_CONFIG,
+  VUE_PROGRESSBAR_CONFIG,
 };

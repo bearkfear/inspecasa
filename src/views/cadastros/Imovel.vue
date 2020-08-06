@@ -10,6 +10,7 @@
             <b-button
               icon-left="plus"
               type="is-primary"
+              outlined
               @click="handleAdicionar()"
               >Criar novo</b-button
             >
