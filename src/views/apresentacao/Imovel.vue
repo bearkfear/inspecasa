@@ -91,7 +91,7 @@
               >
                 <div class="media">
                   <div class="media-left">
-                    <figure class="image is-48x48">
+                    <figure class="image is-square is-48x48">
                       <img
                         :src="proprietario.urlImg"
                         alt=""

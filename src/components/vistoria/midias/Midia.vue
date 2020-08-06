@@ -1,5 +1,22 @@
 <template>
   <div>
+    <div>
+      <b-field>
+        <b-upload
+          v-model="tempFiles"
+          multiple
+          drag-drop
+          expanded
+          @input="handleLoadFiles($event)"
+        >
+          <div class="content has-text-centered">
+            <b-icon icon="upload" size="is-small"></b-icon>&nbsp;Solte seus
+            arquivos aqui ou clique para selecionar
+          </div>
+        </b-upload>
+      </b-field>
+    </div>
+      <hr />
     <div v-if="files.length > 0">
       <table class="table is-striped is-hoverable is-fullwidth is-narrow">
         <thead>
@@ -34,22 +51,7 @@
       </div>
       <hr />
     </div>
-    <div>
-      <b-field>
-        <b-upload
-          v-model="tempFiles"
-          multiple
-          drag-drop
-          expanded
-          @input="handleLoadFiles($event)"
-        >
-          <div class="content has-text-centered">
-            <b-icon icon="upload" size="is-small"></b-icon>&nbsp;Solte seus
-            arquivos aqui ou clique para selecionar
-          </div>
-        </b-upload>
-      </b-field>
-    </div>
+
     <List :midias="midias"></List>
   </div>
 </template>

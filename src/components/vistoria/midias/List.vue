@@ -1,12 +1,10 @@
 <template>
-  <div class="">
-    <div v-for="list in midias" :key="list.id">
-      <video
-        class="image is-128x128"
-        v-if="list.extensao === '.mp4'"
-        controls
-        :src="list.url"
-      />
+  <div class="columns is-multiline is-narrow">
+    <div v-for="list in midias" :key="list.id" class="column is-2">
+      <figure v-if="list.extensao === '.mp4'">
+        <video class="image is-128x128" controls :src="list.url" />
+      </figure>
+
       <figure v-else class="image is-128x128">
         <img :src="list.url" />
       </figure>

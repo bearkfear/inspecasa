@@ -11,6 +11,7 @@
               icon-left="plus"
               type="is-primary"
               @click="handleAdicionar()"
+              outlined
               >Criar novo</b-button
             >
           </div>

@@ -11,6 +11,7 @@
               icon-left="plus"
               type="is-primary"
               @click="handleAdicionar()"
+              outlined
               >Criar novo</b-button
             >
           </div>
@@ -38,9 +39,11 @@
                   class="user-content"
                   :to="{ path: `/show/cliente/${cliente.id}` }"
                 >
-                  <figure class="image is-48x48">
-                    <img class="is-rounded" :src="cliente.urlImg" alt="" />
-                  </figure>
+                  <div>
+                    <figure class="image is-square is-48x48">
+                      <img class="is-rounded" :src="cliente.urlImg" />
+                    </figure>
+                  </div>
                   <p>
                     &nbsp;&nbsp;&nbsp;&nbsp;{{ cliente.nome }}
                     {{ cliente.sobrenome }}

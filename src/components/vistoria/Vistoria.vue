@@ -3,15 +3,25 @@
     <div class="level">
       <div class="level-left"></div>
       <div class="level-right">
-        <b-button type="is-primary" icon-left="plus" @click="handleOpenForm()"
+        <b-button
+          type="is-primary"
+          outlined
+          icon-left="plus"
+          @click="handleOpenForm()"
           >Adicionar</b-button
         >
       </div>
     </div>
     <hr />
-    <div v-if="vistorias.length === 0" class="notification">
-      Nenhuma vistoria ainda!
-    </div>
+
+    <section v-if="vistorias.length === 0" class="section">
+      <div class="content has-text-grey has-text-centered">
+        <p>
+          <b-icon icon="frown-open" size="is-large"> </b-icon>
+        </p>
+        <p>Sem Registros. Crie um!</p>
+      </div>
+    </section>
     <div v-for="vistoria in vistorias" :key="vistoria.id" class="box">
       <div class="media">
         <div class="media-left">
@@ -27,9 +37,7 @@
           </router-link>
         </div>
         <div class="media-content">
-          <div class="notification">
-            {{ vistoria.observacao }}
-          </div>
+          <div class="notification" v-html="vistoria.observacao"></div>
           <p class="has-text-weight-bold">
             {{ new Date(Number(vistoria.createdAt)).toLocaleString() }}
           </p>
@@ -68,6 +76,7 @@
 import Vue from "vue";
 import { GET_VISTORIAS_FROM_IMOVEL } from "@/queries/imovel";
 import Form from "../forms/Vistoria.vue";
+import eventBus, { TYPES } from "../../eventBus";
 
 export default Vue.extend({
   name: "Vistoria",
@@ -101,6 +110,7 @@ export default Vue.extend({
   },
   created() {
     this.fetchVistorias();
+    eventBus.$on(TYPES.REFRESH_LIST_VISTORIAS, () => this.fetchVistorias());
   },
 });
 </script>
