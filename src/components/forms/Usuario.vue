@@ -243,7 +243,6 @@ export default Vue.extend({
         this.$emit("close");
         this.isSubmitting = false;
       } catch (e) {
-        console.log();
         if (e.graphQLErrors.length) {
           this.$buefy.snackbar.open({
             message: e.graphQLErrors[0].message,

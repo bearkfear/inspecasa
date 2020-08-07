@@ -54,6 +54,7 @@
 import Vue from "vue";
 import gql from "graphql-tag";
 import ModalImovel from "@/components/forms/Imovel.vue";
+import { Categoria } from "@/types";
 
 export default Vue.extend({
   name: "imovel",
@@ -69,44 +70,10 @@ export default Vue.extend({
       return "Vendido";
     },
     categoria(key: number) {
-      enum Categoria {
-        Apartamento,
-        Kitnet,
-        Loft,
-        Duplex,
-        Triplex,
-        Casa,
-      }
       return Categoria[key];
     },
   },
   methods: {
-    handleRemover(imovel: any) {
-      this.$buefy.dialog.confirm({
-        title: "Remover Imovel",
-        message:
-          "Deseja <b>remover</b> o imovel? Essa ação não pode ser desfeita.",
-        confirmText: "Remover",
-        type: "is-danger",
-        hasIcon: true,
-        onConfirm: () => {
-          this.$apollo
-            .mutate({
-              mutation: gql`
-                mutation deleteImovel($id: ID!) {
-                  deleteImovel(id: $id)
-                }
-              `,
-              variables: {
-                id: imovel.id,
-              },
-            })
-            .then(() => {
-              this.fetchImoveis();
-            });
-        },
-      });
-    },
     handleAdicionar() {
       this.$buefy.modal.open({
         parent: this,
@@ -114,23 +81,6 @@ export default Vue.extend({
         component: ModalImovel,
         props: {},
         fullScreen: true,
-        events: {
-          reload: () => {
-            this.fetchImoveis();
-          },
-        },
-      });
-    },
-    handleEditar(imovel: any) {
-      this.$buefy.modal.open({
-        parent: this,
-        hasModalCard: true,
-        component: ModalImovel,
-        props: {
-          isEditing: true,
-          idImovel: imovel.id,
-          idEndereco: imovel.endereco.id,
-        },
         events: {
           reload: () => {
             this.fetchImoveis();

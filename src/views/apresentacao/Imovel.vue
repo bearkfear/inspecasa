@@ -26,43 +26,69 @@
           <article class="column is-6">
             <div>
               <h1 class="title is-5">Informações</h1>
-              <p>
-                <strong>Preço: </strong>
-                <b-tag v-if="!loading" size="is-medium" type="is-success">R$ {{
-                  imovel.valorProposta
-                }}</b-tag>
-                <b-skeleton v-else active animated width="50px"></b-skeleton>
-              </p>
-              <p>
-                <strong>Quantidade de quartos: </strong>
-                <b-tag v-if="!loading" size="is-medium">{{ imovel.numQuartos }}</b-tag>
-                <b-skeleton v-else animated active width="50px"></b-skeleton>
-              </p>
-              <p>
-                <strong>Categoria: </strong>
-                <b-tag v-if="!loading" size="is-medium">{{ imovel.categoria }}</b-tag>
-                <b-skeleton v-else animated active width="50px"></b-skeleton>
-              </p>
-              <strong>Descrição: </strong>
-              <div
-                class="notification"
-                v-if="!loading"
-                v-html="imovel.descricao"
-              ></div>
-              <b-skeleton v-else animated active width="50px"></b-skeleton>
-
-              <p>
-                <strong>Endereço: </strong>
-              </p>
-              <div class="notification" v-if="!loading">
-                {{ imovel.endereco.cidade }}/{{ imovel.endereco.uf }} -
-                {{ imovel.endereco.bairro }} -
-                {{ imovel.endereco.logradouro }} -
-                {{ imovel.endereco.numero }} -
-                {{ imovel.endereco.complemento }} -
-                {{ imovel.endereco.cep }}
+              <div class="columns">
+                <div class="column is-2">
+                  <strong>Valor Proposto: </strong>
+                </div>
+                <div class="column">
+                  <p v-if="!loading" size="is-medium" type="is-success">
+                    R$ {{ imovel.valorProposta }}
+                  </p>
+                  <b-skeleton v-else active animated width="50px"></b-skeleton>
+                </div>
               </div>
-              <b-skeleton v-else animated active width="100"></b-skeleton>
+              <div class="columns">
+                <div class="column is-2">
+                  <strong>Quartos: </strong>
+                </div>
+                <div class="column">
+                  <p v-if="!loading" size="is-medium">
+                    {{ imovel.numQuartos }}
+                  </p>
+                  <b-skeleton v-else animated active width="50px"></b-skeleton>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column is-2">
+                  <strong>Categoria: </strong>
+                </div>
+                <div class="column">
+                  <p v-if="!loading" size="is-medium">
+                    {{ imovel.categoria | Categoria }}
+                  </p>
+                  <b-skeleton v-else animated active width="50px"></b-skeleton>
+                </div>
+              </div>
+
+              <div class="columns">
+                <div class="column is-2">
+                  <strong>Endereço: </strong>
+                </div>
+                <div class="column">
+                  <p v-if="!loading">
+                    {{ imovel.endereco.cidade }}/{{ imovel.endereco.uf }} -
+                    {{ imovel.endereco.bairro }} -
+                    {{ imovel.endereco.logradouro }} -
+                    {{ imovel.endereco.numero }} -
+                    {{ imovel.endereco.complemento }} -
+                    {{ imovel.endereco.cep }}
+                  </p>
+                  <b-skeleton v-else animated active width="100"></b-skeleton>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column is-2">
+                  <strong>Descrição: </strong>
+                </div>
+                <div class="column">
+                  <div
+                    class="notification"
+                    v-if="!loading"
+                    v-html="imovel.descricao"
+                  ></div>
+                  <b-skeleton v-else animated active width="50px"></b-skeleton>
+                </div>
+              </div>
             </div>
           </article>
           <article class="column is-6">
@@ -137,6 +163,7 @@ import Documento from "@/components/documentos/Documento.vue";
 import Midia from "@/components/midia/Midia.vue";
 import Vistoria from "@/components/vistoria/Vistoria.vue";
 import Historico from "@/components/Historico.vue";
+import { Categoria } from "@/types";
 
 export default Vue.extend({
   name: "VisualizarImovel",
@@ -150,6 +177,11 @@ export default Vue.extend({
     Midia,
     Vistoria,
     Documento,
+  },
+  filters: {
+    Categoria(cat: number) {
+      return Categoria[cat];
+    },
   },
   methods: {
     handleOpenHistorico() {

@@ -63,3 +63,13 @@ export interface Midia {
 	extensao: string;
 	url: string;
 }
+
+
+export enum Categoria {
+	Apartamento,
+	Kitnet,
+	Loft,
+	Duplex,
+	Triplex,
+	Casa,
+}
