@@ -252,17 +252,20 @@ export default Vue.extend({
     },
     async saveCliente() {
       try {
-        const { email, ...toSaveCliente } = this.cliente;
+        if (this.cliente) {
+          const { email, ...toSaveCliente } = this.cliente;
 
-        await this.$apollo.mutate({
-          mutation: UPDATE_CLIENTE,
-          variables: {
-            id: this.$route.params.id,
-            cliente: toSaveCliente,
-          },
-        });
-        this.$emit("refresh");
-        this.$emit("close");
+          await this.$apollo.mutate({
+            mutation: UPDATE_CLIENTE,
+            variables: {
+              id: this.$route.params.id,
+              cliente: toSaveCliente,
+            },
+          });
+
+          this.$emit("refresh");
+          this.$emit("close");
+        }
       } catch (error) {
         this.$buefy.toast.open({
           message: "Não foi possível salvar os dados.",

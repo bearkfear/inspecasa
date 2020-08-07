@@ -121,3 +121,11 @@ export const GET_VISTORIAS_FROM_IMOVEL = gql`
 	}
 
 `
+
+
+export const DELETE_IMOVEL = gql`
+
+	mutation deleteImovel($id: ID!) { 
+		deleteImovel(id: $id) 
+	}
+`

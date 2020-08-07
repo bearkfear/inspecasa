@@ -166,7 +166,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { GET_IMOVEL } from "@/queries/imovel";
+import { GET_IMOVEL, DELETE_IMOVEL } from "@/queries/imovel";
 import Documento from "@/components/documentos/Documento.vue";
 import Midia from "@/components/midia/Midia.vue";
 import Vistoria from "@/components/vistoria/Vistoria.vue";
@@ -208,23 +208,23 @@ export default Vue.extend({
           this.loading = true;
           const { id } = this.$route.params;
 
-          // this.$apollo
-          //   .mutate({
-          //     mutation: DELETE_USER,
-          //     variables: {
-          //       id,
-          //     },
-          //   })
-          //   .then(() => {
-          //     this.$router.push({ path: '/cadastro/usuario' });
-          //   })
-          //   .catch(() => {
-          //     this.$buefy.toast.open({
-          //       message: 'Não foi possível apagar o Usuário',
-          //       type: 'is-danger',
-          //     });
-          //     this.loading = false;
-          //   });
+          this.$apollo
+            .mutate({
+              mutation: DELETE_IMOVEL,
+              variables: {
+                id,
+              },
+            })
+            .then(() => {
+              this.$router.push({ path: "/cadastro/imovel" });
+            })
+            .catch(() => {
+              this.$buefy.toast.open({
+                message: "Não foi possível remover o Imóvel",
+                type: "is-danger",
+              });
+              this.loading = false;
+            });
         },
       });
     },
