@@ -4,7 +4,7 @@
       <div class="container">
         <div class="columns is-multiline">
           <article class="column is-3">
-            <div class="">
+            <div>
               <b-field class="file" :disabled="loading">
                 <b-upload
                   v-model="file"
@@ -21,7 +21,7 @@
                     height="128"
                     v-if="loading"
                   ></b-skeleton>
-                  <figure v-else class="image is-128x128">
+                  <figure v-else class="image is-square is-128x128">
                     <img
                       class="is-rounded"
                       :src="reader ? reader : usuario.urlImg"
@@ -58,7 +58,7 @@
               </h1>
 
               <b-skeleton animated width="128" v-if="loading"></b-skeleton>
-              <h2 v-else class="title is-6"> {{ usuario.email }}</h2>
+              <h2 v-else class="title is-6">{{ usuario.email }}</h2>
 
               <p>
                 <b-skeleton animated width="128" v-if="loading"></b-skeleton
@@ -66,42 +66,77 @@
               </p>
               <hr />
               <div class="buttons">
-								<b-button type="is-info" icon-left="edit">Editar</b-button>
-                <b-button type="is-danger" icon-left="trash">Apagar</b-button>
+                <b-button
+                  type="is-info"
+                  icon-left="edit"
+                  @click="handleOpenEdit()"
+                  >Editar</b-button
+                >
+                <b-button
+                  type="is-danger"
+                  icon-left="trash"
+                  @click="handleApagarUsuario()"
+                  >Apagar</b-button
+                >
               </div>
             </div>
           </article>
           <article class="column">
             <b-tabs>
               <b-tab-item label="Geral" icon="address-card">
-                <p>
-                <strong>Função:</strong>
-                <b-skeleton animated width="128" v-if="loading"></b-skeleton>
-                <span v-else> {{ usuario.funcao }}</span>
-              </p>
-              <p>
-                <strong>Bio:</strong>
-                <b-skeleton animated width="128" v-if="loading"></b-skeleton
-                ><span v-else>{{ usuario.bio }}</span>
-              </p>
-              <p>
-                <strong>Primeiro Acesso:</strong>
-                <b-skeleton animated width="128" v-if="loading"></b-skeleton>
-                <span v-else>
-                  {{ new Date(Number(usuario.createdAt)).toLocaleString() }}
-                </span>
-              </p>
-              <p>
-                <strong>Ultimo Acesso:</strong>
-                <b-skeleton animated width="128" v-if="loading"></b-skeleton>
-                <span v-else>
-                  {{ new Date(Number(usuario.changedAt)).toLocaleString() }}
-                </span>
-              </p><p>
-                <strong>Função:</strong>
-                <b-skeleton animated width="128" v-if="loading"></b-skeleton>
-                <span v-else> {{ usuario.funcao }}</span>
-              </p>
+                <div class="columns">
+                  <div class="column is-2">
+                    <strong>Bio:</strong>
+                  </div>
+                  <div class="column">
+                    <b-skeleton animated width="128" v-if="loading"></b-skeleton
+                    ><span v-else>{{ usuario.bio }}</span>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column is-2">
+                    <strong>Primeiro Acesso:</strong>
+                  </div>
+                  <div class="column">
+                    <b-skeleton
+                      animated
+                      width="128"
+                      v-if="loading"
+                    ></b-skeleton>
+                    <span v-else>
+                      {{ new Date(Number(usuario.createdAt)).toLocaleString() }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="columns">
+                  <div class="column is-2">
+                    <strong>Último Acesso:</strong>
+                  </div>
+                  <div class="column">
+                    <b-skeleton
+                      animated
+                      width="128"
+                      v-if="loading"
+                    ></b-skeleton>
+                    <span v-else>
+                      {{ new Date(Number(usuario.changedAt)).toLocaleString() }}
+                    </span>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column is-2">
+                    <strong>Função:</strong>
+                  </div>
+                  <div class="column">
+                    <b-skeleton
+                      animated
+                      width="128"
+                      v-if="loading"
+                    ></b-skeleton>
+                    <span v-else> {{ usuario.funcao }}</span>
+                  </div>
+                </div>
               </b-tab-item>
               <b-tab-item label="Vendas" icon="chart-pie">
                 <div><p>Nenhuma venda ainda!</p></div>
@@ -116,8 +151,9 @@
 <script lang="ts">
 import Vue from "vue";
 import * as firebase from "firebase/app";
-import { GET_USER, UPDATE_USER } from "@/queries/user";
+import { GET_USER, UPDATE_USER, DELETE_USER } from "@/queries/user";
 import uuid from "uuid-random";
+import UsuarioForm from "@/components/forms/Usuario.vue";
 
 interface Usuario {
   id: number;
@@ -152,6 +188,56 @@ export default Vue.extend({
     isUploading: false,
   }),
   methods: {
+    handleApagarUsuario() {
+      this.$buefy.dialog.confirm({
+        title: "Apagar Usuário",
+        message: `
+          Remover um Usuário é uma ação que não pode ser desfeita.
+          Caso o usuário possua dados vinculados a conta, a remoção não será efetuada.
+          Para remover um usuário é necessário remover todos os seus vinculos
+         `,
+        cancelText: "Cancelar",
+        confirmText: "APAGAR",
+        type: "is-danger",
+        onConfirm: () => {
+          this.loading = true;
+          const { id } = this.$route.params;
+
+          this.$apollo
+            .mutate({
+              mutation: DELETE_USER,
+              variables: {
+                id,
+              },
+            })
+            .then(() => {
+              this.$router.push({ path: "/cadastro/usuario" });
+            })
+            .catch(() => {
+              this.$buefy.toast.open({
+                message: "Não foi possível apagar o Usuário",
+                type: "is-danger",
+              });
+              this.loading = false;
+            });
+        },
+      });
+    },
+    handleOpenEdit() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: UsuarioForm,
+        hasModalCard: true,
+        fullScreen: true,
+        props: {
+          isEditing: true,
+          usuarioEdit: this.usuario,
+        },
+        events: {
+          refresh: this.fetchUser,
+        },
+      });
+    },
     saveFoto() {
       const { file } = this;
       if (file !== null) {

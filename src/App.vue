@@ -1,10 +1,10 @@
 <template>
   <div id="app">
+    <vue-progress-bar></vue-progress-bar>
     <template v-if="isLoading">
       <b-loading active :is-full-page="true"></b-loading>
     </template>
     <template v-else>
-      <vue-progress-bar></vue-progress-bar>
       <Navbar v-if="$route.meta.requireAuth"></Navbar>
       <transition name="fade">
         <router-view />

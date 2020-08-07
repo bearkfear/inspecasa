@@ -85,25 +85,32 @@
           <article class="column">
             <b-tabs>
               <b-tab-item label="Geral" icon="address-card">
-                <p>
-                  <strong>Bio: </strong>
-                  <b-skeleton animated width="128" v-if="loading"></b-skeleton
-                  ><span v-else>{{ cliente.bio }}</span>
-                </p>
-                <p>
-                  <strong>Primeiro Acesso:</strong>
-                  <b-skeleton animated width="128" v-if="loading"></b-skeleton>
+
+                <div class="columns">
+                  <div class="column is-2"><strong>E-mail: </strong></div>
+                  <div class="column"><b-skeleton animated width="128" v-if="loading"></b-skeleton>
+                  <span v-else>{{ cliente.email }}</span></div>
+                </div>
+
+                <div class="columns">
+                  <div class="column is-2"><strong>Bio: </strong></div>
+                  <div class="column"><b-skeleton animated width="128" v-if="loading"></b-skeleton
+                  ><span v-else>{{ cliente.bio }}</span></div>
+                </div>
+                <div class="columns">
+                  <div class="column is-2"><strong>Cliente desde:</strong></div>
+                  <div class="column"><b-skeleton animated width="128" v-if="loading"></b-skeleton>
                   <span v-else>
                     {{ new Date(Number(cliente.createdAt)).toLocaleString() }}
-                  </span>
-                </p>
-                <p>
-                  <strong>Ultimo Acesso:</strong>
-                  <b-skeleton animated width="128" v-if="loading"></b-skeleton>
+                  </span></div>
+                </div>
+                <div class="columns">
+                  <div class="column is-2"><strong>Data última alteração:</strong></div>
+                  <div class="column"> <b-skeleton animated width="128" v-if="loading"></b-skeleton>
                   <span v-else>
                     {{ new Date(Number(cliente.changedAt)).toLocaleString() }}
-                  </span>
-                </p>
+                  </span></div>
+                </div>
               </b-tab-item>
               <b-tab-item label="Transações" icon="wallet">
                 <div>

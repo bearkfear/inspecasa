@@ -7,6 +7,6 @@ export default {
 		funcao: null,
 		nome: null,
 		sobrenome: null,
-		urlImg: null
+		urlImg: null,
 	}
 }
