@@ -8,6 +8,7 @@ export const GET_IMOVEL = gql`
 			numQuartos
 			valorProposta
 			updatedAt
+			situacao
 			proprietarios {
 				id
 				nome
@@ -42,6 +43,15 @@ export const UPDATE_IMOVEL_ENDERECO = gql`
 		}
 	}
 `;
+
+export const UPDATE_IMOVEL = gql`
+	mutation updateImovel($id: ID!, $imovel: ImovelInput!) { 
+		updateImovel(id: $id, imovel: $imovel) {
+			id
+		}
+	}
+`
+
 export const STORE_IMOVEL_ENDERECO = gql`
 	mutation storeImovelAndEndereco(
 		$imovel: ImovelInput!

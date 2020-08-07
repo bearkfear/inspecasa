@@ -17,8 +17,16 @@
               >Historico</b-button
             >
             <b-button icon-left="handshake" type="is-success">Vender</b-button>
-            <b-button icon-left="edit" type="is-info"></b-button>
-            <b-button icon-left="trash" type="is-danger"></b-button>
+            <b-button
+              icon-left="edit"
+              type="is-info"
+              @click="handleEditarImovel()"
+            ></b-button>
+            <b-button
+              icon-left="trash"
+              type="is-danger"
+              @click="handleApagarImovel()"
+            ></b-button>
           </div>
         </div>
         <hr />
@@ -164,6 +172,7 @@ import Midia from "@/components/midia/Midia.vue";
 import Vistoria from "@/components/vistoria/Vistoria.vue";
 import Historico from "@/components/Historico.vue";
 import { Categoria } from "@/types";
+import ImovelForm from "@/components/forms/Imovel.vue";
 
 export default Vue.extend({
   name: "VisualizarImovel",
@@ -184,6 +193,56 @@ export default Vue.extend({
     },
   },
   methods: {
+    handleApagarImovel() {
+      this.$buefy.dialog.confirm({
+        title: "Apagar Imóvel",
+        message: `
+          Remover um Imóvel é uma ação que não pode ser desfeita.
+          Caso o Imóvel possua dados vinculados a conta, a remoção não será efetuada.
+          Para remover um Imóvel é necessário remover todos os seus vinculos
+         `,
+        cancelText: "Cancelar",
+        confirmText: "APAGAR",
+        type: "is-danger",
+        onConfirm: () => {
+          this.loading = true;
+          const { id } = this.$route.params;
+
+          // this.$apollo
+          //   .mutate({
+          //     mutation: DELETE_USER,
+          //     variables: {
+          //       id,
+          //     },
+          //   })
+          //   .then(() => {
+          //     this.$router.push({ path: '/cadastro/usuario' });
+          //   })
+          //   .catch(() => {
+          //     this.$buefy.toast.open({
+          //       message: 'Não foi possível apagar o Usuário',
+          //       type: 'is-danger',
+          //     });
+          //     this.loading = false;
+          //   });
+        },
+      });
+    },
+    handleEditarImovel() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: ImovelForm,
+        fullScreen: true,
+        hasModalCard: true,
+        props: {
+          isEditing: true,
+          imovelEdit: this.imovel,
+        },
+        events: {
+          refresh: this.fetchImovel,
+        },
+      });
+    },
     handleOpenHistorico() {
       this.$buefy.modal.open({
         component: Historico,
