@@ -13,6 +13,13 @@ export const GET_ME = gql`
 	}
 `;
 
+export const DELETE_USER = gql`
+
+	mutation deleteUser($id: ID!) { 
+		deleteUsuario(id: $id)
+	}
+`
+
 export const UPDATE_USER = gql`
 	mutation updateUsuario($id: ID!, $usuario: UsuarioInput!) {
 		updateUsuario(id: $id, usuario: $usuario) {

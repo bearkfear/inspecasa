@@ -35,7 +35,7 @@
             >
           </b-select>
         </b-field>
-        <b-field label="Proprietário(s)">
+        <b-field label="Proprietário(s)" v-if="!isEditing">
           <Multiselect
             v-model="donos"
             label="nome"
@@ -86,80 +86,81 @@
             </b-field>
           </div>
         </div>
-
-        <br />
-        <br />
-        <h3 class="title is-4">Endereço</h3>
-        <p>Informe o endereço</p>
-        <hr />
-        <div class="columns">
-          <b-field label="CEP" class="column is-2">
-            <input
-              class="input"
-              v-model="endereco.cep"
-              v-mask="'#####-###'"
-              placeholder="Digite o seu CEP"
-              @input="handleCep(endereco.cep)"
-            />
-          </b-field>
-          <b-field label="Rua" class="column">
-            <b-input
-              type="text"
-              v-model="endereco.rua"
-              placeholder="Nome da rua"
-              :loading="loading.loadingCep"
-              disabled
-            >
-            </b-input>
-          </b-field>
-          <b-field label="Cidade" class="column">
-            <b-input
-              type="text"
-              v-model="endereco.cidade"
-              placeholder="Nome da Municipio"
-              :loading="loading.loadingCep"
-              disabled
-            >
-            </b-input>
-          </b-field>
-          <b-field label="UF" class="column is-1">
-            <b-input
-              placeholder="UF"
-              type="text"
-              v-model="endereco.uf"
-              maxlength="2"
-              :loading="loading.loadingCep"
-              disabled
-            >
-            </b-input>
-          </b-field>
-        </div>
-        <div class="columns">
-          <b-field label="Bairro" class="column">
-            <b-input
-              v-model="endereco.bairro"
-              placeholder="Nome do bairro"
-              :loading="loading.loadingCep"
-              disabled
-            ></b-input>
-          </b-field>
-          <b-field label="Complemento" class="column">
-            <b-input
-              type="text"
-              v-model="endereco.complemento"
-              placeholder="Complemento"
-            >
-            </b-input>
-          </b-field>
-          <b-field label="Número" class="column">
-            <b-input
-              placeholder="Número da casa"
-              type="number"
-              v-model.number="endereco.numero"
-              min="0"
-            ></b-input>
-          </b-field>
-        </div>
+        <template v-if="!isEditing">
+          <br />
+          <br />
+          <h3 class="title is-4">Endereço</h3>
+          <p>Informe o endereço</p>
+          <hr />
+          <div class="columns">
+            <b-field label="CEP" class="column is-2">
+              <input
+                class="input"
+                v-model="endereco.cep"
+                v-mask="'#####-###'"
+                placeholder="Digite o seu CEP"
+                @input="handleCep(endereco.cep)"
+              />
+            </b-field>
+            <b-field label="Rua" class="column">
+              <b-input
+                type="text"
+                v-model="endereco.rua"
+                placeholder="Nome da rua"
+                :loading="loading.loadingCep"
+                disabled
+              >
+              </b-input>
+            </b-field>
+            <b-field label="Cidade" class="column">
+              <b-input
+                type="text"
+                v-model="endereco.cidade"
+                placeholder="Nome da Municipio"
+                :loading="loading.loadingCep"
+                disabled
+              >
+              </b-input>
+            </b-field>
+            <b-field label="UF" class="column is-1">
+              <b-input
+                placeholder="UF"
+                type="text"
+                v-model="endereco.uf"
+                maxlength="2"
+                :loading="loading.loadingCep"
+                disabled
+              >
+              </b-input>
+            </b-field>
+          </div>
+          <div class="columns">
+            <b-field label="Bairro" class="column">
+              <b-input
+                v-model="endereco.bairro"
+                placeholder="Nome do bairro"
+                :loading="loading.loadingCep"
+                disabled
+              ></b-input>
+            </b-field>
+            <b-field label="Complemento" class="column">
+              <b-input
+                type="text"
+                v-model="endereco.complemento"
+                placeholder="Complemento"
+              >
+              </b-input>
+            </b-field>
+            <b-field label="Número" class="column">
+              <b-input
+                placeholder="Número da casa"
+                type="number"
+                v-model.number="endereco.numero"
+                min="0"
+              ></b-input>
+            </b-field>
+          </div>
+        </template>
       </div>
     </section>
     <footer class="modal-card-foot">
@@ -199,7 +200,7 @@ import Multiselect from "vue-multiselect";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 import CKEDITOR_CONFIG from "@/constants";
-import { STORE_IMOVEL_ENDERECO, GET_IMOVEL_ENDERECO, UPDATE_IMOVEL_ENDERECO } from "@/queries/imovel";
+import { STORE_IMOVEL_ENDERECO, UPDATE_IMOVEL } from "@/queries/imovel";
 import { GET_CLIENTES } from "@/queries/cliente";
 
 import { UPDATE_ENDERECO } from "@/queries/endereco";
@@ -232,15 +233,10 @@ export default Vue.extend({
       default: false,
       type: Boolean,
     },
-    idImovel: {
+    imovelEdit: {
       required: false,
-      default: "0",
-      type: String,
-    },
-    idEndereco: {
-      required: false,
-      default: "0",
-      type: String,
+      default: null,
+      type: Object,
     },
   },
   data: (): Data => ({
@@ -277,6 +273,35 @@ export default Vue.extend({
     Multiselect,
   },
   methods: {
+    async handleEditImovel() {
+      this.isSubmitting = true;
+
+      try {
+        await this.$apollo.mutate({
+          mutation: UPDATE_IMOVEL,
+          variables: {
+            id: this.$route.params.id,
+            imovel: {
+              descricao: this.imovel.descricao,
+              valorProposta: Number(this.imovel.valorProposta?.replace("R$ ", "").replace(/\./, "").replace(",", ".")),
+              categoria: this.imovel.categoria,
+              numQuartos: this.imovel.numQuartos,
+              situacao: this.imovel.situacao,
+            },
+          },
+        });
+        this.$emit("refresh");
+        this.$emit("close");
+      } catch (error) {
+        this.$buefy.toast.open({
+          message: "Tivemos um problema para tentar salvar suas alterações",
+          type: "is-danger",
+        });
+      } finally {
+        this.isSubmitting = false;
+      }
+    },
+
     fetchClientes() {
       this.$apollo
         .query({ query: GET_CLIENTES })
@@ -287,27 +312,7 @@ export default Vue.extend({
           this.loading.clientes = false;
         });
     },
-    handleEditImovel() {
-      this.isSubmitting = true;
-      const val = this.imovel.valorProposta;
-      this.$apollo
-        .mutate({
-          mutation: UPDATE_IMOVEL_ENDERECO,
-          variables: {
-            imovel: {
-              ...this.imovel,
-              valorProposta: cleanMoney(String(val)),
-            },
-            endereco: this.endereco,
-            idEndereco: this.idEndereco,
-            idImovel: this.idImovel,
-          },
-        })
-        .then(() => {
-          this.$emit("reload");
-          this.$emit("close");
-        });
-    },
+
     handleStoreImovel() {
       this.isSubmitting = true;
       const val = this.imovel.valorProposta;
@@ -390,28 +395,9 @@ export default Vue.extend({
     if (!this.isEditing) {
       this.loading.clientes = true;
       this.fetchClientes();
-    }
-
-    if (this.isEditing) {
-      this.$apollo
-        .query({
-          query: GET_IMOVEL_ENDERECO,
-          variables: {
-            idImovel: this.idImovel,
-            idEndereco: this.idEndereco,
-          },
-        })
-        .then(({ data }) => {
-          this.endereco = data.endereco;
-          this.imovel = data.imovel;
-          this.$delete(this.endereco, "__typename");
-          this.$delete(this.imovel, "__typename");
-        });
+    } else {
+      this.imovel = this.imovelEdit;
     }
   },
 });
 </script>
-
-<style lang="scss" scoped>
-@import '~vue-multiselect/dist/vue-multiselect.min.css';
-</style>

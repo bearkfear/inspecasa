@@ -19,16 +19,15 @@
         <table class="table is-striped is-hoverable is-fullwidth">
           <thead>
             <tr>
-              <th>Cliente</th>
+              <th width="20%">Cliente</th>
               <th>Email</th>
               <th>Bio</th>
-              <th>Data Criação</th>
             </tr>
           </thead>
           <tbody>
             <template v-if="loading">
               <tr v-for="(skl, i) in 10" :key="i">
-                <th v-for="(skll, inx) in 7" :key="inx">
+                <th v-for="(skll, inx) in 6" :key="inx">
                   <b-skeleton active animated width="100px"></b-skeleton>
                 </th>
               </tr>
@@ -44,17 +43,14 @@
                       <img class="is-rounded" :src="cliente.urlImg" />
                     </figure>
                   </div>
-                  <p>
-                    &nbsp;&nbsp;&nbsp;&nbsp;{{ cliente.nome }}
+                  <p class="pd">
+                    {{ cliente.nome }}
                     {{ cliente.sobrenome }}
                   </p>
                 </router-link>
               </th>
               <td>{{ cliente.email }}</td>
               <td>{{ cliente.bio }}</td>
-              <td>
-                {{ new Date(Number(cliente.createdAt)).toLocaleString() }}
-              </td>
             </tr>
           </tbody>
         </table>
@@ -118,11 +114,15 @@ export default Vue.extend({
   },
 });
 </script>
-<style lang="css" scoped>
+<style lang="scss" scoped>
 .user-content {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
+  align-content: flex-start;
+}
+.pd {
+  margin-left: 10px;
 }
 </style>

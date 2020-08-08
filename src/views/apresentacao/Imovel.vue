@@ -17,8 +17,16 @@
               >Historico</b-button
             >
             <b-button icon-left="handshake" type="is-success">Vender</b-button>
-            <b-button icon-left="edit" type="is-info"></b-button>
-            <b-button icon-left="trash" type="is-danger"></b-button>
+            <b-button
+              icon-left="edit"
+              type="is-info"
+              @click="handleEditarImovel()"
+            ></b-button>
+            <b-button
+              icon-left="trash"
+              type="is-danger"
+              @click="handleApagarImovel()"
+            ></b-button>
           </div>
         </div>
         <hr />
@@ -26,43 +34,69 @@
           <article class="column is-6">
             <div>
               <h1 class="title is-5">Informações</h1>
-              <p>
-                <strong>Preço: </strong>
-                <b-tag v-if="!loading" size="is-medium" type="is-success">R$ {{
-                  imovel.valorProposta
-                }}</b-tag>
-                <b-skeleton v-else active animated width="50px"></b-skeleton>
-              </p>
-              <p>
-                <strong>Quantidade de quartos: </strong>
-                <b-tag v-if="!loading" size="is-medium">{{ imovel.numQuartos }}</b-tag>
-                <b-skeleton v-else animated active width="50px"></b-skeleton>
-              </p>
-              <p>
-                <strong>Categoria: </strong>
-                <b-tag v-if="!loading" size="is-medium">{{ imovel.categoria }}</b-tag>
-                <b-skeleton v-else animated active width="50px"></b-skeleton>
-              </p>
-              <strong>Descrição: </strong>
-              <div
-                class="notification"
-                v-if="!loading"
-                v-html="imovel.descricao"
-              ></div>
-              <b-skeleton v-else animated active width="50px"></b-skeleton>
-
-              <p>
-                <strong>Endereço: </strong>
-              </p>
-              <div class="notification" v-if="!loading">
-                {{ imovel.endereco.cidade }}/{{ imovel.endereco.uf }} -
-                {{ imovel.endereco.bairro }} -
-                {{ imovel.endereco.logradouro }} -
-                {{ imovel.endereco.numero }} -
-                {{ imovel.endereco.complemento }} -
-                {{ imovel.endereco.cep }}
+              <div class="columns">
+                <div class="column is-2">
+                  <strong>Valor Proposto: </strong>
+                </div>
+                <div class="column">
+                  <p v-if="!loading" size="is-medium" type="is-success">
+                    R$ {{ imovel.valorProposta }}
+                  </p>
+                  <b-skeleton v-else active animated width="50px"></b-skeleton>
+                </div>
               </div>
-              <b-skeleton v-else animated active width="100"></b-skeleton>
+              <div class="columns">
+                <div class="column is-2">
+                  <strong>Quartos: </strong>
+                </div>
+                <div class="column">
+                  <p v-if="!loading" size="is-medium">
+                    {{ imovel.numQuartos }}
+                  </p>
+                  <b-skeleton v-else animated active width="50px"></b-skeleton>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column is-2">
+                  <strong>Categoria: </strong>
+                </div>
+                <div class="column">
+                  <p v-if="!loading" size="is-medium">
+                    {{ imovel.categoria | Categoria }}
+                  </p>
+                  <b-skeleton v-else animated active width="50px"></b-skeleton>
+                </div>
+              </div>
+
+              <div class="columns">
+                <div class="column is-2">
+                  <strong>Endereço: </strong>
+                </div>
+                <div class="column">
+                  <p v-if="!loading">
+                    {{ imovel.endereco.cidade }}/{{ imovel.endereco.uf }} -
+                    {{ imovel.endereco.bairro }} -
+                    {{ imovel.endereco.logradouro }} -
+                    {{ imovel.endereco.numero }} -
+                    {{ imovel.endereco.complemento }} -
+                    {{ imovel.endereco.cep }}
+                  </p>
+                  <b-skeleton v-else animated active width="100"></b-skeleton>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column is-2">
+                  <strong>Descrição: </strong>
+                </div>
+                <div class="column">
+                  <div
+                    class="notification"
+                    v-if="!loading"
+                    v-html="imovel.descricao"
+                  ></div>
+                  <b-skeleton v-else animated active width="50px"></b-skeleton>
+                </div>
+              </div>
             </div>
           </article>
           <article class="column is-6">
@@ -132,11 +166,13 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { GET_IMOVEL } from "@/queries/imovel";
+import { GET_IMOVEL, DELETE_IMOVEL } from "@/queries/imovel";
 import Documento from "@/components/documentos/Documento.vue";
 import Midia from "@/components/midia/Midia.vue";
 import Vistoria from "@/components/vistoria/Vistoria.vue";
 import Historico from "@/components/Historico.vue";
+import { Categoria } from "@/types";
+import ImovelForm from "@/components/forms/Imovel.vue";
 
 export default Vue.extend({
   name: "VisualizarImovel",
@@ -151,7 +187,62 @@ export default Vue.extend({
     Vistoria,
     Documento,
   },
+  filters: {
+    Categoria(cat: number) {
+      return Categoria[cat];
+    },
+  },
   methods: {
+    handleApagarImovel() {
+      this.$buefy.dialog.confirm({
+        title: "Apagar Imóvel",
+        message: `
+          Remover um Imóvel é uma ação que não pode ser desfeita.
+          Caso o Imóvel possua dados vinculados a conta, a remoção não será efetuada.
+          Para remover um Imóvel é necessário remover todos os seus vinculos
+         `,
+        cancelText: "Cancelar",
+        confirmText: "APAGAR",
+        type: "is-danger",
+        onConfirm: () => {
+          this.loading = true;
+          const { id } = this.$route.params;
+
+          this.$apollo
+            .mutate({
+              mutation: DELETE_IMOVEL,
+              variables: {
+                id,
+              },
+            })
+            .then(() => {
+              this.$router.push({ path: "/cadastro/imovel" });
+            })
+            .catch(() => {
+              this.$buefy.toast.open({
+                message: "Não foi possível remover o Imóvel",
+                type: "is-danger",
+              });
+              this.loading = false;
+            });
+        },
+      });
+    },
+    handleEditarImovel() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: ImovelForm,
+        fullScreen: true,
+        hasModalCard: true,
+        props: {
+          isEditing: true,
+          imovelEdit: this.imovel,
+        },
+        events: {
+          refresh: this.fetchImovel,
+        },
+      });
+    },
     handleOpenHistorico() {
       this.$buefy.modal.open({
         component: Historico,
