@@ -1,0 +1,35 @@
+input VistoriaInput { 
+  midias: [MidiaInput]!
+}
+
+type Vistoria {
+  midias: [Midia!]!
+}
+type Imovel {
+  midias: [Midia!]!
+}
+type Midia {
+  id: ID!
+  extensao: String!
+  descricao: String!
+  url: String!
+  createdAt: String
+  changedAt: String
+}
+
+input MidiaInput {
+  descricao: String!
+  extensao: String!
+  url: String!
+}
+
+type Mutation {
+  storeMidia(midia: MidiaInput!, imovelId: ID!): Midia
+  updateMidia(id: ID!, midia: MidiaInput!): Midia
+  deleteMidia(id: ID!): String!
+}
+
+type Query {
+  midias: [Midia!]!
+  midia(id: ID!): Midia
+}

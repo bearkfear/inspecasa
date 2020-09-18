@@ -1,0 +1,47 @@
+type Transacao { 
+  imovel: Imovel!
+}
+
+type Cliente {
+  imoveis: [Imovel]
+  compras: [Imovel]
+  vendas: [Imovel]
+}
+type Imovel {
+  id: ID!
+  descricao: String
+  valorProposta: String
+  categoria: Int
+  numQuartos: Int
+  situacao: Int
+  createdAt: String
+  updatedAt: String
+}
+
+input ImovelInput {
+  descricao: String!
+  valorProposta: Float!
+  categoria: Int!
+  numQuartos: Int!
+  situacao: Int!
+}
+type Mutation {
+  storeImovel(imovel: ImovelInput!, owners: [ID!]!): Imovel
+  updateImovel(id: ID!, imovel: ImovelInput!): Imovel
+  deleteImovel(id: ID!): String
+  """
+    Vender um imóvel consiste em trocar de N pessoas ao qual ele está em posse á N pessoas que o possuirão
+    @id: consiste no identificador do imóvel
+    @compradores: Lista de IDS dos clientes que serão seus proprietários
+    @valorVenda: Valor da venda do imóvel sendo dividido entre os compradores na transação
+    @situacao: 
+      1 - Visivel na listagem (o que o faz um imóvel a venda)
+      2 - Removido da listagem o considerando um imóvel que não deve ser vendido
+  """
+  venderImovel(id: ID!, compradores: [ID!]!, valorVenda: Float!, situacao: Int): Boolean
+}
+
+type Query {
+  imoveis: [Imovel]!
+  imovel(id: ID!): Imovel
+}

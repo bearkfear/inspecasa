@@ -1,0 +1,40 @@
+type Imovel { 
+  proprietarios: [Cliente!]!
+}
+
+type Cliente {
+  id: ID!
+  nome: String!
+  sobrenome: String!
+  email: String!
+  createdAt: String!
+  changedAt: String!
+  bio: String
+  urlImg: String
+}
+
+input ClienteStore {
+  nome: String!
+  sobrenome: String!
+  bio: String!
+  urlImg: String!
+  email: String!
+}
+
+input ClienteInput { 
+  nome: String
+  sobrenome: String
+  bio: String
+  urlImg: String
+}
+
+type Mutation {
+  storeCliente(cliente: ClienteStore!): Cliente
+  updateCliente(id: ID!, cliente: ClienteInput!): Cliente
+  deleteCliente(id: ID!): String
+}
+
+type Query {
+  clientes: [Cliente!]!
+  cliente(id: ID!): Cliente
+}

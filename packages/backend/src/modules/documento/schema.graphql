@@ -1,0 +1,28 @@
+type Imovel {
+  documentos: [Documento!]!
+}
+type Documento {
+  id: ID!
+  url: String!
+  extensao: String!
+  descricao: String!
+  createdAt: String
+  changedAt: String
+}
+
+input DocumentoInput {
+  url: String!
+  extensao: String!
+  descricao: String!
+}
+
+type Mutation {
+  storeDocumento(input: DocumentoInput!, imovelId: ID): Documento
+  updateDocumento(id: ID!, input: DocumentoInput!, imovelId: ID): Documento
+  deleteDocumento(id: ID!): String!
+}
+
+type Query {
+  documentos: [Documento!]!
+  documento(id: ID!): Documento
+}

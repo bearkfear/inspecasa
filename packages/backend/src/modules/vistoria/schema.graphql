@@ -1,0 +1,21 @@
+type Imovel {
+  vistorias: [Vistoria!]!
+}
+type Vistoria {
+  id: ID!
+  observacao: String!
+  createdAt: String!
+}
+
+input VistoriaInput { 
+  observacao: String!
+}
+
+type Query {
+  vistorias: [Vistoria!]!
+  vistoria(id: ID!): Vistoria
+}
+
+type Mutation { 
+  storeVistoria(vistoria: VistoriaInput, imovelId: ID!): ID!
+}

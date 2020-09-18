@@ -1,0 +1,48 @@
+type Vistoria {
+  responsavel: Usuario!
+}
+type Usuario {
+  id: ID!
+  nome: String!
+  sobrenome: String!
+  funcao: String
+  email: String!
+  bio: String
+  uid: String!
+  createdAt: String!
+  changedAt: String!
+  urlImg: String
+}
+
+input UsuarioInput { 
+  nome: String
+  sobrenome: String
+  funcao: String
+  bio: String
+  # changedAt: String!
+  urlImg: String
+}
+
+input UsuarioStore { 
+  nome: String!
+  sobrenome: String!
+  email: String!
+  funcao: String!
+  bio: String!
+  urlImg: String!
+}
+
+
+
+type Query {
+  verificaUsuario(email: String!): Usuario 
+  usuarios: [Usuario]!
+  usuario(id: ID!): Usuario,
+  me: Usuario,
+}
+
+type Mutation { 
+  updateUsuario(id: ID!, usuario: UsuarioInput!): Usuario!
+  storeUsuario(usuario: UsuarioStore!, password: String!): Usuario
+  deleteUsuario(id: ID!): String
+}

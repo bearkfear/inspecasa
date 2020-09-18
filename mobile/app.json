@@ -1,0 +1,48 @@
+{
+  "expo": {
+    "name": "Inspecasa",
+    "description": "Aplicativo Mobile para efetuar vistorias em imóveis",
+    "slug": "inspecasa",
+    "privacy": "public",
+    "backgroundColor": "#fffff",
+    "userInterfaceStyle": "automatic",
+    "android": {
+      "package": "com.yourcompany.yourappname",
+      "versionCode": 1
+    },
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "sh.now.inspecasa",
+      "buildNumber": "1.0.0"
+    },
+    "androidStatusBar": {
+      "barStyle": "dark-content",
+      "backgroundColor": "#ffffff",
+      "package": "sh.now.inspecasa",
+      "versionCode": 1
+    },
+    "androidNavigationBar": {
+      "barStyle": "dark-content",
+      "backgroundColor": "#ffffff"
+    },
+    "githubUrl": "https://github.com/bearkfear/home-inspection-app"
+  }
+}

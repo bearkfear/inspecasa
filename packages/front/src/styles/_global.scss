@@ -1,0 +1,92 @@
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import '~vue-multiselect/dist/vue-multiselect.min.css';
+@import '~nprogress/nprogress.css';
+$family-sans-serif: Arial, BlinkMacSystemFont,-apple-system, sans-serif;
+
+@import "~bulma/sass/utilities/_all";
+
+$navbar-breakpoint: $tablet;
+
+// Set your colors
+$primary: #ef6235;
+$primary-invert: findColorInvert($primary);
+
+$info: #3ca7f7;
+$info-invert: findColorInvert($info);
+
+$success: #61ce35;
+$success-invert: findColorInvert($success);
+
+$danger: #ee3834;
+$danger-invert: findColorInvert($danger);
+
+$warning: #f7b142;
+$warning-invert: findColorInvert($warning);
+
+$dark: #000;
+$dark-invert: findColorInvert($dark);
+
+$twitter: #4099ff;
+$twitter-invert: findColorInvert($twitter);
+
+// Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$colors: (
+	"white": (
+		$white,
+		$black
+	),
+	"black": (
+		$black,
+		$white
+	),
+	"light": (
+		$light,
+		$light-invert
+	),
+	"dark": (
+		$dark,
+		$dark-invert
+	),
+	"primary": (
+		$primary,
+		$primary-invert
+	),
+	"info": (
+		$info,
+		$info-invert
+	),
+	"success": (
+		$success,
+		$success-invert
+	),
+	"warning": (
+		$warning,
+		$warning-invert
+	),
+	"danger": (
+		$danger,
+		$danger-invert
+	),
+	"twitter": (
+		$twitter,
+		$twitter-invert
+	)
+);
+
+// Links
+$link: $primary;
+$link-invert: $primary-invert;
+$link-focus-border: $primary;
+
+// bulma styles
+$speed-slow: 150ms !default;
+$speed-slower: 250ms !default;
+
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
+
+#app {
+	width: 100vw;
+	height: 100vh;
+}

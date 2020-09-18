@@ -1,0 +1,10 @@
+
+type Usuario { 
+  vendas: [Transacao!]!
+}
+
+type Transacao { 
+  id: ID!
+  valor: Float!
+  data: String!  
+}

@@ -1,0 +1,46 @@
+type Usuario {
+  enderecos: [Endereco!]!
+}
+type Cliente {
+  enderecos: [Endereco]
+}
+type Imovel {
+  endereco: Endereco!
+}
+type Endereco {
+  id: ID!
+  rua: String!
+  logradouro: String
+  complemento: String
+  numero: Int!
+  uf: String!
+  cep: String!
+  avenida: String
+  cidade: String!
+  bairro: String!
+  createdAt: String
+  updatedAt: String
+}
+
+input EnderecoInput {
+  rua: String!
+  logradouro: String
+  complemento: String
+  numero: Int!
+  uf: String!
+  cep: String!
+  avenida: String
+  cidade: String!
+  bairro: String!
+}
+
+type Mutation {
+  storeEndereco(input: EnderecoInput!, imovelId: ID): Endereco
+  updateEndereco(id: ID!, input: EnderecoInput!, imovelId: ID): Endereco
+  deleteEndereco(id: ID!): String!
+}
+
+type Query {
+  enderecos: [Endereco]!
+  endereco(id: ID!): Endereco
+}
