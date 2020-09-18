@@ -1,6 +1,6 @@
 {
   "name": "@inspecasa/backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "author": "Enrico Da Silva <camponogara5@gmail.com>",
   "license": "MIT",
