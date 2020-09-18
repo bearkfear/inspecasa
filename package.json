@@ -1,6 +1,13 @@
-{ 
+{
+  "name": "inspecasa",
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  },
+  "scripts": {
+    "new-version": "lerna version --conventional-commits --yes"
+  }
 }

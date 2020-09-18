@@ -335,8 +335,9 @@ export default Vue.extend({
           id: string;
         };
       }
+
       this.$apollo
-        .mutate<ResponseMutation>({
+        .mutate({
           mutation: STORE_IMOVEL_ENDERECO,
           variables: {
             imovel: {
@@ -348,7 +349,8 @@ export default Vue.extend({
             vendedor: this.$store.state.user.id,
           },
         })
-        .then(({ data }) => {
+        
+        .then(({ data }: { data: ResponseMutation}) => {
           this.isSubmitting = false;
           this.$apollo
             .mutate({
@@ -389,6 +391,7 @@ export default Vue.extend({
             },
           })
           .then(({ data }) => {
+
             const { logradouro, bairro, localidade, uf } = data;
             this.endereco.rua = logradouro;
             this.endereco.uf = uf;

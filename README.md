@@ -5,6 +5,7 @@
 <h1 align="center">INSPECASA 🚀</h1>
 
 🚀 **inspecasa está em desenvolvimento** 
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 Criar um sistema (Web) para gerir as vendas dos imóveis em empresas que atuam no mercado imobiliário. Os usuários serão os colaboradores, que farão uso do sistema para preenchimento das informações sejam elas: cadastro de compra ou venda, clientes, anexos relacionados a um imóvel e vistorias as residências.
 Dos imóveis, serão registradas informações de quem está vendendo e quem irá comprar. O registro das vendas serão feitas por um colaborador de um cliente que vende para outro que compra. As informações dos imóveis serão: data da venda; data da compra; o valor proposto e o valor da venda; endereço completo; a categoria do imóvel (apartamento, “kitnet”, Loft, Duplex, Triplex ou casa); quantidade de quartos; quantidade de banheiros; um título curto; uma descrição objetiva de 200 caracteres e fotos do imóvel. Para cada imóvel também é possível anexar documentos com o título e a descrição do documento, tal como: contrato.
