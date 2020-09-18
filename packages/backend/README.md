@@ -1,21 +1,5 @@
-<p align="center">
-  <img src="https://firebasestorage.googleapis.com/v0/b/inspecasa.appspot.com/o/logos-inspecasa.png?alt=media&token=6d80dbf9-f316-4a88-ba37-dbd49da19c03" width="200" />
-</p>
-
-<h1 align="center">
-  inspecasa
-</h1>
 
 
-
-🚀 **inspecasa está em desenvolvimento** 
-
-# BACK-END INSPECASA
-
-
-Para rodar o sistema incluindo **Backend** e **FrontEnd** é necessário ter [NodeJS](https://nodejs.org/pt-br/) instalado. Recomendada a versão LTS
-
-Também necessário instalar o [Yarn](https://classic.yarnpkg.com/pt-BR/docs/install)
 
 Recomendações: 
 
