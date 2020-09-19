@@ -29,15 +29,13 @@ import { gsap, Back } from "gsap"
 @Component
 export default class Dashboard extends Vue { 
 
-	
-
 	mounted() { 
-
-		gsap.from('.box', { 
-			y: 10,
-			stagger: 0.5,
-			ease: Back.easeOut
-		})
+		this.$router.push("/cadastro/imovel")
+		// gsap.from('.box', { 
+		// 	y: 10,
+		// 	stagger: 0.5,
+		// 	ease: Back.easeOut
+		// })
 
 	}
 

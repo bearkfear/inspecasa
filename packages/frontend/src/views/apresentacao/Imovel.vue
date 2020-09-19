@@ -5,17 +5,16 @@
         <div class="level">
           <div class="level-left">
             <h1 class="title is-5">
-              <router-link to="/cadastro/imovel">Imóveis</router-link>
-              Visualizar
+              <router-link to="/cadastro/imovel">Imóveis</router-link>/Visualizar
             </h1>
           </div>
           <div class="level-right buttons">
-            <b-button
+            <!-- <b-button
               icon-left="history"
               type="is-primary"
               @click="handleOpenHistorico()"
               >Historico</b-button
-            >
+            > -->
             <vender-imovel @update="fetchImovel()"></vender-imovel>
             <b-button
               icon-left="edit"
@@ -40,7 +39,7 @@
                 </div>
                 <div class="column">
                   <p v-if="!loading" size="is-medium" type="is-success">
-                    R$ {{ imovel.valorProposta }}
+                    R$ {{ imovel.valorProposta | money}}
                   </p>
                   <b-skeleton v-else active animated width="50px"></b-skeleton>
                 </div>
@@ -173,7 +172,7 @@ import Historico from "@/components/Historico.vue";
 import { Categoria } from "@/types";
 import ImovelForm from "@/components/forms/Imovel.vue";
 import VenderImovel from "@/components/venderImovel/index.vue";
-
+import numeral from "numeral";
 export default Vue.extend({
   name: "VisualizarImovel",
   data: () => ({
@@ -192,6 +191,9 @@ export default Vue.extend({
     Categoria(cat: number) {
       return Categoria[cat];
     },
+    money(valor: number) { 
+      return numeral(valor).format("0.00[,]00")
+    }
   },
   methods: {
     handleApagarImovel() {

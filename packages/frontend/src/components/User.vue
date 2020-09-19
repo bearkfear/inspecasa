@@ -39,28 +39,27 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { auth } from "firebase/app";
-import { mapState } from "vuex";
-import AuthState from "@/store/modules/auth/types";
+import { Vue, Component } from 'vue-property-decorator';
+import { auth } from 'firebase/app';
+import { mapState } from 'vuex';
+import AuthState from '@/store/modules/auth/types';
 
-export default Vue.extend({
-  data: () => ({
-    loading: false,
-  }),
+@Component({
   computed: {
     ...mapState<{ auth: AuthState }>({
       usuario: (state: any) => state.auth.user,
     }),
   },
-  methods: {
-    logoutUser() {
-      auth().signOut();
-      localStorage.removeItem("token");
-      this.$router.push({ path: "/auth" });
-    },
-  },
-});
+})
+export default class User extends Vue {
+  loading: boolean = false;
+
+  logoutUser() {
+    auth().signOut();
+    localStorage.removeItem('token');
+    this.$router.push({ path: '/auth' });
+  }
+}
 </script>
 
 <style scoped>

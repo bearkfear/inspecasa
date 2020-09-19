@@ -1,4 +1,38 @@
 import gql from "graphql-tag";
+import { http  } from "@/configs/graphql" 
+import { VendasUsuario } from "@/types"
+import { ApolloQueryResult } from 'apollo-client';
+
+export function getVendas(id: string | number): Promise<ApolloQueryResult<VendasUsuario.RootObject>> { 
+	const query = gql`
+		query getVendas($id: ID!) { 
+			usuario(id: $id){ 
+				id
+				vendas {
+					id
+					valor
+					data
+					imovel{
+						id
+						categoria
+						proprietarios { 
+							id
+							urlImg
+						}
+					}
+				}
+			}
+		}
+	`
+
+	return http.query<VendasUsuario.RootObject>({
+		query,
+		variables: { 
+			id
+		}
+	})
+}
+
 
 export const GET_ME = gql`
 	query me {

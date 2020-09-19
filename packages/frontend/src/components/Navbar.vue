@@ -36,14 +36,16 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import User from "./User.vue";
 
-export default Vue.extend({
+import User from "./User.vue";
+import { Vue, Component } from "vue-property-decorator";
+
+@Component({
   components: {
     User,
   },
-});
+})
+export default class Navbar extends Vue {}
 </script>
 
 <style lang="scss" scoped>
