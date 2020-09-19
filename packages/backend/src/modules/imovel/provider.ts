@@ -70,6 +70,7 @@ export class Provider {
 
   async list (limit = 20): Promise<Imovel[]> {
     const resp = await db<Imovel>('imovel')
+      .where('situacao', '=', '1')
       .orderBy('id', 'desc')
       .limit(limit);
     return resp;
