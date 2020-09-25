@@ -35,14 +35,11 @@
     },
     "androidStatusBar": {
       "barStyle": "dark-content",
-      "backgroundColor": "#ffffff",
-      "package": "sh.now.inspecasa",
-      "versionCode": 1
+      "backgroundColor": "#ffffff"
     },
     "androidNavigationBar": {
       "barStyle": "dark-content",
       "backgroundColor": "#ffffff"
-    },
-    "githubUrl": "https://github.com/bearkfear/home-inspection-app"
+    }
   }
 }

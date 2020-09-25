@@ -1,5 +1,2 @@
-import cleanMoney from "./cleanMoney";
-
-export default { 
-  cleanMoney
-}
+export { cleanMoney } from "./cleanMoney";
+export { getToken } from "./getToken";

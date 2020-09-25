@@ -1,32 +1,21 @@
 import ApolloClient from 'apollo-boost'
-import { authStore } from '@/store'
-import { auth } from 'firebase'
-import decode from 'jwt-decode'
+import { getToken } from '@inspecasa/common/getToken'
+
 export const client = new ApolloClient({
   onError: (e) => {
-    console.log('Erro em request')
+    if (e.networkError) {
+      alert('Verifique sua conexão!')
+    } else if (e.graphQLErrors) {
+      console.log('e.graphQLErrors', e.graphQLErrors)
+    }
   },
   uri: 'http://localhost:5000/graphql',
-  request: operation => {
-    let token = authStore.token
-    if (token) {
-      const decodedToken = decode(token)
-      if (decodedToken.exp * 1000 < Date.now()) {
-        try {
-          setTimeout(async () => {
-            token = await auth().currentUser.getIdToken(true)
-            authStore.setToken(token)
-          }, 100)
-        } catch (error) {
-          alert('Tivemos um problema para verificar suas credenciais. Entre novamente!')
-          authStore.clearStore()
-        }
+  request: async ({ setContext }) => {
+    const token = await getToken()
+    setContext({
+      headers: {
+        authorization: token || null
       }
-      operation.setContext({
-        headers: {
-          authorization: token
-        }
-      })
-    }
+    })
   }
 })

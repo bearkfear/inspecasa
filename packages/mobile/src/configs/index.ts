@@ -1,4 +1,4 @@
 import fire from './fire'
-import { observerBatchingOptOut } from 'mobx-react'
+// import { observerBatchingOptOut } from 'mobx-react'
 fire.install()
-observerBatchingOptOut()
+// observerBatchingOptOut()

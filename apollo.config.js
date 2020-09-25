@@ -4,7 +4,7 @@ module.exports = {
     service: {
       name: 'inspecasa-graphql-api',
       // URL to the GraphQL API
-      url: 'http://localhost:5000/graphql'
+      url: 'https://localhost:5000'
     },
     // Files processed by the extension
     includes: [
