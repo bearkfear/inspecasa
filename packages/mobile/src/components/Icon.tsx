@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons'
 interface IconProps {
   name: string;
   active?: boolean;
-  style?: {[key]: string | number};
+  style?: {[key: string]: string | number};
 }
 
 export const Icon: React.FC<IconProps> = ({

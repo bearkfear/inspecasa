@@ -10,9 +10,7 @@ import { Icon } from '@/components/Icon'
 import { useQuery } from '@apollo/react-hooks'
 import { GET_CURRENT_USER } from '@/querys'
 import { StatusBar } from 'expo-status-bar'
-import {
-  TouchableOpacity
-} from 'react-native-gesture-handler'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const Settings: React.FC<{}> = () => {
   const store = useContext(Store)
@@ -35,7 +33,7 @@ const Settings: React.FC<{}> = () => {
         `)}
       >
         <View style={tailwind('flex-row items-center')}>
-          <View style={tailwind('rounded-full mr-6')}>
+          <View style={tailwind('mr-6')}>
             <Image
               source={{ uri: data?.me?.urlImg }}
               PlaceholderContent={<Spinner />}
@@ -45,11 +43,10 @@ const Settings: React.FC<{}> = () => {
           <View>
             <Text
               style={tailwind(`
-            text-xl 
-            text-center 
-            font-bold 
-            text-orange-600
-          `)}
+                text-lg 
+                font-bold 
+                text-orange-600
+              `)}
             >
               {data?.me?.nome} {data?.me?.sobrenome}
             </Text>
@@ -65,7 +62,6 @@ const Settings: React.FC<{}> = () => {
               style={tailwind(`
           uppercase
           font-bold
-          py-2
         `)}
             >
               {data?.me?.funcao}
@@ -84,12 +80,12 @@ const Settings: React.FC<{}> = () => {
                 flex-row
                 items-center
                 justify-between
-                px-5
-                py-3
+                px-3
+                py-2
                 rounded-lg
               `)}
             >
-              <Text>Geral</Text>
+              <Text style={tailwind('font-bold')}>Geral</Text>
             </View>
 
             <TouchableOpacity
@@ -99,12 +95,12 @@ const Settings: React.FC<{}> = () => {
                 flex-row
                 items-center
                 justify-between
-                px-5
-                py-3
+                px-4
+                py-2
                 rounded-lg
               `)}
             >
-              <Text style={tailwind('text-lg')}>Sair</Text>
+              <Text style={tailwind('text-sm')}>Sair</Text>
               <Icon name="ios-log-out" />
             </TouchableOpacity>
           </View>

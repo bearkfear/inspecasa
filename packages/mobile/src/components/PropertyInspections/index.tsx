@@ -1,24 +1,21 @@
-import React, { useState } from 'react'
+import React, { useRef } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { GET_VISTORIAS } from '@/querys'
 import { useNavigation } from '@react-navigation/native'
-import {
-  Spinner,
-  Content,
-  Body,
-  Text,
-  Card,
-  CardItem,
-  Button,
-  Fab,
-  View
-} from 'native-base'
+import tailwind from 'tailwind-rn'
+import { VistoriaCard, Vistoria } from '../VistoriaCard'
+import { RefreshControl } from 'react-native'
+
+import { Spinner, Content, Text, Fab, View } from 'native-base'
 import { Icon } from '@/components/Icon'
+
 interface Props {
-  id: number;
+  id: number
 }
 
-const Inspection: React.FC<Props> = ({ id }) => {
+export default function Inspection ({ id }: Props): JSX.Element {
+  const refreshRef = useRef(false)
+
   const navigation = useNavigation()
   const resp = useQuery(GET_VISTORIAS, {
     variables: {
@@ -26,49 +23,49 @@ const Inspection: React.FC<Props> = ({ id }) => {
     }
   })
 
-  const { data, loading, error } = resp
+  const { data, loading } = resp
 
   if (loading) {
     return <Spinner />
   }
-  return <>
-    <Content padder>
-      {
-        data.imovel.vistorias.length === 0 && !loading &&
-        <Text>Nenhuma vistoria ainda!</Text>
-      }
-      {
-        data.imovel.vistorias.map(vistoria => {
-          return (
-            <Card key={vistoria.id}>
-              <CardItem header bordered>
-                <Text>
-                  {new Date(Number(vistoria.createdAt)).toLocaleString()}
-                </Text>
-              </CardItem>
-              <CardItem>
-                <Text>
-                  {vistoria.observacao}
-                </Text>
-              </CardItem>
-              <CardItem>
-                <Text>{ JSON.stringify(vistoria.midias, null, 4)}</Text>
-              </CardItem>
 
-            </Card>
-          )
-        })
-      }
-    </Content>
-    <Fab
-      style={{
-        backgroundColor: '#ef6235'
-      }}
-      onPress={() => { navigation.navigate('CadastroVistoria', { id }) }}
-    >
-      <Icon name="ios-add" style={{ color: '#fff' }} />
-    </Fab>
-  </>
+  refreshRef.current = false
+
+  return (
+    <>
+      <Content
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshRef.current}
+            onRefresh={() => {
+              if (loading && resp) {
+                refreshRef.current = true
+                resp.refetch()
+              }
+            }}
+          />
+        }
+      >
+        {data.imovel.vistorias.length === 0 && !loading && (
+          <Text>Nenhuma vistoria ainda!</Text>
+        )}
+        <View style={tailwind('flex-col')}>
+          {data?.imovel?.vistorias?.map((vistoria: Vistoria) => (
+            <VistoriaCard key={vistoria.id} vistoria={vistoria}></VistoriaCard>
+          ))}
+          <View style={tailwind('w-10 h-32')}></View>
+        </View>
+      </Content>
+      <Fab
+        style={{
+          backgroundColor: '#ef6235'
+        }}
+        onPress={() => {
+          navigation.navigate('CadastroVistoria', { id })
+        }}
+      >
+        <Icon name="ios-add" style={{ color: '#fff' }} />
+      </Fab>
+    </>
+  )
 }
-
-export default Inspection

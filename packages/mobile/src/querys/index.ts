@@ -16,7 +16,7 @@ export const GET_CURRENT_USER = gql`
 
 export interface Imovel {
   id: string;
-  valorProposta: number;
+  valorProposta: number | string;
   situacao: number;
   numQuartos: number;
   descricao: string;
@@ -71,15 +71,22 @@ export const GET_VISTORIAS = gql`
     imovel(id: $id) {
       id
       vistorias {
-        createdAt
         id
+        createdAt
         observacao
+        responsavel {
+          id
+          nome
+          sobrenome
+          email
+          urlImg
+        }
         midias {
           id
           url
           extensao
           createdAt
-          changedAt
+          descricao
         }
       }
     }

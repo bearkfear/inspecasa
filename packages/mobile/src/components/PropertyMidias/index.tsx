@@ -6,7 +6,7 @@ import { Spinner, Content, Body, Text } from 'native-base'
 import { Card, Image } from 'react-native-elements'
 import { Video } from 'expo-av'
 interface Props {
-  id: number;
+  id: number
 }
 
 const PropertyMidias: React.FC<Props> = ({ id }) => {

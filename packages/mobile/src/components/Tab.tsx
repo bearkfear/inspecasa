@@ -28,7 +28,7 @@ const Tab: React.FC<BottomTabBarProps> = ({
         <BarButton
           isActive={index === 0}
           icon="ios-home"
-          name="Propriedades"
+          name="Imóveis"
           onPress={() => navigation.navigate('home')}
         ></BarButton>
         <BarButton
