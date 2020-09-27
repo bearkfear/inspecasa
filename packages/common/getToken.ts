@@ -1,9 +1,13 @@
+import AsyncStorage  from '@react-native-community/async-storage';
 // @ts-ignore
 import decode from "jwt-decode"
 import firebase from "firebase/app";
-export const getToken = (): Promise<string> => new Promise((resolve, reject) => {
 
-	const currentToken = localStorage.getItem('token');
+export const getToken = (token: string | null): Promise<string> => new Promise((resolve, reject) => {
+
+
+
+	const currentToken = token
 	if (!currentToken) { 
 		return resolve("");
 	}
@@ -17,12 +21,10 @@ export const getToken = (): Promise<string> => new Promise((resolve, reject) => 
 	const listener = firebase.auth().onAuthStateChanged(user => {
 		listener();
 		if (!user) { 
-			localStorage.removeItem('token');
 			return resolve("");
 		}
 		
 		user.getIdToken(true).then((token) => { 
-			localStorage.setItem('token', token);
 			resolve(token);
 		})
 	})

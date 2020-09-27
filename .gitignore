@@ -5,7 +5,8 @@ serviceAccountKey.json
 .DS_Store
 node_modules
 /dist
-
+.expo/
+.expo-shared/
 # local env files
 .env.local
 .env.*.local
@@ -56,3 +57,5 @@ web-report/
 .DS_Store
 yarn.lock
 yarn-error.log
+packages/mobile/.expo
+packages/mobile/.expo/web/cache/development/babel-loader/**/*
