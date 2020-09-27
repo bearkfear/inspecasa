@@ -54,9 +54,12 @@ const LoginForm: React.FC<{}> = () => {
       store.setUid(resp.user.uid)
       store.setToken(token)
 
-      const { data } = await client.query({
+      const { data, errors } = await client.query({
         query: GET_ME
       })
+
+      console.log('errors', errors)
+
       if (data.me.id) {
         store.setEmail(email)
         store.setIsAuth(true)

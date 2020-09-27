@@ -2,34 +2,17 @@ import React, { useContext, useRef } from 'react'
 import { observer } from 'mobx-react'
 import Store from '@/store'
 
-import {
-  Content,
-  Text,
-  H3,
-  Spinner,
-  ListItem,
-  Left,
-  Body,
-  Right,
-  List,
-  Title,
-  Header
-} from 'native-base'
+import { Spinner } from 'native-base'
+import { SafeAreaView, View, Text } from 'react-native'
+import tailwind from 'tailwind-rn'
 import { Image } from 'react-native-elements'
 import { Icon } from '@/components/Icon'
 import { useQuery } from '@apollo/react-hooks'
 import { GET_CURRENT_USER } from '@/querys'
 import { StatusBar } from 'expo-status-bar'
-import styled from 'styled-components/native'
-
-const User = styled.View`
-  align-items: center;
-  justify-content: space-evenly;
-`
-
-const Box = styled.View`
-  padding-top: 10px;
-`
+import {
+  TouchableOpacity
+} from 'react-native-gesture-handler'
 
 const Settings: React.FC<{}> = () => {
   const store = useContext(Store)
@@ -43,53 +26,91 @@ const Settings: React.FC<{}> = () => {
   }
 
   return (
-    <>
+    <SafeAreaView style={tailwind('h-full bg-gray-100')}>
       <StatusBar style="dark" />
-      <Content scrollEnabled={false} contentContainerStyle={{ flex: 1 }}>
-        {loading ? (
-          <Spinner />
-        ) : (
-          <User>
+      <View
+        style={tailwind(`
+          px-10
+          pt-10
+        `)}
+      >
+        <View style={tailwind('flex-row items-center')}>
+          <View style={tailwind('rounded-full mr-6')}>
             <Image
-              source={{ uri: data.me?.urlImg }}
+              source={{ uri: data?.me?.urlImg }}
               PlaceholderContent={<Spinner />}
-              style={{ width: 60, height: 60, borderRadius: 30 }}
+              style={tailwind('w-20 h-20 rounded-full')}
             />
-            <Box>
-              <H3>
-                {data?.me.nome} {data.me?.sobrenome}
-              </H3>
-            </Box>
-            <Box>
-              <Text note>{data.me?.email}</Text>
-            </Box>
-            <Box>
-              <Text>{data.me?.funcao}</Text>
-            </Box>
-          </User>
+          </View>
+          <View>
+            <Text
+              style={tailwind(`
+            text-xl 
+            text-center 
+            font-bold 
+            text-orange-600
+          `)}
+            >
+              {data?.me?.nome} {data?.me?.sobrenome}
+            </Text>
+            <Text
+              style={tailwind(`
+          text-lg
+          text-sm
+        `)}
+            >
+              {data?.me?.email}
+            </Text>
+            <Text
+              style={tailwind(`
+          uppercase
+          font-bold
+          py-2
+        `)}
+            >
+              {data?.me?.funcao}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={tailwind(`
+            py-10
+          `)}
+        >
+          <View>
+            <View
+              style={tailwind(`
+                bg-transparent
+                flex-row
+                items-center
+                justify-between
+                px-5
+                py-3
+                rounded-lg
+              `)}
+            >
+              <Text>Geral</Text>
+            </View>
 
-        // <List>
-        //   <ListItem thumbnail itemHeader>
-
-        //   </ListItem>
-        //   <ListItem>
-        //     <Body>
-        //       <Text>Perfil</Text>2
-        //     </Body>
-        //   </ListItem>
-        //   <ListItem onPress={() => store.clearStore()} last icon>
-        //     <Left>
-        //       <Icon name="ios-log-out"></Icon>
-        //     </Left>
-        //     <Body>
-        //       <Text>Sair</Text>
-        //     </Body>
-        //     <Right></Right>
-        //   </ListItem>
-        // </List>
-        )}
-      </Content>
-    </>
+            <TouchableOpacity
+              onPress={() => store.clearStore()}
+              style={tailwind(`
+                bg-gray-200
+                flex-row
+                items-center
+                justify-between
+                px-5
+                py-3
+                rounded-lg
+              `)}
+            >
+              <Text style={tailwind('text-lg')}>Sair</Text>
+              <Icon name="ios-log-out" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </SafeAreaView>
   )
 }
 
