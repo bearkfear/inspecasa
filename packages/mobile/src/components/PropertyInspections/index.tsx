@@ -47,7 +47,17 @@ export default function Inspection ({ id }: Props): JSX.Element {
         }
       >
         {data.imovel.vistorias.length === 0 && !loading && (
-          <Text>Nenhuma vistoria ainda!</Text>
+          <View style={tailwind('flex-col items-center')}>
+            <View
+              style={tailwind(
+                'rounded-full overflow-hidden bg-orange-600 px-2 py-2 px-4 my-2'
+              )}
+            >
+              <Text style={tailwind('text-sm text-white')}>
+                Nenhuma vistoria ainda!
+              </Text>
+            </View>
+          </View>
         )}
         <View style={tailwind('flex-col')}>
           {data?.imovel?.vistorias?.map((vistoria: Vistoria) => (
