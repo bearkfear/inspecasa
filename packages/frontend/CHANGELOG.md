@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.1](https://github.com/bearkfear/projeto-integrador/compare/@inspecasa/front@0.3.0...@inspecasa/front@0.3.1) (2020-10-02)
+
+
+### Bug Fixes
+
+* **mobile - web:** configura expo monorepo ([dd7d2f2](https://github.com/bearkfear/projeto-integrador/commit/dd7d2f2e94898a82b051cb215d0e82049cccb0fe))
+
+
+
+
+
 # [0.3.0](https://github.com/bearkfear/projeto-integrador/compare/@inspecasa/front@0.2.0...@inspecasa/front@0.3.0) (2020-09-19)
 
 
