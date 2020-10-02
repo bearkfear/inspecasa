@@ -1,13 +1,13 @@
 import React, { useRef } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { GET_VISTORIAS } from '@/querys'
-import { useNavigation } from '@react-navigation/native'
+
 import tailwind from 'tailwind-rn'
 import { VistoriaCard, Vistoria } from '../VistoriaCard'
 import { RefreshControl } from 'react-native'
 
-import { Spinner, Content, Text, Fab, View } from 'native-base'
-import { Icon } from '@/components/Icon'
+import { Spinner, Content, Text, View } from 'native-base'
+import { AddInspection } from '../AddInspection'
 
 interface Props {
   id: number
@@ -16,7 +16,6 @@ interface Props {
 export default function Inspection ({ id }: Props): JSX.Element {
   const refreshRef = useRef(false)
 
-  const navigation = useNavigation()
   const resp = useQuery(GET_VISTORIAS, {
     variables: {
       id
@@ -66,16 +65,9 @@ export default function Inspection ({ id }: Props): JSX.Element {
           <View style={tailwind('w-10 h-32')}></View>
         </View>
       </Content>
-      <Fab
-        style={{
-          backgroundColor: '#ef6235'
-        }}
-        onPress={() => {
-          navigation.navigate('CadastroVistoria', { id })
-        }}
-      >
-        <Icon name="ios-add" style={{ color: '#fff' }} />
-      </Fab>
+      <AddInspection refresh={() => {
+        resp.refetch()
+      }} imovelId={id} />
     </>
   )
 }

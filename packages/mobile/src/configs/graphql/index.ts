@@ -9,11 +9,11 @@ export const client = new ApolloClient({
     if (e.networkError) {
       alert('Verifique sua conexão!')
 
-      console.log('Conection error ', e.networkError?.message)
+      console.log('Conection error ', JSON.stringify(e, null, 2))
 
-      auth().signOut()
-      authStore.setToken('')
-      authStore.setIsAuth(false)
+      // auth().signOut()
+      // authStore.setToken('')
+      // authStore.setIsAuth(false)
     } else if (e.graphQLErrors) {
       console.log('e.graphQLErrors', e.graphQLErrors)
     }

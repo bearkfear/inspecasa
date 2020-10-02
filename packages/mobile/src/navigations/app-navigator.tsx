@@ -53,10 +53,6 @@ const bottomNavigator: React.FC<{}> = () => {
 const AppNavigator: React.FC<{}> = () => (
   <stack.Navigator mode="modal">
     <stack.Screen name="HomeTabs" component={bottomNavigator} />
-    <stack.Screen
-      name="CadastroVistoria"
-      component={Views.CadastroVistoria}
-    />
   </stack.Navigator>
 )
 

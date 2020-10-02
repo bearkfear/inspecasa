@@ -129,3 +129,10 @@ export const GET_DOCS_FROM_IMOVEL = gql`
   }
 
 `
+
+export const ADD_VISTORIA = gql`
+  mutation addVistoria($imovelId: ID!, $vistoriaInput: VistoriaInput!) { 
+    storeVistoria(imovelId: $imovelId, vistoria: $vistoriaInput)
+  }
+
+`

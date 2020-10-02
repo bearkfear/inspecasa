@@ -1,8 +1,8 @@
-import AsyncStorage  from '@react-native-community/async-storage';
+
 // @ts-ignore
 import decode from "jwt-decode"
 import firebase from "firebase/app";
-
+import "firebase/auth";
 export const getToken = (token: string | null): Promise<string> => new Promise((resolve, reject) => {
 
 
