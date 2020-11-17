@@ -26,7 +26,7 @@ npm i
 Para testar é preciso acessar ambos pacotes, backend e frontend e seguir seus `README.md`
 
 <hr>
-## 👤 **Bearkfear**
+👤 **Bearkfear**
 
 * Website: https://enrico-silva.web.app/
 * Github: [@bearkfear](https://github.com/bearkfear)
