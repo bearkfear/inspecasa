@@ -5,8 +5,6 @@ import firebase from "firebase/app";
 import "firebase/auth";
 export const getToken = (token: string | null): Promise<string> => new Promise((resolve, reject) => {
 
-
-
 	const currentToken = token
 	if (!currentToken) { 
 		return resolve("");

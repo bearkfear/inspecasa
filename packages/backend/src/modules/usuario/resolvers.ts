@@ -12,7 +12,8 @@ export const resolvers = {
     verificaUsuario: (root, { email }: { email: string}, { injector }: ModuleContext) => {
       return injector.get(Provider).verificaUsuario(email);
     },
-    usuarios: (root, args, { injector }) => {
+    usuarios: (root, args, { injector }, extra) => {
+      console.log(JSON.stringify(extra.fieldNodes, null, 2));
       return injector.get(Provider).list().then(pessoas => pessoas);
     },
     usuario: (_, { id }, { injector }) => {

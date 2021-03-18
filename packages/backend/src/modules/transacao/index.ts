@@ -5,6 +5,7 @@ import * as typeDefs from './schema.graphql';
 import { Imovel } from '../imovel';
 import { Vistoria } from '../vistoria';
 import { Auth } from '../auth';
+import { isAuthenticated } from '@/utils/isAuthenticated';
 
 export const Transacao = new GraphQLModule({
   typeDefs,
@@ -13,5 +14,6 @@ export const Transacao = new GraphQLModule({
   imports: [
     Auth,
     Imovel
-  ]
+  ],
+  middleware: (module) => console.log(module)
 });

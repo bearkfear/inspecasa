@@ -9,6 +9,7 @@ import mutationTypes from './mutationTypes';
 
 const actions: ActionTree<S, {}> = {
   async verificarEmail(context, email: string) {
+     
     const resp = await http.query({
       query: gql`
         query verificarUsuario($email: String!) {
@@ -25,6 +26,8 @@ const actions: ActionTree<S, {}> = {
       },
     });
     return resp.data;
+  
+     
   },
   async logarUsuario(context, { email, password }) {
     try {

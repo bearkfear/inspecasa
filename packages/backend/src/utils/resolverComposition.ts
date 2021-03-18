@@ -16,5 +16,6 @@ export const resolversComposition = {
   'Query.enderecos': [isAuthenticated()],
   'Query.endereco': [isAuthenticated()],
   'Query.midias': [isAuthenticated()],
-  'Query.midia': [isAuthenticated()]
+  'Query.midia': [isAuthenticated()],
+  'Query.transacao': [isAuthenticated()]
 };

@@ -7,14 +7,10 @@ logger.level = 'debug';
 
 export const development: Config = {
   client: 'pg',
-  connection: {
-    database: 'reloaded',
-    user: 'postgres',
-    password: '123456'
-  },
+  connection: process.env.DB_CONNECTION,
   pool: {
     min: 1,
-    max: 4
+    max: 1
   },
 
   migrations: {
@@ -70,7 +66,7 @@ export const production: Config = {
   },
   pool: {
     min: 1,
-    max: 4
+    max: 1
   }
 
 };
